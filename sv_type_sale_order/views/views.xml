@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--window action for sv.incidence-->
+    <record model="ir.actions.act_window" id="sv_incidence_action">
+      <field name="name">Incidencias para ordenes de venta</field>
+      <field name="res_model">sv.incidence</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Incidencias para ordenes de venta</p>
+      </field>
+    </record>
+    <!--menu item for sv.incidence-->
+    <menuitem 
+     id="sv_incidence_menu" 
+     parent="sale.menu_sale_config"
+     name="Incidencias"
+     action="sv_incidence_action"
+     sequence="101"
+     groups='base.group_system,sales_team.group_sale_manager,'
+     />
+    <!--form view for sv.incidence-->
+    
+    <!--list view for sv.incidence-->
+    <record model="ir.ui.view" id="sv_incidence_list">
+      <field name="name">sv_incidence_list</field>
+      <field name="model">sv.incidence</field>
+      <field name="arch" type="xml">
+        <tree editable="bottom" sample="1">
+            <field name="name"/>
+            <field name="active"/>
+        </tree>
+      </field>
+    </record>
+    <!--search view for sv.incidence-->
+    <record model="ir.ui.view" id="sv_incidence_search_view">
+      <field name="name">sv_incidence_search_view</field>
+      <field name="model">sv.incidence</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name" string="Incidencia" filter_domain="[('name','ilike',self)]"/>
+          <filter name="inactive" string="Archivado" domain="[('active','=',False)]"/>
+        </search>
+      </field>
+    </record>
+    <!--form view for confirmation data-->
+    <record model="ir.ui.view" id="sv_confirmation_data_form">
+        <field name="name">sv_confirmation_data_form</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <style rel="stylesheet" type="text/css">
+                    .apply_dimension {
+                    width: 100%;
+                    height: 40% !important;
+                    }
+                </style>
+                    <sheet>
+                    <group>
+                        <group string="Confirme los datos del pedido">
+                        <field name="x_ruta_proceso_id"/>
+                        <field name="type_order"/>
+                        <field name="x_reclamo_orden" domain="[('state','in',('done','sale'))]" attrs="{'required':[('type_order','in',('claim','warranty','rectification'))],'invisible':[('type_order','not in',('claim','warranty','rectification'))]}"/>
+                        </group>
+                        <group string="Datos adicionales">
+                        <label string="Incidencias de reclamo" for="incidence_ids" attrs="{'invisible':[('type_order','!=','claim')]}"/>
+                        <label string="Incidencias de garantía" for="incidence_ids" attrs="{'invisible':[('type_order','!=','warranty')]}"/>
+                        <label string="Incidencias de rectificación" for="incidence_ids" attrs="{'invisible':[('type_order','!=','rectification')]}"/>
+                        <field name="incidence_ids" nolabel="1" widget="many2many_tags" attrs="{'invisible':[('type_order','not in',('claim','warranty','rectification'))]}"/>
+                        <field name="incidence_note" colspan="2" class="apply_dimension" nolabel="1" placeholder="Detalles de reclamo, rectificación o garantía..." attrs="{'invisible':[('type_order','not in',('claim','warranty','rectification'))]}"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" colspan="2" type="object" string="Guardar y confirmar" class="btn btn-primary"/>
+                    </footer>
+                    </sheet>
+            </form>
+        </field>
+        </record>
+
+    <!--form inherited for replace butons in sale order form
+    <record id="sv_confirm_sale_order_data" model="ir.ui.view">
+            <field name="name">sv_confirm_sale_order_data</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            <data>
+              <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="name">confirm_data</attribute>
+                <attribute name="groups">!sv_type_sale_order.type_orders_group</attribute>
+              </xpath>
+            </data>
+            </field>
+    </record>
+
+    <record id="sv_confirm_sale_order_data" model="ir.ui.view">
+            <field name="name">sv_confirm_sale_order_data</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            <data>
+              <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="groups">!sv_type_sale_order.type_orders_group</attribute>
+              </xpath>
+            </data>
+            </field>
+    </record>
+
+    <record id="sv_confirm_data_lomed" model="ir.ui.view">
+            <field name="name">sv_confirm_data_lomed</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="lomed.lomed_sale_order_form"/>
+            <field name="arch" type="xml">
+            <data>
+              <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="name">confirm_data</attribute>
+                <attribute name="string">Confirmar</attribute>
+                <attribute name="groups">sv_type_sale_order.type_orders_group</attribute>
+                <attribute name="onclick">var x=1</attribute>
+              </xpath>
+            </data>
+            </field>
+    </record>-->
+    </data>
+</odoo>

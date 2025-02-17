@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sv_client_segmentation.admin_function" model="res.groups">
+            <field name="name">Administra perfil técnico</field>
+        </record>
+
+        <record id="sv_client_segmentation.user_function" model="res.groups">
+            <field name="name">Calcular perfil técnico</field>
+        </record>
+    </data>
+</odoo>

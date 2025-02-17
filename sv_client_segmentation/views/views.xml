@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--Window action for segmentation settings-->
+    <record model="ir.actions.act_window" id="sv_segmentation_settings_action">
+      <field name="name">Configuración de segmentación</field>
+      <field name="res_model">sv.segmentation.settings</field>
+      <field name="context">{'search_default_active_settings':1}</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">Configuración de segmentos de clientes</p>
+      </field>
+    </record>
+    <!--Menu item for segmentation settings-->
+    <menuitem 
+     id="sv_segmentation_settings_menu" 
+     parent="contacts.res_partner_menu_config"
+     name="Configuración de segmentación"
+     action="sv_segmentation_settings_action"
+     sequence="30"
+     groups='base.group_system,account.group_account_manager'
+     />
+    <!--List view for segmentation settings-->
+    <record model="ir.ui.view" id="sv_segmentation_settings_list">
+      <field name="name">sv_segmentation_settings_list</field>
+      <field name="model">sv.segmentation.settings</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="reference_categ_id"/>
+            <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='current'" decoration-danger="state=='obsolete'"/>
+        </tree>
+      </field>
+    </record>
+    <!--Form for segmentation settings-->
+    <record model="ir.ui.view" id="sv_segmentation_settings_form">
+      <field name="name">sv_segmentation_settings_form</field>
+      <field name="model">sv.segmentation.settings</field>
+      <field name="arch" type="xml">
+        <form string="Configuración de segmentos">
+          <header>
+            <button name="action_set_current" type="object" class="btn btn-primary" string="Activar" attrs="{'invisible':[('state','!=','draft')]}"/>
+            <button name="back_to_draft" type="object" string="Cambiar a borrador" attrs="{'invisible':[('state','=','draft')]}"/>
+            <button name="set_obsolete" type="object" string="Invalidar" class="btn btn-primary" attrs="{'invisible':[('state','not in','current')]}"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,current"/>
+          </header>
+          <sheet>
+            <widget name="web_ribbon" title="Obsoleto" bg_color="bg-danger" attrs="{'invisible':[('state','!=','obsolete')]}"/>
+            <div name="button_box" class="oe_button_box"> </div>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Nombre de la configuración" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/>
+              </h1>
+            </div>
+            <group name="general_settings">
+              <group name="interval" string="Intervalo">
+                <label for="interval" string="Intervalo"/>
+                <div>
+                  <field name="interval" class="oe_inline" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/>
+                  <field name="interval_type" nolabel="1" class="oe_inline" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/>
+                </div>
+                <field name="end_interval" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/>
+                <field name="reference_categ_id" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/>
+              </group>
+              <group name="preview" string="Rango">
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="last_calculate"/>
+              </group>
+            </group>
+            <group name="sku_focus_list" string="Lista productos objetivo">
+              <field name="focus_sku_ids" widget="many2many_tags" attrs="{'readonly':[('state','in',('current','obsolete'))]}"/><!--domain="[('categ_id','in',(105,104,108,106))]"-->
+            </group>
+            <notebook>
+              <page name="config_lines" string="Configuración de categorias">
+                <field name="line_ids" nolabel="1" attrs="{'readonly':[('state','in',('obsolete','current'))]}">
+                <tree editable="bottom">
+                  <field name="categ_id" style="width:15%%"/>
+                  <field name="order_frequency" style="width:15%"/>
+                  <field name="min_value" style="width:14%%"/>
+                  <field name="top_value" style="width:14%%"/>
+                  <field name="branch" style="width:14%%"/>
+                  <field name="sku" style="width:14%%"/>
+                  <field name="percent" style="width:14%%"/>
+                </tree>
+              </field>
+              </page>
+              <page name="ohter_info" string="Otra información">
+                <group>
+                  <group name="create_info">
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                  </group>
+                  <group name="write_info">
+                    <field name="write_uid"/>
+                    <field name="write_date"/>
+                  </group>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        <div class="oe_chatter">
+            <field name="message_follower_ids" groups="base.group_user"/>
+            <field name="message_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+    <!--Search view for segmentation settings-->
+    <record id="sv_segmentation_settings_search_view" model="ir.ui.view">
+    <field name="name">sv_segmentation_settings_search_view</field>
+    <field name="model">sv.segmentation.settings</field>
+    <field name="arch" type="xml">
+       <search>
+          <field name="name"/>
+          <filter name="active_settings" string="Activos" domain="[('state','!=','obsolete')]"/>
+          <filter name="obsolete_settings" string="Obsoletos" domain="[('state','=','obsolete')]"/>
+       </search>
+    </field>
+</record>
+    <!--Inherited form for res partner-->
+    <record id="sv_technical_profile" model="ir.ui.view">
+            <field name="name">sv_techical_profile</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//notebook" position="inside">
+                  <page string="Perfil técnico del cliente" name="technical_page">
+                    <group>
+                      <group string="Resumen de resultados">
+                        <label for="order_frequency" string="Frecuencia de compra"/>
+                        <div class="o_row">
+                          <field name="order_frequency" class="oe_inline o_hr_narrow_field"/>
+                          <field name="of_trend" class="oe_inline o_hr_narrow_field" widget="badge" decoration-success="of_trend == 'upgrade'" decoration-info="of_trend == 'equal'" decoration-danger="of_trend == 'downgrade'"/>
+                        </div>
+                        <label for="sku" string="#SKU"/>
+                        <div class="o_row">
+                          <field name="sku" class="oe_inline o_hr_narrow_field"/>
+                          <field name="sku_trend" class="oe_inline o_hr_narrow_field" widget="badge" decoration-success="sku_trend == 'upgrade'" decoration-info="sku_trend == 'equal'" decoration-danger="sku_trend == 'downgrade'"/>
+                        </div>
+                        <field name="branches"/>
+                        <label for="turnover" string="Compra mensual"/>
+                        <div class="o_row">
+                          <field name="turnover" class="oe_inline o_hr_narrow_field"/>
+                          <field name="to_trend" class="oe_inline o_hr_narrow_field" widget="badge" decoration-success="to_trend == 'upgrade'" decoration-info="to_trend == 'equal'" decoration-danger="to_trend == 'downgrade'"/>
+                        </div>
+                        <field name="target_product" invisible="1"/>
+                        <label for="target_product_string" string="Producto Objetivo"/>
+                        <div class="o_row">
+                          <field name="target_product_string" class="oe_inline o_hr_narrow_field"/>
+                          <field name="tp_trend" class="oe_inline o_hr_narrow_field" widget="badge" decoration-success="tp_trend == 'upgrade'" decoration-info="tp_trend == 'equal'" decoration-danger="tp_trend == 'downgrade'"/>
+                        </div>
+                      </group>
+                      <group string="Datos de configuración">
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <button name="action_calculate_profile" type="object" string="Calcular perfil" colspan="2" class="btn btn-primary" groups="sv_client_segmentation.admin_function,sv_client_segmentation.user_function"/>
+                      </group>
+                    </group>
+                    <group name="sugest_categ" string="Categoria sugerida" groups="sv_client_segmentation.admin_function" attrs="{'invisible':[('suggested','=',False)]}">
+                      <group>
+                        <field name="suggested" widget="badge" readonly="1"/>
+                      </group>
+                      <group>
+                        <button class="btn btn-primary" name="apply_suggested" type="object" string="Aplicar sugerido" colspan="2"/>
+                        <button class="btn btn-primary" name="ignore_suggested" type="object" string="Conservar actual" colspan="2"/>
+                      </group>
+                    </group>
+                  </page>
+                  <page name="history_data" string="Historial del cliente">
+                    <field name="hisory_profile_ids" nolabel="1" readonly="1">
+                      <tree>
+                        <field name="replace_date"/>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="order_frequency"/>
+                        <field name="sku"/>
+                        <field name="branches"/>
+                        <field name="turnover"/>
+                        <field name="target_product"/>
+                      </tree>
+                    </field>
+                  </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

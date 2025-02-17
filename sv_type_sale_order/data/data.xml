@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sv_incidence_1" model="sv.incidence">
+            <field name="name">Producto</field>
+            <field name="active">True</field>
+        </record>
+        <record id="sv_incidence_2" model="sv.incidence">
+            <field name="name">Receta</field>
+            <field name="active">True</field>
+        </record>
+        <record id="sv_incidence_3" model="sv.incidence">
+            <field name="name">Medidas personalizadas</field>
+            <field name="active">True</field>
+        </record>
+        <record id="sv_incidence_4" model="sv.incidence">
+            <field name="name">Aro</field>
+            <field name="active">True</field>
+        </record>
+        <record id="sv_incidence_5" model="sv.incidence">
+            <field name="name">Problemas de adaptación</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="sv_type_sale_order.type_orders_group" model="res.groups">
+            <field name="name">Crear todo tipo de orden de venta</field>
+        </record>
+    </data>
+</odoo>

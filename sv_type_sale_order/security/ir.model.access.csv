@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sv_incidence_all,sv_incidence_all,model_sv_incidence,base.group_user,1,0,0,0
+sv_incidence_usr,sv_incidence_usr,model_sv_incidence,account.group_account_manager,1,1,1,0
+sv_incidence_adm,sv_incidence_adm,model_sv_incidence,base.group_system,1,1,1,1

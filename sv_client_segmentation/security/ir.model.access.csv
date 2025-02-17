@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sv_segm_setting,sv_segm_setting,model_sv_segmentation_settings,base.group_user,1,0,0,0
+sv_segm_setting_line,sv_segm_setting_line,model_sv_segmentation_settings_line,base.group_user,1,1,1,1
+sv_history_data,sv_history_data,model_sv_partner_history_data,base.group_user,1,1,1,0
+sv_segm_setting_adm,sv_segm_setting_adm,model_sv_segmentation_settings,base.group_system,1,1,1,1
+sv_segm_setting_line_adm,sv_segm_setting_adm,model_sv_segmentation_settings_line,base.group_system,1,1,1,1
+sv_history_data_adm,sv_history_data_adm,model_sv_partner_history_data,base.group_system,1,1,1,1
+sv_segm_setting_usr,sv_segm_setting_usr,model_sv_segmentation_settings,account.group_account_manager,1,1,1,0
