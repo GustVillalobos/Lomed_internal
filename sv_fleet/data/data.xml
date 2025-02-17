@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="brand_serpento" model="fleet.vehicle.model.brand">
+      	    <field name="name">Serpento</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/serpento.png"/>
+        </record>
+
+        <record id="brand_bajaj" model="fleet.vehicle.model.brand">
+      	    <field name="name">Bajaj</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/bajaj.png"/>
+        </record>
+
+        <record id="brand_dayun" model="fleet.vehicle.model.brand">
+      	    <field name="name">Dayun</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/dayun.png"/>
+        </record>
+
+        <record id="brand_katana" model="fleet.vehicle.model.brand">
+      	    <field name="name">Katana</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/katana.svg"/>
+        </record>
+
+        <record id="brand_genesis" model="fleet.vehicle.model.brand">
+      	    <field name="name">Genesis</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/genesis.jpg"/>
+        </record>
+
+        <record id="brand_honda" model="fleet.vehicle.model.brand">
+      	    <field name="name">Honda Motos</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/honda.jpg"/>
+        </record>
+
+        <record id="brand_yamaha" model="fleet.vehicle.model.brand">
+      	    <field name="name">Yamaha</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/yamaha.png"/>
+        </record>
+
+        <record id="brand_kawasaki" model="fleet.vehicle.model.brand">
+      	    <field name="name">Kawasaki</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/kawasaki.jpg"/>
+        </record>
+
+        <record id="brand_ducati" model="fleet.vehicle.model.brand">
+      	    <field name="name">Ducati</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/ducati.png"/>
+        </record>
+
+        <record id="brand_benelli" model="fleet.vehicle.model.brand">
+      	    <field name="name">Benelli</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/benelli.png"/>
+        </record>
+
+        <record id="brand_keeway" model="fleet.vehicle.model.brand">
+      	    <field name="name">Keeway</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/keeway.png"/>
+        </record>
+
+        <record id="brand_freedom" model="fleet.vehicle.model.brand">
+      	    <field name="name">Freedom</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/freedom.jpg"/>
+        </record>
+
+        <record id="brand_hero" model="fleet.vehicle.model.brand">
+      	    <field name="name">Hero</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/hero.png"/>
+        </record>
+
+        <record id="brand_tvs" model="fleet.vehicle.model.brand">
+      	    <field name="name">TVS</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/tvs.png"/>
+        </record>
+
+        <record id="brand_akt" model="fleet.vehicle.model.brand">
+      	    <field name="name">AKT</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/akt.png"/>
+        </record>
+
+        <record id="brand_um" model="fleet.vehicle.model.brand">
+      	    <field name="name">UM</field>
+      	    <field name="image_128" type="base64" file="sv_fleet/static/img/um.png"/>
+        </record>
+
+        <record id="categ_delivery" model="fleet.vehicle.model.category">
+            <field name="name">Motocicleta de reparto</field>
+        </record>
+
+        <record id="categ_delivery_2" model="fleet.vehicle.model.category">
+            <field name="name">Motocicleta de mensajeria</field>
+        </record>
+
+        <record id="categ_temp" model="fleet.vehicle.model.category">
+            <field name="name">Motocicleta temporal</field>
+        </record>
+
+        <record id="tag_own" model="fleet.vehicle.tag">
+            <field name="name">Propiedad de empleado</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="tag_company" model="fleet.vehicle.tag">
+            <field name="name">Propiedad de empresa</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="tag_rent" model="fleet.vehicle.tag">
+            <field name="name">En alquiler</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="tag_urban" model="fleet.vehicle.tag">
+            <field name="name">Urbana</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="tag_long_distance" model="fleet.vehicle.tag">
+            <field name="name">Interdepartamental</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="tag_dedicated" model="fleet.vehicle.tag">
+            <field name="name">Dedicada</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="tag_model_1" model="fleet.vehicle.tag">
+            <field name="name">Mensajeria</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="tag_model_2" model="fleet.vehicle.tag">
+            <field name="name">Deportiva</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="tag_model_3" model="fleet.vehicle.tag">
+            <field name="name">Doble proposito</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="tag_model_4" model="fleet.vehicle.tag">
+            <field name="name">Chopper</field>
+            <field name="color">10</field>
+        </record>
+
+        <record id="tag_model_5" model="fleet.vehicle.tag">
+            <field name="name">Enduro</field>
+            <field name="color">11</field>
+        </record>
+
+    </data>
+</odoo>

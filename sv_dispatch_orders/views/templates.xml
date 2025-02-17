@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--Report action for sv_route_dispatch for settlement -->
+    <report id="settlement_report_sv"
+            string="Liquidacion de ruta"
+            model="sv.route.dispatch"
+            report_type="qweb-pdf"
+            file="sv_dispatch_orders.report_settlement"
+            name="sv_dispatch_orders.report_settlement"
+            menu="False"
+            print_report_name="'Liquidacion - '+object.name"
+            />
+
+    <!--Template 1 for settlement_report_sv-->    
+    <template id="report_settlement">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="env.company"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="sv_dispatch_orders.report_settlement_document" t-lang="company.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <!--Template 2 document content for settlement_report_sv-->
+    <template id="report_settlement_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+              <t t-call="web.external_layout">
+                <div class="page">
+                  <div class="row">
+                    <div class="col-9" style="font-family:Cambria">
+                      <h3>LIQUIDACION DE RUTA</h3>
+                    </div>
+                    <div class="col-3" style="text-align:center">
+                      <img t-att-src="'http://localhost:8069/report/barcode/EAN13/'+o.code" style="width:100%;height:50px"/>
+                      <strong><span t-esc="o.code" style="font-size:11px"/></strong>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h2><span t-esc="o.name"/></h2>
+                      <strong><span>Fecha de confirmación: </span></strong><span t-esc="(o.confirm_date-datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/><br/>
+                      <strong><span>Cantidad de ordenes: </span></strong><span t-esc="o.order_count"/><br/>
+                      <strong><span>Mensajero: </span></strong><span t-field="o.employee_id"/><br/>
+                    </div>
+                  </div>
+                  <br/><br/><br/>
+                  <div class="row" t-if="o.route_line_ids">
+                    <div class="col-12">
+                      <span>LISTADO DE DOCUMENTOS A ENTREGAR</span><br/>
+                      <table class="table table-sm table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Orden</th>
+                            <th>Cliente</th>
+                            <th>Paciente</th>
+                            <th>Factura</th>
+                            <th>Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="o.route_line_ids" t-as="l">
+                            <tr>
+                              <td><span t-field="l.sale_order_id"/></td>
+                              <td><span t-field="l.sale_order_id.partner_id"/></td>
+                              <td/>
+                              <td><span t-field="l.invoice_number"/></td>
+                              <td><span t-field="l.delivery_status"/></td>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  
+                  <br/><br/><br/><br/><br/><br/><br/>
+                  <div class="row" style="text-align:center">
+                    <div class="col-4">
+                      <t t-set="coordinador" t-value="o.get_employee_in_charge()"/>
+                      F.____________________________<br/>
+                      <span>Elaborado por</span><br/>
+                      <span t-esc="coordinador.name.title()"/><br/>
+                      <span t-esc="coordinador.job_title.title()"/><br/>
+                    </div>
+                    <div class="col-4">
+                      F.____________________________<br/>
+                      <span>Responsable</span><br/>
+                      <span t-esc="o.employee_id.name.title()"/><br/>
+                      <span t-esc="o.employee_id.job_title.title()"/><br/>
+                    </div>
+                    <div class="col-4">
+                      F.____________________________<br/>
+                      Firma Recepción Laboratorio
+                    </div>
+                  </div>
+                  
+                </div>
+              </t>  
+            </t>
+        </t>
+    </template>
+
+    <!--Report action for sv_route_dispatch for dispatch -->
+    <report id="dispatch_report_sv"
+            string="Hoja de ruta"
+            model="sv.route.dispatch"
+            report_type="qweb-pdf"
+            file="sv_dispatch_orders.report_dispatch"
+            name="sv_dispatch_orders.report_dispatch"
+            menu="False"
+            print_report_name="object.name"
+            />
+
+    <!--Template 1 for dispatch_report_sv-->    
+    <template id="report_dispatch">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="env.company"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="sv_dispatch_orders.report_dispatch_document" t-lang="company.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_dispatch_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+              <t t-call="web.external_layout">
+                <div class="page">
+                  <div class="row">
+                    <div class="col-9" style="font-family:Cambria">
+                      <h3>HOJA DE RUTA</h3>
+                    </div>
+                    <div class="col-3" style="text-align:center">
+                      <img t-att-src="'http://localhost:8069/report/barcode/EAN13/'+o.code" style="width:100%;height:50px"/>
+                      <strong><span t-esc="o.code" style="font-size:11px"/></strong>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <h2><span t-esc="o.name"/></h2>
+                      <strong><span>Fecha de confirmación: </span></strong><span t-esc="(o.confirm_date-datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/><br/>
+                      <strong><span>Cantidad de ordenes: </span></strong><span t-esc="o.order_count"/><br/>
+                      <strong><span>Mensajero: </span></strong><span t-field="o.employee_id"/><br/>
+                    </div>
+                  </div>
+                  <br/><br/><br/>
+                  <div class="row" t-if="o.route_line_ids">
+                    <div class="col-12">
+                      <span>LISTADO DE DOCUMENTOS A ENTREGAR</span><br/>
+                      <table class="table table-sm table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Orden</th>
+                            <th>Cliente</th>
+                            <th>Paciente</th>
+                            <th>Factura</th>
+                            <th>Estado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="o.route_line_ids" t-as="l">
+                            <tr>
+                              <td><span t-field="l.sale_order_id"/></td>
+                              <td><span t-field="l.sale_order_id.partner_id"/></td>
+                              <td/>
+                              <td><span t-field="l.invoice_number"/></td>
+                              <td><span t-field="l.delivery_status"/></td>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  
+                  <br/><br/><br/><br/><br/><br/><br/>
+                  <div class="row" style="text-align:center">
+                    <div class="col-4">
+                      <t t-set="coordinador" t-value="o.get_employee_in_charge()"/>
+                      F.____________________________<br/>
+                      <span>Elaborado por</span><br/>
+                      <span t-esc="coordinador.name.title()"/><br/>
+                      <span t-esc="coordinador.job_title.title()"/><br/>
+                    </div>
+                    <div class="col-4">
+                      F.____________________________<br/>
+                      <span>Responsable</span><br/>
+                      <span t-esc="o.employee_id.name.title()"/><br/>
+                      <span t-esc="o.employee_id.job_title.title()"/><br/>
+                    </div>
+                    <div class="col-4">
+                      F.____________________________<br/>
+                      Firma Recepción Laboratorio
+                    </div>
+                  </div>
+                  
+                </div>
+              </t>  
+            </t>
+        </t>
+    </template>
+    </data>
+</odoo>

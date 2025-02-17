@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sv_route_all,sv_route_all,model_sv_route,base.group_user,1,0,0,0
+sv_route_system,sv_route_sistem,model_sv_route,base.group_system,1,1,1,1
+sv_route_dispatch_all,sv_dispatch_route_all,model_sv_route_dispatch,base.group_user,1,0,0,0
+sv_route_dispatch_system,sv_route_dispatch_sistem,model_sv_route_dispatch,base.group_system,1,1,1,1
+sv_route_dispatch_line_all,sv_route_dispatch_line_all,model_sv_route_dispatch_line,base.group_user,1,0,0,0
+sv_route_dispatch_line_system,sv_route_dispatch_line_system,model_sv_route_dispatch_line,base.group_system,1,1,1,1

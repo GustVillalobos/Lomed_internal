@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--Window action for sv.route-->
+    <record id="sv_route_action" model="ir.actions.act_window">
+        <field name="name">Rutas</field>
+        <field name="res_model">sv.route</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Rutas para despacho</p>
+        </field>
+    </record>
+
+    <!--Menu item general-->
+     <menuitem 
+     id="sv_route_module" 
+     name="Reparto de ordenes"
+     action="sv_route_action"
+     sequence="13"
+     groups='base.group_system'
+     web_icon='sv_route_dispatch,static/src/img/icon.png'
+     />
+    
+    <!--Menu item for sv.route-->
+    <menuitem 
+     id="sv_route_menu" 
+     name="Rutas"
+     action="sv_route_action"
+     parent="sv_route_module"
+     sequence="2"
+     />
+    <!--List view for sv.route-->
+    <record model="ir.ui.view" id="sv_route_list_view">
+      <field name="name">sv_route_list_view</field>
+      <field name="model">sv.route</field>
+      <field name="arch" type="xml">
+        <tree string="Rutas">
+            <field name="name"/>
+            <field name="code"/>
+            <field name="employee_id"/>
+            <field name="tour_date"/>
+        </tree>
+      </field>
+    </record>
+    <!--Form view for sv.route-->
+    <record id="sv_route_form_view" model="ir.ui.view">
+        <field name="name">sv_route_form_view</field>
+        <field name="model">sv.route</field>
+        <field name="arch" type="xml">
+            <form string="Rutas">
+            <header>
+            </header>
+            <sheet>
+            <field name="department_id" invisible="1"/>
+                <div name="button_box" class="oe_button_box">
+                    <button class="oe_stat_button" type="object" icon="fa-truck" name="get_active_route_list">
+                        <field name="active_routes" string="Rutas activas" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button" type="object" icon="fa-book" name="get_route_list">
+                        <field name="route_dispatch_count" string="Todas las rutas" type="object" widget="statinfo"/>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" placeholder="Nombre de la ruta"/>
+                    </h1>
+                    <group>
+                        <group name="lef_side_info">
+                            <field name="code"/>
+                            <field name="employee_id" domain="[('department_id','=',department_id)]"/>
+                        </group>
+                        <group name="right_side_info">
+                            <field name="active_routes" readonly="1"/>
+                            <field name="tour_date" readonly="1"/>
+                        </group>
+                    </group>
+                </div>
+            </sheet>
+            <!--<div class="oe_chatter">
+                <field name="message_follower_ids" groups="base.group_user"/>
+                <field name="message_ids"/>
+            </div>-->
+            </form>
+        </field>
+    </record>
+    <!--Window action for sv.route.dispatch-->
+    <record id="sv_route_dispatch_action" model="ir.actions.act_window">
+        <field name="name">Despacho de rutas</field>
+        <field name="res_model">sv.route.dispatch</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Documentos de despacho de ruta</p>
+        </field>
+    </record>
+
+    <!--Menu item for sv.route.dispatch-->
+    <menuitem 
+     id="sv_route_dispatch_menu" 
+     name="Despacho de ruta"
+     action="sv_route_dispatch_action"
+     parent="sv_route_module"
+     sequence="1"
+     />
+    <!--List view for sv.route.dispatch-->
+    <record model="ir.ui.view" id="sv_route_dispatch_list_view">
+      <field name="name">sv_route_dispatch_list_view</field>
+      <field name="model">sv.route.dispatch</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="dispatch_date"/>
+            <field name="employee_id"/>
+            <field name="type_order" optional="show"/>
+            <field name="type" optional="show"/>
+            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state in ('close','done')" decoration-warning="state in ('confirm','progress')" decoration-danger="state == 'cancel'"/>
+            <field name="total_delivered" optional="hide"/>
+            <field name="total_rejected" optional="hide"/>
+            <field name="total_devolution" optional="hide"/>
+        </tree>
+      </field>
+    </record>
+    <!--Form view for sv.route.dipatch-->
+    <record id="sv_rout_dispatch_form_view" model="ir.ui.view">
+        <field name="name">sv_route_dispatch_form_view</field>
+        <field name="model">sv.route.dispatch</field>
+        <field name="arch" type="xml">
+            <form string="Despacho de rutas">
+            <header>
+                <button name="button_confirm_route"  class="btn btn-primary" string="Confirmar" type="object" groups="sv_dispatch_orders.sv_logistic_manager" attrs="{'invisible':[('state','!=','draft')]}"/>
+                <button name="button_complete_dispatch" string="Recibir" class="btn btn-primary" type="object" groups="sv_dispatch_orders.sv_logistic_manager" attrs="{'invisible':[('state','!=','close')]}"/>
+                <button name="button_draft_route" string="Cambiar a borrador" type="object" groups="sv_dispatch_orders.sv_logistic_manager" attrs="{'invisible':[('state','=','draft')]}"/>
+                <button name="button_cancel_route" string="Cancelar" type="object" groups="sv_dispatch_orders.sv_logistic_manager" attrs="{'invisible':[('state','in',('draft','Cancel'))]}"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,confirm,progress,done"/>
+            </header>
+            <sheet>
+                <!--Invisible fields-->
+                <field name="code" invisible="1"/>
+                <field name="department_id" invisible="1"/>
+                <group style="display:none;">
+                    <field name="_barcode_scanned" widget="barcode_handler"/>
+                </group>
+                <div name="button_box" class="oe_button_box">
+                    <button name="print_dispatch_report" type="object" string="Hoja De Ruta" icon="fa-print" class="oe_stat_button" attrs="{'invisible':[('state','=','draft')]}"/>
+                    <button name="print_settlement_report" type="object" string="Liquidación" icon="fa-check-square" class="oe_stat_button" attrs="{'invisible':[('state','not in',('close','done'))]}"/>
+                </div>
+                <div class="oe_title">
+                    <label for="code" string="Código de ruta" class="oe_inline"/><field class="oe_inline" name="code" readonly="1"/>
+                    <h1>
+                        <field name="name" placeholder="Titulo de la ruta" readonly="1"/>
+                    </h1>
+                </div>
+                <group>
+                    <group name="lef_side_info">
+                        <field name="dispatch_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="type_order" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="route_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="vehicle_id" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                    </group>
+                    <group name="right_side_info">
+                        <field name="confirm_date" readonly="1" attrs="{'invisible':[('confirm_date','=',False)]}"/>
+                        <field name="end_date" readonly="1" attrs="{'invisible':[('end_date','=',False)]}"/>
+                        <field name="return_date" readonly="1" attrs="{'invisible':[('return_date','=',False)]}"/>
+                        <field name="order_count" readonly="1"/>
+                        <field name="client_count" readonly="1"/>
+                        <field name="employee_id" domain="[('department_id','=',department_id)]" attrs="{'readonly':[('state','!=','draft')],'required':1}" options="{'no_open':True}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="route_line_page" string="Ordenes para despachar">
+                        <field name="route_line_ids" nolabel="1">
+                            <tree create="False">
+                                <field name="sale_order_id"/>
+                                <field name="date_order"/>
+                                <field name="invoice_number" optional="show"/>
+                                <field name="invoice_date" optional="show"/>
+                                <field name="partner_id"/>
+                                <!--<field name="patient"/>-->
+                                <field name="delivery_status" widget="badge" decoration-success="delivery_status == 'delivered'" decoration-info="delivery_status == 'pending'" decoration-danger="delivery_status == 'rejected'" decoration-warning="delivery_status == 'forward'"/>
+                                <button name="action_end_process" string="Finalizar" type="object" class="btn btn-primary" attrs="{'invisible':['|',('parent_state','=','draft'),('delivery_status','!=','pending')]}"/> 
+                                <field name="note" optional="hide"/>
+                                <field name="effective_date" optional="hide"/>
+                                <field name="parent_state" invisible="1"/>
+                            </tree>
+                            <kanban class="o_kanban_mobile" create="false">
+                              <field name="sale_order_id"/>
+                              <field name="partner_id"/>
+                              <field name="delivery_status"/>
+                              <field name="invoice_number"/>
+                              <field name="effective_date"/>
+                              <field name="parent_state"/>
+                              <field name="color"/>
+                              <!--<field name="patient"/>-->
+                              <templates>
+                                <t t-name="kanban-box">
+                                  <div t-attf-class="oe_kanban_card {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                                    <div class="row">
+                                      <div class="col-8">
+                                        <h2 t-out="record.sale_order_id.value"/>
+                                      </div>
+                                      <div class="col-4">
+                                        <field name="delivery_status" widget="label_selection" options="{'classes': {'pending': 'info', 'rejected': 'danger', 'delivered': 'success', 'forward':'warning'}}"/>
+                                      </div>
+                                    </div>
+                                   <div class="row">
+                                      <div class="col-12">
+                                        <span><b>Cliente:</b></span><t t-out="record.partner_id.value"/>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-9 text-muted">
+                                        <span t-if="record.effective_date.value"><b>Fecha entrega: </b></span><t t-if="record.effective_date.value" t-out="record.effective_date.value"/>
+                                      </div>
+                                      <div class="col-4">
+                                        <button type="object" class="btn btn-primary btn-sm" attrs="{'invisible':['|',('delivery_status','!=','pending'),('parent_state','=','draft')]}" name="action_end_process">Finalizar</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </t>
+                            </templates>
+                          </kanban>
+                        </field>
+                        <group name="note_group_delivered" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                                   
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="totals">
+                                <field name="total_delivered"/>
+                                <field name="total_rejected"/>
+                                <field name="total_pending"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page name="returned_orders" string="Ordenes de retorno">
+                        <field name="devolution_line_ids" nolabel="1">
+                            <tree>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <!--<field name="paciente"/>-->
+                                <field name="date_order"/>
+                            </tree>
+                        </field>
+                        <group name="note_group_devolutions" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">            
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="totals_2">
+                                <field name="total_devolution"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page name="Other_info" string="Otra información">
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="create_uid"/>
+                            <field name="create_date"/>
+                        </group>
+                    </page>                
+                </notebook>
+            </sheet>
+            <!--<div class="oe_chatter">
+                <field name="message_follower_ids" groups="base.group_user"/>
+                <field name="message_ids"/>
+            </div>-->
+            </form>
+        </field>
+    </record>
+    <!--Form for coment in sv.route.dispatch.line-->
+    <record model="ir.ui.view" id="sv_route_comment_form_view">
+      <field name="name">sv_route_comment_form_view</field>
+      <field name="model">sv.route.dispatch.line</field>
+      <field name="arch" type="xml">
+        <form string="Comentarios">
+        <!--Invisible fields-->
+        <field name="use_employee_code" invisible="1"/>
+        <field name="comment_required" invisible="1"/>
+            <div class="oe_title">
+                <h1>
+                    <field name="sale_order_id" options="{'no_open':True}" readonly="1"/>
+                </h1>
+            </div>
+            <group>
+                <group>
+                    <field name="delivery_status" default="'delivered'"/>
+                    <!--<field name="effective_date" readonly="1"/>-->
+                </group>
+                <group attrs="{'invisible':[('use_employee_code','=',False)]}">
+                    <field name="employee_code" attrs="{'required':[('use_employee_code','=',True)]}"/>
+                    <field name="employee_id" readonly="1" options="{'no_open':True}" attrs="{'invisible':[('employee_code','=',False)]}"/>
+                </group>
+            </group>
+           <field name="note" placeholder="Comentario, aclaración o motivo..." colspan="4" attrs="{'required':[('comment_required','=',True),('delivery_status','in',('rejected','forward'))]}"/>
+        </form>
+      </field>
+    </record>
+
+    <!--Search view for sv.route.dispatch-->
+    <record model="ir.ui.view" id="sv_route_search_view">
+      <field name="name">sv_route_search_view</field>
+      <field name="model">sv.route.dispatch</field>
+      <field name="arch" type="xml">
+        <search string="Filtros de ruta">
+            <field name="name" string="Ruta" filter_domain="['|',('code','ilike',self),('employee_id','ilike',self)]"/>
+            <field name="employee_id"/>
+            <field name="route_id"/>
+            <field name="type_order"/>
+            <field name="route_line_ids"/>
+            <separator/>
+            <filter name="draft_route" string="Borrador" domain="[('state','=','draft')]"/>
+            <filter name="active_route" string="Activas" domain="[('state','in',('confirm','progress'))]"/>
+            <filter name="close_route" string="Cerradas" domain="[('state','=','close')]"/>
+            <filter name="cancel_route" string="Canceladas" domain="[('state','=','cancel')]"/>
+            <separator/>
+            <separator/>
+            <filter name="filter_dispatch_date" string="Fecha de ruta" date="dispatch_date"/>
+            <filter name="filter_confirm_date" string="Fecha de confirmación" date="confirm_date"/>
+            <group expand="0" string="Agrupar por">
+                <filter name="group_route_id" string="Ruta" domain="[]" context="{'group_by':'route_id'}"/>
+                <separator/>
+                <filter name="group_type" string="Tipo de ruta" domain="[]" context="{'group_by':'type'}"/>
+                <separator/>
+                <filter name="group_type_order" string="Tipo de orden" domain="[]" context="{'group_by':'type_order'}"/>
+                <separator/>
+                <filter name="group_dispatch_date" string="Fecha de ruta" domain="[]" context="{'group_by':'dispatch_date'}"/>
+                <filter name="group_confirm_date" string="Fecha de confirmación" domain="[]" context="{'group_by':'confirm_date'}"/>
+            </group>
+        </search>
+      </field>
+    </record>
+    <!--kanban mobile view for sv.route.dispatch-->
+    <record model="ir.ui.view" id="sv_route_kanban_dispatch_view">
+      <field name="name">sv_route_kanban_dispatch_view</field>
+      <field name="model">sv.route.dispatch</field>
+      <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile" sample="1">
+            <field name="name"/>
+            <field name="dispatch_date"/>
+            <field name="employee_id"/>
+            <field name="type_order"/>
+            <field name="type"/>
+            <field name="state"/>
+            <field name="total_delivered"/>
+            <field name="code"/>
+            <field name="order_count"/>
+            <field name="route_id"/>
+            <field name="color"/>
+            <template>
+                <t t-name="kanban-box">
+                <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                    <div class="o_kanban_record_top mb16">
+                    <div class="o_kanban_record_headings mt4">
+                        <strong class="o_kanban_record_title">
+                        <span t-out="record.name.value"/>
+                        </strong><br/>
+                        <span>Codigo: </span><t t-out="record.code.value"/>
+                    </div>
+                    <strong>
+                        <field name="state" widget="label_selection" options="{'classes': {'draft': 'info', 'cancel': 'danger', 'done': 'success', 'close':'success','confirm':'warning', 'progress':'warning'}}"/>
+                        <!--<t t-out="record.state.value"/>-->
+                    </strong>
+                    </div>
+                    
+                    <div class="oe_kanban_body text-muted">
+                    <span><b>Encargado: </b></span><t t-out="record.employee_id.value"/><br/>
+                    <span><b>Total ordenes: </b></span><t t-out="record.order_count.value"/>
+                    </div>
+                    <div class="o_kanban_record_bottom">
+                    <div class="oe_kanban_bottom_left text-muted">
+                        <span>
+                        <span>Ruta: </span><t t-out="record.route_id.value"/>
+                        </span>
+                    </div>
+                    <div class="oe_kanban_bottom_right text-muted">
+                        <span>Entregado: </span><t t-out="record.total_delivered.value"/>
+                    </div>
+                    </div>
+                    
+                </div>
+                </t>
+            </template>
+        </kanban>
+      </field>
+    </record>
+
+    <!--kanban mobile view for sv.route-->
+    <record model="ir.ui.view" id="sv_route_kanban_view">
+      <field name="name">sv_route_kanban_view</field>
+      <field name="model">sv.route</field>
+      <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile" sample="1">
+            <field name="name"/>
+            <field name="code"/>
+            <field name="employee_id"/>
+            <field name="route_dispatch_count"/>
+            <field name="tour_date"/>
+            <field name="active_routes"/>
+            <template>
+                <t t-name="kanban-box">
+                <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                    <div class="o_kanban_record_top mb16">
+                    <div class="o_kanban_record_headings mt4">
+                        <strong class="o_kanban_record_title">
+                        <span t-out="record.name.value"/>
+                        </strong><br/>
+                        <span>Codigo: </span><t t-out="record.code.value"/>
+                    </div>
+                    <span><b>Total despachos: </b></span> <t t-out="record.route_dispatch_count.value"/>
+                    </div>
+                    
+                    <div class="oe_kanban_body text-muted">
+                    <span t-if="record.employee_id.value"><b>Mensajero: </b></span><t t-if="record.employee_id.value" t-out="record.employee_id.value"/><br/>
+                    </div>
+                    <div class="o_kanban_record_bottom">
+                    <div class="oe_kanban_bottom_left text-muted">
+                        <span>
+                        <span t-if="record.tour_date.value">Último recorrido el: </span><t t-if="record.tour_date.value" t-out="record.tour_date.value"/>
+                        </span>
+                    </div>
+                    <div class="oe_kanban_bottom_right text-muted">
+                        <span>Despachos activos: </span><t t-out="record.active_routes.value"/>
+                    </div>
+                    </div>
+                    
+                </div>
+                </t>
+            </template>
+        </kanban>
+      </field>
+    </record>
+    </data>
+</odoo>

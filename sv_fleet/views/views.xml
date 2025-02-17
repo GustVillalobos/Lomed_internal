@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sv_fleet_form_view" model="ir.ui.view">
+            <field name="name">sv_fleet_form_view</field>
+            <field name="model">fleet.vehicle.model</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//page[@name='information']/group/group" position="attributes">
+                    <attribute name="attrs">{'invisible':[('vehicle_type','not in',('motorcicle','car'))]}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='information']/group[last()]" position="attributes">
+                    <attribute name="attrs">{'invisible':[('vehicle_type','not in',('motorcicle','car'))]}</attribute>
+                </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="sv_fleet_vehicle_form_view" model="ir.ui.view">
+            <field name="name">sv_fleet_vehicle_form_view</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button class="oe_stat_button" type="object" icon="fa-book" name="get_route_list">
+                            <field name="dispatch_count" string="Todas las rutas" type="object" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" icon="fa-truck" name="get_active_route_list">
+                            <field name="dispatch_active" string="Rutas activas" type="object" widget="statinfo"/>
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

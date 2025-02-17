@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sv_route_res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">sv_route_res_config_settings_view_form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Reparto de ordenes" id="sv_route" string="Reparto de ordenes" data-key="sv.route">
+                        <h2>Configuración de rutas</h2>
+                        <div class="row mt12 o_settings_container" id="sv_route_setting_row1">
+                            <div class="col-12 col-lg-6 o_setting_box" id="route_sv_department_id">
+                                <div class="o_setting_left_pane">
+                                    
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="department_ref_id" string="Departamento encargado"/>
+                                    <field name="department_ref_id" options="{'no_open':True}"/>
+                                    <div class="text-muted">
+                                       Asigne el departamento que será el encargado de gestionar y aplicar los repartos
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box" id="route_sv_comment_config">
+                                <div class="o_setting_left_pane">
+                                    <field name="comment_required"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="comment_required" string="Comentario requerido"/>
+                                    <div class="text-muted">
+                                       Será obligatorio que el empleado deje comentario en caso de ser reenvio o rechazo de una orden
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt12 o_settings_container" id="sv_route_setting_row2">
+                            <div class="col-12 col-lg-6 o_settig_box" id="route_sv_use_employee_code">
+                                <div class="o_setting_left_pane">
+                                    
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="emp_in_charge" string="Encargado de despacho "/><field name="emp_in_charge" options="{'no_open':True}" domain="[('department_id','=',department_ref_id)]"/>
+                                    <div class="text-muted">
+                                       Empleado a cargo de verificar la salida de cada documento de despacho
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_settig_box" id="route_sv_use_employee_code">
+                                <div class="o_setting_left_pane">
+                                    <field name="clear_fields"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="clear_fields" string="Limpiar campos"/>
+                                    <div class="text-muted">
+                                       Cuando cambie a borrador limpiará los campos que contienen documentos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt12 o_settings_container" id="sv_route_setting_row3">
+                            <div class="col-12 col-lg-6 o_settig_box" id="route_sv_use_employee_code">
+                                <div class="o_setting_left_pane">
+                                    <field name="use_employee_code"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="use_employee_code" string="Código de empleado requerido"/>
+                                    <div class="text-muted">
+                                       Para cada entrega solicitará el pin del empleado y se verificará que pertenezca al departamento asignado
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_settig_box" id="route_sv_use_employee_code">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="max_days" string="Máximo"/>
+                                    <field name="max_days" class="text-center" style="width: 10%; min-width: 4rem;"/>
+                                    <label for="max_days" string="días de anticipación"/>
+                                    <div class="text-muted">
+                                       Define el límite para confirmar rutas de manera anticipada
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sv_route_config_settings_action" model="ir.actions.act_window">
+            <field name="name">Configuración</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'sv.route', 'bin_size': False}</field>
+        </record>
+
+        <menuitem id="sv_route_config_settings_menu" 
+            name="Configuración"
+            parent="sv_route_module" 
+            sequence="200" 
+            action="sv_route_config_settings_action"
+            groups="base.group_system"/>
+    </data>
+</odoo>
