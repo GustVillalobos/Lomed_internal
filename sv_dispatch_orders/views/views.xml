@@ -17,8 +17,8 @@
      name="Reparto de ordenes"
      action="sv_route_action"
      sequence="13"
-     groups='base.group_system'
-     web_icon='sv_route_dispatch,static/src/img/icon.png'
+     groups='sv_dispatch_orders.sv_logistic_manager,sv_dispatch_orders.sv_logistic_user,sv_dispatch_orders.sv_logistic_recepcionist'
+     web_icon='sv_dispatch_orders,static/description/icon.png'
      />
     
     <!--Menu item for sv.route-->
@@ -76,10 +76,10 @@
                     </group>
                 </div>
             </sheet>
-            <!--<div class="oe_chatter">
+            <div class="oe_chatter">
                 <field name="message_follower_ids" groups="base.group_user"/>
                 <field name="message_ids"/>
-            </div>-->
+            </div>
             </form>
         </field>
     </record>
@@ -175,7 +175,7 @@
                                 <field name="invoice_number" optional="show"/>
                                 <field name="invoice_date" optional="show"/>
                                 <field name="partner_id"/>
-                                <!--<field name="patient"/>-->
+                                <field name="patient"/>
                                 <field name="delivery_status" widget="badge" decoration-success="delivery_status == 'delivered'" decoration-info="delivery_status == 'pending'" decoration-danger="delivery_status == 'rejected'" decoration-warning="delivery_status == 'forward'"/>
                                 <button name="action_end_process" string="Finalizar" type="object" class="btn btn-primary" attrs="{'invisible':['|',('parent_state','=','draft'),('delivery_status','!=','pending')]}"/> 
                                 <field name="note" optional="hide"/>
@@ -190,7 +190,7 @@
                               <field name="effective_date"/>
                               <field name="parent_state"/>
                               <field name="color"/>
-                              <!--<field name="patient"/>-->
+                              <field name="patient"/>
                               <templates>
                                 <t t-name="kanban-box">
                                   <div t-attf-class="oe_kanban_card {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
@@ -231,12 +231,35 @@
                             </group>
                         </group>
                     </page>
-                    <page name="returned_orders" string="Ordenes de retorno">
+                    <page name="works_collected" string="Trabajos recibidos" attrs="{'invisible':[('state','=','draft')]}">
+                        <field name="collected_works_ids" nolabel="1">
+                            <tree editable="top">
+                                <field name="name"/>
+                                 <field name="date_sent" readonly="1"/>
+                                <field name="partner_id"/>
+                                <field name="state" readonly="1" widget="badge" decoration-success="state == 'received'" decoration-info="state == 'collected'" decoration-warning="state == 'waiting'" decoration-danger="state == 'rejected'"/>
+                                <field name="comments"/>
+                                <field name="delivery_id" invisible="1"/>
+                                <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                                <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','!=','collected')]}"/>
+                                <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                            </tree>
+                        </field>
+                        <group name="note_group_wroks_collected" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                                   
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="totals">
+                                <field name="total_collected"/>
+                            </group>
+                        </group>
+                    </page> 
+                    <page name="returned_orders" string="Ordenes de retorno" attrs="{'invisible':[('state','=','draft')]}">
                         <field name="devolution_line_ids" nolabel="1">
                             <tree>
                                 <field name="name"/>
                                 <field name="partner_id"/>
-                                <!--<field name="paciente"/>-->
+                                <field name="paciente"/>
                                 <field name="date_order"/>
                             </tree>
                         </field>
@@ -257,10 +280,10 @@
                     </page>                
                 </notebook>
             </sheet>
-            <!--<div class="oe_chatter">
+            <div class="oe_chatter">
                 <field name="message_follower_ids" groups="base.group_user"/>
                 <field name="message_ids"/>
-            </div>-->
+            </div>
             </form>
         </field>
     </record>
@@ -425,6 +448,30 @@
             </template>
         </kanban>
       </field>
+    </record>
+
+    <record id="sv_partner_envelope_form" model="ir.ui.view">
+        <field name="name">sv_partner_envelope_form</field>
+        <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="envelope_delivered" string="Despacho de sobres">
+                        <field name="envelope_delivered_ids" nolabel="1">
+                            <tree editable="top">
+                                <field name="delivery_date" readonly="1"/>
+                                <field name="number_from" attrs="{'readonly':[('total_return','&gt;',0)]}"/>
+                                <field name="number_to" attrs="{'readonly':[('total_return','&gt;',0)]}"/>
+                                <field name="total_delivered"/>
+                                <field name="total_return"/>
+                                <field name="total_remaining"/>
+                                <field name="usable" widget="boolean_toggle"/>
+                                <field name="return_ids" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
     </record>
     </data>
 </odoo>

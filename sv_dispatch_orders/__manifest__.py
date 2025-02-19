@@ -36,5 +36,6 @@
     'demo': [
         'demo/demo.xml',
     ],
-     'images': [''],
+     'images': ['static/description/icon.png'],
+     'license':'LGPL-3'
 }

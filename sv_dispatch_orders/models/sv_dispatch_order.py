@@ -51,6 +51,8 @@ class sv_dispatch_route(models.Model):
     total_pending = fields.Integer("Ordenes pendientes",compute='compute_total_pending',copy=False)
     total_devolution = fields.Integer("Devoluciones",compute='compute_total_devolution',copy=False)
     devolution_line_ids = fields.Many2many('sale.order','sv_route_dispath_sale_order_rel','route_disp_id','sale_order_id',string="Devoluciones")
+    collected_works_ids = fields.One2many(comodel_name='sv.returns.envelope',inverse_name='dispatch_id',string="Nuevas ordenes")
+    total_collected = fields.Integer(string="Trabajos nuevos",compute = 'compute_total_collected',store=False,copy=False)
     clear_fields = fields.Boolean(string="Limpiar Campos",compute='compute_clean_field',copy=False)
     department_id = fields.Integer("Departamento",compute='compute_department_id')
     color = fields.Integer(string="Color",compute='get_color')
@@ -278,7 +280,32 @@ class sv_dispatch_route(models.Model):
             elif r.state in ('confirm','progess'):
                 res = 3
             r.color = res
-
+    
+    @api.depends('collected_works_ids')
+    def compute_total_collected(self):
+        for r in self:
+            res = 0
+            if r.collected_works_ids:
+                res = len(r.collected_works_ids)
+            r.total_collected = res
+    
+    @api.onchange('route_id')
+    def on_change_route(self):
+        for r in self:
+            res = False
+            if r.route_id and r.route_id.employee_id:
+                res = r.route_id.employee_id.id
+            r.employee_id = res
+    
+    @api.onchange('employee_id')
+    def on_change_employee(self):
+        for r in self:
+            res = False
+            if r.employee_id:
+                vehicle = self.env['fleet.vehicle'].search([('driver_id','=',r.employee_id.work_contact_id.id)],limit=1)
+                if vehicle:
+                    res = vehicle.id
+            r.vehicle_id = res
 
 class sv_route_dispatch_line(models.Model):
     _name = 'sv.route.dispatch.line'

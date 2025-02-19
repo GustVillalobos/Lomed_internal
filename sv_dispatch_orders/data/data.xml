@@ -63,6 +63,8 @@
         <record id="sv_logistic_user" model="res.groups">
             <field name="name">Gestor de logistica</field>
         </record>
-        
+        <record id="sv_logistic_recepcionist" model="res.groups">
+            <field name="name">Liquidación de ruta</field>
+        </record>
     </data>
 </odoo>
