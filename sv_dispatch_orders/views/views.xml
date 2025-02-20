@@ -205,6 +205,8 @@
                                    <div class="row">
                                       <div class="col-12">
                                         <span><b>Cliente:</b></span><t t-out="record.partner_id.value"/>
+                                        <span t-if="record.invoice_number.value" style="font-size:10px"><b>Factura:</b> <t t-out="record.invoice_number.value"/><br/></span>
+                                        <span t-if="record.patient.value" style="font-size:10px"><b>Paciente:</b> <t t-out="record.patient.value" /><br/></span>
                                       </div>
                                     </div>
                                     <div class="row">
