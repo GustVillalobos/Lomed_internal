@@ -162,7 +162,7 @@ class sv_dispatch_route(models.Model):
     def get_invoice(self,order):
         invoice_list = order.invoice_ids.filtered(lambda i:i.state=='posted' and i.move_type=='out_invoice' and i.payment_state != 'reversed')
         final_invoice = False
-        deposit_id = self.get_deposit_id
+        deposit_id = self.get_deposit_id()
         if invoice_list and len(invoice_list) > 1:
             for i in invoice_list:
                 is_final = i.invoice_line_ids.filtered(lambda l: l.product_id.id == deposit_id and l.price_unit < 0)
