@@ -238,7 +238,7 @@
                             <tree editable="bottom">
                                 <field name="name"/>
                                  <field name="date_sent" readonly="1"/>
-                                <field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio,'propio'))]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio','propio'))]}"/>
                                 <field name="state" readonly="1" widget="badge" decoration-success="state == 'received'" decoration-info="state == 'collected'" decoration-warning="state == 'waiting'" decoration-danger="state == 'rejected'"/>
                                 <field name="comments"/>
                                 <field name="delivery_id" invisible="1"/>
@@ -520,7 +520,7 @@
                 </h1>
             </div>
             <group>
-             	<field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio,'propio'))]}"/>
+             	<field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio','propio'))]}"/>
              	<field name="date_sent" readonly="1"/>
             </group>
            <field name="comments" placeholder="Comentario, aclaración, etc..." colspan="4"/>
