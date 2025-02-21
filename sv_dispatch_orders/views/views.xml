@@ -204,7 +204,7 @@
                                     </div>
                                    <div class="row">
                                       <div class="col-12">
-                                        <span><b>Cliente:</b></span><t t-out="record.partner_id.value"/>
+                                        <span><b>Cliente:</b></span><t t-out="record.partner_id.value"/><br/>
                                         <span t-if="record.invoice_number.value" style="font-size:10px"><b>Factura:</b> <t t-out="record.invoice_number.value"/><br/></span>
                                         <span t-if="record.patient.value" style="font-size:10px"><b>Paciente:</b> <t t-out="record.patient.value" /><br/></span>
                                       </div>
@@ -235,7 +235,7 @@
                     </page>
                     <page name="works_collected" string="Trabajos recibidos" attrs="{'invisible':[('state','=','draft')]}">
                         <field name="collected_works_ids" nolabel="1">
-                            <tree editable="top">
+                            <tree editable="bottom">
                                 <field name="name"/>
                                  <field name="date_sent" readonly="1"/>
                                 <field name="partner_id"/>
@@ -246,6 +246,39 @@
                                 <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','!=','collected')]}"/>
                                 <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
                             </tree>
+                            <kanban class="o_kanban_mobile">
+                              <field name="name"/>
+                              <field name="date_sent"/>
+                              <field name="partner_id"/>
+                              <field name="state"/>
+                              <templates>
+                                <t t-name="kanban-box">
+                                  <div t-attf-class="oe_kanban_card {{'oe_kanban_color_' + kanban_getcolor(10) }}">
+                                    <div class="row">
+                                      <div class="col-8">
+                                        <h2>Sobre número: <t t-out="record.name.value"/></h2>
+                                      </div>
+                                      <div class="col-4">
+                                        <field name="state" widget="label_selection" options="{'classes': {'collected': 'info', 'rejected': 'danger', 'received': 'success', 'waiting':'warning'}}"/>
+                                      </div>
+                                    </div>
+                                   <div class="row">
+                                      <div class="col-12 text-mutted">
+                                        <span><b>Cliente: </b></span><t t-out="record.partner_id.value"/><br/>
+                                        <span><b>Recolectado el: </b></span><t t-out="record.date_sent.value"/>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-12">
+                                        <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                                <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','!=','collected')]}"/>
+                                <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </t>
+                            </templates>
+                          </kanban>
                         </field>
                         <group name="note_group_wroks_collected" col="6" class="mt-2 mt-md-0">
                             <group colspan="4">
@@ -257,7 +290,7 @@
                         </group>
                     </page> 
                     <page name="returned_orders" string="Ordenes de retorno" attrs="{'invisible':[('state','=','draft')]}">
-                        <field name="devolution_line_ids" nolabel="1">
+                        <field name="devolution_line_ids" nolabel="1" mode="tree,kanban">
                             <tree>
                                 <field name="name"/>
                                 <field name="partner_id"/>
@@ -474,6 +507,25 @@
                     </page>
                 </xpath>
             </field>
+    </record>
+    <!--Form for delivery envelope-->
+    <record model="ir.ui.view" id="sv_returns_envelope_form">
+      <field name="name">sv_returns_envelope_form</field>
+      <field name="model">sv.returns.envelope</field>
+      <field name="arch" type="xml">
+        <form string="Retur">
+            <div class="oe_title">
+                <h1>
+                    <field name="name" placeholder="Numero de sobre..."/>
+                </h1>
+            </div>
+            <group>
+             	<field name="partner_id" readonly="1"/>
+             	<field name="date_sent" readonly="1"/>
+            </group>
+           <field name="comments" placeholder="Comentario, aclaración, etc..." colspan="4"/>
+        </form>
+      </field>
     </record>
     </data>
 </odoo>

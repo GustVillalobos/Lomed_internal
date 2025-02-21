@@ -72,16 +72,25 @@ class sv_returns_envelope(models.Model):
         for r in self:
             envelope_number = 0
             res = False
+            exist_other = False
+            exist_line = False
             try:
                 envelope_number = int(r.name)
             except Exception as error:
-                raise UserError('Error: '+str(error))
+                x = error
+                #raise UserError('Error: '+str(error))
             if envelope_number > 0:
                 res = self.env['sv.delivery.envelope'].search([('number_from','<=',envelope_number),('number_to','>=',envelope_number),('usable','=',True)],limit=1)
+                exist_other = self.env['sv.returns.envelope'].search([('name','=',str(envelope_number)),('state','!=','rejected'),('dispatch_id','!=',r.dispatch_id.id)])
+                exist_line = r.dispatch_id.collected_works_ids.filtered(lambda x:x.name==str(envelope_number) and type(x.id) is int)
+            if exist_other:
+                raise UserError(f'El sobre {envelope_number} ya fue reportado en otra ruta.')
+            if exist_line and len(exist_line) > 1:
+                raise UserError(f'El sobre {envelope_number} ya fue reportado en esta ruta.')
+            r.delivery_id = res.id if res else False
             r.date_sent = datetime.now()
             if res:
                 r.partner_id = res.partner_id.id
-            r.delivery_id = res.id if res else False
     
     def action_receive(self):
         self.ensure_one()
