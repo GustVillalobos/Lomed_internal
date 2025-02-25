@@ -39,6 +39,7 @@
             <field name="code"/>
             <field name="employee_id"/>
             <field name="tour_date"/>
+            <field name="description" optional="hide"/>
         </tree>
       </field>
     </record>
@@ -64,17 +65,20 @@
                     <h1>
                         <field name="name" placeholder="Nombre de la ruta"/>
                     </h1>
-                    <group>
-                        <group name="lef_side_info">
-                            <field name="code"/>
-                            <field name="employee_id" domain="[('department_id','=',department_id)]"/>
-                        </group>
-                        <group name="right_side_info">
-                            <field name="active_routes" readonly="1"/>
-                            <field name="tour_date" readonly="1"/>
-                        </group>
-                    </group>
                 </div>
+                <group>
+                    <group name="lef_side_info">
+                        <field name="code"/>
+                        <field name="employee_id" domain="[('department_id','=',department_id)]"/>
+                    </group>
+                    <group name="right_side_info">
+                        <field name="active_routes" readonly="1"/>
+                        <field name="tour_date" readonly="1"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="description" nolabel="1" colspan="2" placeholder="Descripción de la ruta..."
+                </group>
             </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" groups="base.group_user"/>

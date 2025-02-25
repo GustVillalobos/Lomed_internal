@@ -19,6 +19,7 @@ class sv_route(models.Model):
 
     name = fields.Char("Nombre",copy=False)
     code = fields.Char("Código",copy=False)
+    description = fields.Text("Descripción",copy=False)
     employee_id = fields.Many2one(comodel_name='hr.employee',string="Mensajero preferido",copy=False)
     route_dispatch_ids = fields.One2many(comodel_name='sv.route.dispatch',inverse_name='route_id',string="Todas las rutas asociadas")
     route_dispatch_count = fields.Integer("Rutas totales",copy=False,store=False,compute='compute_total_routes')
