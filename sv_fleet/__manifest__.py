@@ -33,4 +33,5 @@
         'demo/demo.xml',
     ],
      'images': [],
+     'license':'LGPL-3',
 }
