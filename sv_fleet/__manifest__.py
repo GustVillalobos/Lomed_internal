@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "sv_fleet",
+    'name': "Motocicletas para flota",
 
     'summary': """
         Adiciones al modulo de Flota
