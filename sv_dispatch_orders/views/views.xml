@@ -77,7 +77,7 @@
                     </group>
                 </group>
                 <group>
-                    <field name="description" nolabel="1" colspan="2" placeholder="Descripción de la ruta..."
+                    <field name="description" nolabel="1" colspan="2" placeholder="Descripción de la ruta..."/>
                 </group>
             </sheet>
             <div class="oe_chatter">
