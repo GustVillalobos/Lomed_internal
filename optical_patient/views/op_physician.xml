@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana Profesionales-->
+        <record model="ir.actions.act_window" id="op_physician_action">
+            <field name="name">Profesionales</field>
+            <field name="res_model">op.physician</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Profecionales</p>
+            </field>
+        </record>
+
+        <!--Accion de ventana especialidades profecionales-->
+        <record model="ir.actions.act_window" id="op_specialty_action">
+            <field name="name">Especialidades</field>
+            <field name="res_model">op.specialty</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Especialidades</p>
+            </field>
+        </record>
+
+        <!--Elemento de menú paciente principal-->
+        <menuitem id="op_physician_main_menu"
+        parent="optical_patient.op_main_menu" 
+        name="Profesionales" 
+        action="" 
+        sequence="3"/>
+
+        <!--Elemento de menú profecionales-->
+        <menuitem id="op_physician_menu"
+        parent="optical_patient.op_physician_main_menu" 
+        name="Profesional" 
+        action="op_physician_action" 
+        sequence="1"/>
+
+        <!--Elemento de menú Especialidades-->
+        <menuitem id="op_specialty_menu"
+        parent="optical_patient.op_physician_main_menu" 
+        name="Especialidades" 
+        action="op_specialty_action" 
+        sequence="2"/>
+
+        <!--Lista de profecionales-->
+        <record model="ir.ui.view" id="op_physician_tree_view">
+            <field name="name">op_physician_tree_view</field>
+            <field name="model">op.physician</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="professional_ID"/>
+                    <field name="specialty_id"/>
+                    <field name="degree" optional="show"/>
+                    <field name="email" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Lista de Especialidades-->
+        <record model="ir.ui.view" id="op_specialty_tree_view">
+            <field name="name">op_specialty_tree_view</field>
+            <field name="model">op.specialty</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name"/>
+                    <field name="prefix"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Kanban Profecionales-->
+        <record model="ir.ui.view" id="op_physician_kanban_view">
+            <field name="name">op_physician_kanban_view</field>
+            <field name="model">op.physician</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="professional_ID"/>
+                    <field name="specialty_id"/>
+                    <field name="degree"/>
+                    <field name="employee_id"/>
+                    <field name="gender"/>
+                    <field name="address"/>
+                    <field name="email"/>
+                    <field name="color"/>
+                    <template>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title">
+                                        <span t-out="record.name.value"/>
+                                        </strong><br/>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_body oe_kanban_details">
+                                    <ul name="info_details">
+                                        <li t-if="record.code.value"><span>Código:</span> <field name="code"/></li>
+                                        <li t-if="record.gender.value"><span>Género:</span> <field name="gender"/></li>
+                                        <li t-if="record.specialty_id.value"><span>Especialidad:</span> <field name="specialty_id"/></li>
+                                        <li t-if="record.email.value"><field name="email"/></li>
+                                    </ul>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                </div>
+                            </div>
+                        </t>
+                    </template>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Formulario pacientes-->
+        <record model="ir.ui.view" id="op_physician_form_view">
+            <field name="name">op_physician_form_view</field>
+            <field name="model">op.physician</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            
+                        </div>
+                        <!--Campos invisibles-->
+                        
+                        <div class="oe_title">
+                            <label for="name" string="Nombre profesional"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre del profesional..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="left_pane">
+                                <field name="code" force_save="1"/>
+                                <field name="professional_ID"/>
+                                <field name="gender"/>
+                                <field name="address"/>
+                            </group>
+                            <group name="right_pane">
+                                <field name="specialty_id"/>
+                                <field name="degree"/>
+                                <field name="email"/>
+                                <field name="employee_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="reception_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

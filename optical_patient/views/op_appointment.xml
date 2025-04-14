@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana consulta-->
+        <record model="ir.actions.act_window" id="op_appointment_action">
+            <field name="name">Examen visual</field>
+            <field name="res_model">op.appointment</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Examen visual</p>
+            </field>
+        </record>
+
+        <!--Menú consulta-->
+        <menuitem id="op_appointment_main_menu"
+        parent="optical_patient.op_main_menu" 
+        name="Registro" 
+        action="" 
+        sequence="3"/>
+
+        <!--Menú consulta-->
+        <menuitem id="op_appointment_menu"
+        parent="optical_patient.op_appointment_main_menu" 
+        name="Examenes" 
+        action="op_appointment_action" 
+        sequence="1"/>
+
+        <!--Lista consultas-->
+        <record model="ir.ui.view" id="op_appointment_tree_view">
+            <field name="name">op_appointment_tree_view</field>
+            <field name="model">op.appointment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="patient_id"/>
+                    <field name="date"/>
+                    <field name="reception_id"/>
+                    <field name="physician_id" optional="show"/>
+                    <field name="state" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'confirm'" decoration-info="state == 'draft'" decoration-danger="state == 'cancel'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--formulario consultas-->
+        <record model="ir.ui.view" id="op_appointment_form_view">
+            <field name="name">op_appointment_form_view</field>
+            <field name="model">op.appointment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <style>
+                        .content-table{
+                            width:100%
+                            border-collapse: collapse;
+                            
+                        }
+                        .content-table thead tr th{
+                            background:#0F1D4C;
+                            color:#FFF;
+                            text-align:center;
+                            boder: solid 1px #000;
+                            font-size:12px;
+                        }
+                        .content-table tbody tr td{
+                            boder: solid 1px #000;
+                            font-size:10px;
+                        }
+
+                    </style>
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirmar" class="btn btn-primary" attrs="{'invisible':[('state','!=','draft')]}"/>
+                        <button name="action_draft" type="object" string="Cambiar a borrador" attrs="{'invisible':[('state','=','draft')]}"/>
+                        <button name="action_done" type="object" string="Finalizar" class="btn btn-primary" attrs="{'invisible':[('state','!=','confirm')]}"/>
+                        <button name="action_cancel" type="object" string="Cancelar" attrs="{'invisible':[('state','!=','draft')]}"/>
+                        <!--<button name="%(optical_patient.op_wizard_create_order_action)d" type="action" string="Crear orden" class="btn btn-primary" attrs="{'invisible':[('state','!=','done')]}"/>-->
+                        <button name="new_order" type="object" string="Crear orden" class="btn btn-primary" attrs="{'invisible':['|',('state','!=','done'),('order_id','!=',False)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <group style="display:none;">
+                            <field name="_barcode_scanned" widget="barcode_handler"/>
+                            <field name="order_id"/>
+                        </group>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="get_order" type="object" string="Venta" class="oe_stat_button" icon="fa-usd" attrs="{'invisible':[('order_id','=',False)]}"/>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" string="Examen visual"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="patient_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="physician_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="its_own_frame" widget="boolean_toogle"/>
+                                <field name="frame_id" force_save="1" readonly="1" attrs="{'invisible':[('its_own_frame','=',False)]}"/>
+                                <field name="confirm_date" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('confirm_date','=',False)]}"/>
+                                <field name="effective_date" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('effective_date','=',False)]}"/>
+                                <field name="time_service" widget="float_time" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('time_service','&lt;=',0)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="prv_vals" string="Lensometria previa">
+                                <group string="Producto en uso" >
+                                    <group>
+                                        <field name="prv_design"/>
+                                        <field name="from_lomed" widget="boolean_toggle"/>
+                                    </group>
+                                    <group>
+                                        <label for="usage_time" string="Tiempo en uso"/>
+                                        <div name="usage_time_container">
+                                            <field name="usage_time" class="oe_inline"/> <field name="usage_unit" class="oe_inline"/>
+                                        </div>
+                                        <button name="get_prior_lensometry" string="Cargar previo" type="object" class="btn-primary" colspan="2" attrs="{'invisible':[('from_lomed','=',False)]}"/>
+                                    </group>
+                                </group>
+                                <div name="prior_lensometry">
+                                    <table name="content_table" class="table table-sm table-bordered content-table">
+                                        <thead>
+                                            <tr>
+                                                <th/>
+                                                <th>Esfera</th>
+                                                <th>Cilindro</th>
+                                                <th>Eje</th>
+                                                <th>Adicion</th>
+                                                <th colspan="2">Prisma</th>
+                                                <th>Curba Base</th>
+                                                <th>AV Lejos</th>
+                                                <th>AV Cerca</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Ojo Der.</td>
+                                                <td><field name="prv_re_sph" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_cyl" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_axis" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_add" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_prism" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_prism_pst" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_base" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_avf" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_re_avc" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ojo Izq.</td>
+                                                <td><field name="prv_le_sph" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_cyl" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_axis" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_add" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_prism" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_prism_pst" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_base" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_avf" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="prv_le_avc" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </page>
+                            <page name="fnl_vals" string="Refracción final">
+                                <group>
+                                    <field name="is_contact_lens" widget="boolean_toggle"/>
+                                </group>
+                                <div name="final_lensometry">
+                                    <table name="content_table" class="table table-sm table-bordered content-table">
+                                        <thead>
+                                            <tr>
+                                                <th/>
+                                                <th>Esfera</th>
+                                                <th>Cilindro</th>
+                                                <th>Eje</th>
+                                                <th>Adicion</th>
+                                                <th colspan="2">Prisma</th>
+                                                <th>Curba Base</th>
+                                                <th>AV Lejos</th>
+                                                <th>AV Cerca</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Ojo Der.</td>
+                                                <td><field name="fnl_re_sph" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_cyl" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_axis" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_add" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_prism" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_prism_pst" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_base" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_avf" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_re_avc" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ojo Izq.</td>
+                                                <td><field name="fnl_le_sph" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_cyl" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_axis" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_add" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_prism" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_prism_pst" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_base" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_avf" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="fnl_le_avc" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <group string="Producto a facturar">
+                                    <field name="design_id"/>
+                                </group>
+                            </page>
+                            <page name="contact_lens_care" string="Regimen de cuidado y reemplazo" attrs="{'invisible':[('is_contact_lens','=',False)]}">
+                                <group>
+                                    <group name="care_regimen" string="Régimen de cuidado">
+                                        <label for="clean_time" string="Limpiar al menos"/>
+                                        <div>
+                                            <field name="clean_time" class="oe_inline"/> <span attrs="{'invisible':[('clean_time','=',1)]}">veces al día</span> <span attrs="{'invisible':[('clean_time','!=',1)]}">vez al día</span>
+                                        </div>
+                                        
+                                        <field name="clean_product_id"/>
+                                    </group>
+                                    <group name="replacement_regimen" string="Régimen de reemplazo">
+                                        <label for="replace_time" string="Tiempo de reemplazo sugerido"/>
+                                        <div>
+                                            <field name="replace_time" class="oe_inline"/> <field name="replace_unit" class="oe_inline"/>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="lens_vals" string="Medidas de aro">
+                                <div name="frame_mesurement">
+                                    <table class="table table-sm table-bordered content-table">
+                                        <thead>
+                                            <tr>
+                                                <th/>
+                                                <th>Distancia Naso Pupilar</th>
+                                                <th>Distantacia Interpupilar</th>
+                                                <th>Altura Pupilar</th>
+                                                <th>Altura Oblea</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Ojo der.</td>
+                                                <td><field name="dnp_re" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td rowspan="2"><field name="dip" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td rowspan="2"><field name="pupillary_height" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td rowspan="2"><field name="blaze_height" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ojo izq.</td>
+                                                <td><field name="dnp_le" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div name="frame_data" string="Datos del aro">
+                                    <table class="table table-sm table-bordered content-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Marca</th>
+                                                <th>Código</th>
+                                                <th>Tamaño</th>
+                                                <th>Color</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><field name="frame_mark" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="frame_code" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="frame_zise" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td><field name="frame_color" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </page>
+                            <page name="other_info" string="Otra información">
+                                <group>
+                                    <field name="reception_id" readonly="1"/>
+                                    <field name="create_uid"/>
+                                    <field name="create_date"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <field name="comment" nolabel="1" placeholder="Comentarios, aclaraciones, etc." colspan="2"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--Filtros consulta-->
+        <record model="ir.ui.view" id="op_appointment_search_view">
+    <field name="name">op_appointment_search_view</field>
+    <field name="model">op.appointment</field>
+    <field name="arch" type="xml">
+        <search string="Filtros de consulta">
+            <field name="name" string="Examen" filter_domain="['|',('name','ilike',self),('patient_id','ilike',self)]"/>
+            <field name="physician_id"/>
+            <field name="reception_id"/>
+            <separator/>
+            <filter name="draft_state" string="Borrador" domain="[('state','=','draft')]"/>
+            <filter name="confirm_state" string="Confirmado" domain="[('state','=','confirm')]"/>
+            <filter name="done_state" string="Hecho" domain="[('state','=','done')]"/>
+            <filter name="cancel_state" string="Cancelado" domain="[('state','=','cancel')]"/>
+            <separator/>
+            <filter name="test_date" string="Fecha de examen" date="date"/>
+            <filter name="cd_filter" string="Fecha de confirmación" date="confirm_date"/>
+            <separator/>
+            <filter name="today" string="Examenes de hoy" domain="[('date','=',context_today())]"/>
+            <group expand="0" string="Agrupar por">
+                <filter name="group_patient" string="Paciente" domain="[]" context="{'group_by':'patient_id'}"/>
+                <filter name="group_reception" string="Sala de recepción" domain="[]" context="{'group_by':'reception_id'}"/>
+                <filter name="group_physician" string="Optometrista" domain="[]" context="{'group_by':'physician_id'}"/>
+                <separator/>
+                <filter name="group_date" string="Fecha de examen" domain="[]" context="{'group_by':'date'}"/>
+                <filter name="group_confirm_date" string="Fecha de confirmación" domain="[]" context="{'group_by':'confirm_date'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="op.patient.tags" id="tag_01">
+            <field name="name">Galerias</field>
+            <field name="color">3</field>
+            <field name="active">true</field>
+        </record>
+
+        <record model="op.patient.tags" id="tag_02">
+            <field name="name">Multiplaza</field>
+            <field name="color">5</field>
+            <field name="active">True</field>
+        </record>
+
+        <record model="op.patient.tags" id="tag_03">
+            <field name="name">Empresarial</field>
+            <field name="color">1</field>
+            <field name="active">True</field>
+        </record>
+
+        <record model="op.patient.tags" id="tag_04">
+            <field name="name">Alta prescripción</field>
+            <field name="color">4</field>
+            <field name="active">True</field>
+        </record>
+
+        <record model="op.patient.tags" id="tag_05">
+            <field name="name">Vision sencilla</field>
+            <field name="color">10</field>
+            <field name="active">True</field>
+        </record>
+
+        <record model="op.patient.tags" id="tag_06">
+            <field name="name">Progresivo</field>
+            <field name="color">9</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

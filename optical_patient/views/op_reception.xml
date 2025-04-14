@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana recepción-->
+        <record model="ir.actions.act_window" id="op_reception_action">
+            <field name="name">Sala de recepción</field>
+            <field name="res_model">op.reception</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Recepción</p>
+            </field>
+        </record>
+
+        <!--Elemento de menú principal-->
+        <menuitem id="op_main_menu"  
+        name="Óptica" 
+        action="op_reception_action" 
+        sequence="20"
+        web_icon="optical_patient,static/description/icon.png"/>
+
+        <!--Elemento de menú recepción-->
+        <menuitem id="op_reception_menu"
+        parent="optical_patient.op_main_menu" 
+        name="Recepción" 
+        action="op_reception_action" 
+        sequence="1"/>
+
+        <!--Lista de recepción-->
+        <record model="ir.ui.view" id="op_reception_tree_view">
+            <field name="name">op_reception_tree_view</field>
+            <field name="model">op.reception</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="recepcionist_id"/>
+                    <field name="physician_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Kanban pacientes-->
+        <record model="ir.ui.view" id="op_reception_kanban_view">
+            <field name="name">op_reception_kanban_view</field>
+            <field name="model">op.reception</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard o_account_kanban oe_background_grey" sample="1">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="recepcionist_id"/>
+                    <field name="physician_id"/>
+                    <field name="appointment_ids"/>
+                    <field name="today_appointment"/>
+                    <field name="sequence_id"/>
+                    <field name="color"/>
+                    <template>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title">
+                                        <span t-out="record.name.value"/>
+                                        </strong><br/>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_body oe_kanban_details">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <ul name="info_details">
+                                                <li t-if="record.user_id.value"><span>Usuario:</span> <field name="user_id"/></li>
+                                                <li t-if="record.recepcionist_id.value"><span>Asesor:</span> <field name="recepcionist_id"/></li>
+                                                <li t-if="record.physician_id.value"><span>Profesional asignado:</span> <field name="physician_id"/></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-4" style="text-align:center">
+                                            <!--Examenes realizados hoy-->
+                                            <span>Examenes de hoy:</span><br/>
+                                            <field name="today_appointment"/>
+                                        </div>
+                                        <div class="col-3">
+                                            <!--Boton de acción-->
+                                            <button name="action_create_record" class="btn btn-success btn-sm" type="object" string="Nuevo examen"/>
+                                            <button name="action_create_patient" class="btn btn-info btn-sm" type="object" string="Nuevo paciente"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    
+                                </div>
+                            </div>
+                        </t>
+                    </template>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Formulario Recepcion-->
+        <record model="ir.ui.view" id="op_reception_form_view">
+            <field name="name">op_reception_form_view</field>
+            <field name="model">op.reception</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object" icon="fa-list-alt" name="get_all_appointment">
+                                <span>Examenes</span>
+                            </button>
+                            <button class="oe_stat_button" type="object" icon="fa-bookmark" name="get_today_apponitment">
+                                <field name="today_appointment" string="De hoy" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <!--Campos invisibles-->
+                        <div style="display:none;">
+                            <field name="_barcode_scanned" widget="barcode_handler"/>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" string="Nombre de la sala"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre de la sala..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="left_pane">
+                                <field name="recepcionist_id"/>
+                                <field name="physician_id"/>
+                                <field name="categ_id" groups="optical_patient.group_op_admin"/>
+                            </group>
+                            <group name="right_pane">
+                                <field name="sequence_id"/>
+                                <field name="color" widget="color_picker"/>
+                                <field name="user_id" groups="base.group_system"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

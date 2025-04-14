@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana Paciente-->
+        <record model="ir.actions.act_window" id="op_patient_action">
+            <field name="name">Pacientes</field>
+            <field name="res_model">op.patient</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Pacientes</p>
+            </field>
+        </record>
+
+        <!--Elemento de menú paciente principal-->
+        <menuitem id="op_patient_main_menu"
+        parent="optical_patient.op_main_menu" 
+        name="Pacientes" 
+        action="" 
+        sequence="2"/>
+
+        <!--Elemento de menú paciente-->
+        <menuitem id="op_patient_menu"
+        parent="optical_patient.op_patient_main_menu" 
+        name="Paciente" 
+        action="op_patient_action" 
+        sequence="1"/>
+
+        <!--Lista de pacientes-->
+        <record model="ir.ui.view" id="op_patient_tree_view">
+            <field name="name">op_patient_tree_view</field>
+            <field name="model">op.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="occupation" optional="show"/>
+                    <field name="last_appointment_date" optional="show"/>
+                    <field name="related_company_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Kanban pacientes-->
+        <record model="ir.ui.view" id="op_patient_kanban_view">
+            <field name="name">op_patient_kanban_view</field>
+            <field name="model">op.patient</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="occupation"/>
+                    <field name="last_appointment_date"/>
+                    <field name="related_company_id"/>
+                    <field name="age"/>
+                    <field name="birthdate"/>
+                    <field name="address"/>
+                    <field name="tag_ids"/>
+                    <field name="is_birthday_today"/>
+                    <field name="color"/>
+                    <template>
+                        <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings mt4">
+                                    <strong class="o_kanban_record_title">
+                                    <span t-out="record.name.value"/>
+                                    </strong><br/>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_body oe_kanban_details">
+                                <span class="oe_kanban_list_many2many">
+                                   <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                                </span>
+                                <ul name="info_details">
+                                    <li t-if="record.gender.value"><span>Genero:</span> <field name="gender"/></li>
+                                    <li t-if="record.age.value &gt; 0"><span>Edad:</span> <field name="age"/></li>
+                                    <li t-if="record.occupation.value"><span>Ocupación:</span> <field name="occupation"/></li>
+                                </ul>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left"/>
+                                <div class="oe_kanban_bottom_right text-muted">
+                                    <span t-if="record.last_appointment_date.value">Última visita: <field name="last_appointment_date"/></span>
+                                    <div class="mb-1 me-n1">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </t>
+                    </template>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Formulario pacientes-->
+        <record model="ir.ui.view" id="op_patient_form_view">
+            <field name="name">op_patient_form_view</field>
+            <field name="model">op.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="create_partner" string="Crear contacto" type="object" attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object" icon="fa-calendar" name="get_oppointment_list">
+                                <field name="appointment_count" string="Visitas" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="object" icon="fa-plus-square" name="create_appointment">
+                                <span>Nuevo Examen</span>
+                            </button>
+                        </div>
+                        <!--Campos invisibles-->
+                        <field name="is_birthday_today" invisible="1"/>
+                        <field name="is_minor" invisible="1"/>
+
+                        <widget name="web_ribbon" title="Cumpleañero" icon="fa-birthday-cake" attrs="{'invisible': [('is_birthday_today','=',False)]}"/>
+                        <div class="oe_title">
+                            <label for="name" string="Nombre del paciente"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre del paciente..." readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="left_pane">
+                                <field name="first_name"/>
+                                <field name="last_name"/>
+                                <field name="gender"/>
+                                <field name="document_type" attrs="{'required':[('is_minor','=',False)]}"/>
+                                <field name="document" attrs="{'required':[('is_minor','=',False)]}"/>
+                                <field name="address"/>
+                                <field name="related_company_id"/>
+                            </group>
+                            <group name="right_pane">
+                                <field name="birthdate"/>
+                                <field name="age"/>
+                                <field name="occupation"/>
+                                <field name="phone"/>
+                                <field name="mobile"/>
+                                <field name="email"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="clinical_history" string="Historia clinica" colspan="2">
+                                <field name="medical_history_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="disease_id"/>
+                                        <field name="diagnosis_date" widget="date" format="%m-%Y"/>
+                                        <field name="underwent_surgery" widget="boolean_toggle"/>
+                                        <field name="comment"/> 
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="optical_history" string="Antecedentes oculares">
+                                <field name="optical_history_ids" nolabel="1" colspan="2">
+                                    <tree editable="bottom">
+                                        <field name="disease_id"/>
+                                        <field name="personal"/>
+                                        <field name="underwent_surgery" widget="boolean_toggle" attrs="{'readonly':[('personal','=',False)]}"/>
+                                        <field name="family"/>
+                                        <field name="comment"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="legal_guardian" string="Encargado" attrs="{'invisible':[('is_minor','=',False)]}">
+                                <group name="guardian_info" string="Información del padre y/o tutor legal">
+                                    <group>
+                                        <field name="guardian_name" attrs="{'required':[('is_minor','=',True)]}"/>
+                                        <field name="guardian_last_name" attrs="{'required':[('is_minor','=',True)]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="guardian_document" attrs="{'required':[('is_minor','=',True)]}"/>
+                                        <field name="relationship" attrs="{'required':[('is_minor','=',True)]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="other_info" string="Otra información">
+                                <group>
+                                    <field name="partner_id"/>
+                                    <field name="create_date"/>
+                                    <field name="create_uid"/>
+                                    <field name="write_date"/>
+                                    <field name="write_uid"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*PADECIMIENTOS OCULARES.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <record model="op.disease" id="disease_opt_1">
+            <field name="name">Cataratas</field>
+            <field name="description">Es la opacidad del cristalino (lente interno del ojo), lo que dificulta el paso de luz y causa visión borrosa o nublada. Es común en personas mayores y generalmente se puede corregir con cirugía.</field>
+            <field name="code">OPT0001</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_2">
+            <field name="name">Glaucoma</field>
+            <field name="description">Es una enfermedad que daña el nervio óptico, generalmente debido a un aumento de la presión intraocular. Puede provocar pérdida de visión periférica y, si no se trata, ceguera irreversible.</field>
+            <field name="code">OPT0002</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_3">
+            <field name="name">Degeneración macular relacionada con la edad (DMAE)</field>
+            <field name="description">Es una enfermedad que afecta la mácula, la parte central de la retina, causando pérdida de la visión central. Es más común en personas mayores y puede dificultar actividades como leer o reconocer rostros.</field>
+            <field name="code">OPT0003</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_4">
+            <field name="name">Retinopatía diabética</field>
+            <field name="description">Es una complicación de la diabetes que afecta los vasos sanguíneos de la retina, lo que puede llevar a hemorragias, pérdida de visión y, si no se trata, ceguera.</field>
+            <field name="code">OPT0004</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_5">
+            <field name="name">Desprendimiento de retina</field>
+            <field name="description">Ocurre cuando la retina se separa de la capa subyacente de vasos sanguíneos que la nutren, lo que puede causar pérdida de visión. Es una urgencia médica y requiere tratamiento inmediato.</field>
+            <field name="code">OPT0005</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_6">
+            <field name="name">Uveítis</field>
+            <field name="description">Es la inflamación de la capa intermedia del ojo (úvea), que puede afectar la visión y causar dolor. Puede ser causada por infecciones, enfermedades autoinmunes o lesiones.</field>
+            <field name="code">OPT0006</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_7">
+            <field name="name">Ojo seco (Síndrome del ojo seco)</field>
+            <field name="description">Es una condición en la que los ojos no producen suficientes lágrimas o las lágrimas no son de buena calidad, lo que provoca irritación, picazón, enrojecimiento y visión borrosa.</field>
+            <field name="code">OPT0007</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_8">
+            <field name="name">Astigmatismo</field>
+            <field name="description">Es un error refractivo causado por una irregularidad en la forma de la córnea o el cristalino, lo que provoca visión borrosa tanto de cerca como de lejos.</field>
+            <field name="code">OPT0008</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_9">
+            <field name="name">Miopía</field>
+            <field name="description">Es un defecto refractivo en el que el ojo es más largo de lo normal o la córnea tiene una curvatura excesiva, lo que hace que los objetos distantes se vean borrosos, pero la visión cercana suele ser clara.</field>
+            <field name="code">OPT0009</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_10">
+            <field name="name">Hipermetropía</field>
+            <field name="description">Es el opuesto de la miopía. En este caso, el ojo es más corto de lo normal o la córnea tiene poca curvatura, lo que dificulta la visión cercana, pero la visión a distancia suele ser mejor.</field>
+            <field name="code">OPT0010</field>
+            <field name="type">optical</field>
+        </record>
+
+        <record model="op.disease" id="disease_opt_11">
+            <field name="name">Queratocono</field>
+            <field name="description">Es una enfermedad en la que la córnea se adelgaza y se deforma en forma de cono, lo que causa visión distorsionada y, en casos graves, puede requerir un trasplante de córnea.</field>
+            <field name="code">OPT0011</field>
+            <field name="type">optical</field>
+        </record>
+
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.PADECIMIENTOS NO OCULARES.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <record model="op.disease" id="disease_cln_1">
+            <field name="name">Diabetes</field>
+            <field name="description">La diabetes mal controlada puede causar retinopatía diabética, donde los vasos sanguíneos de la retina se dañan, lo que puede llevar a pérdida de visión. También aumenta el riesgo de cataratas y glaucoma.</field>
+            <field name="code">CLN0001</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_2">
+            <field name="name">Hipertensión</field>
+            <field name="description">La presión arterial alta puede dañar los vasos sanguíneos en la retina, provocando una condición conocida como retinopatía hipertensiva, que puede llevar a visión borrosa o pérdida de visión si no se controla. También puede aumentar el riesgo de glaucoma.</field>
+            <field name="code">CLN0002</field>
+            <field name="type">clinical</field>
+        </record>
+
+
+        <record model="op.disease" id="disease_cln_3">
+            <field name="name">Esclerosis múltiple</field>
+            <field name="description">Esta enfermedad autoinmune puede afectar el nervio óptico, causando neuritis óptica, lo que provoca dolor ocular y pérdida temporal de la visión, especialmente en un ojo.</field>
+            <field name="code">CLN0003</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_4">
+            <field name="name">Accidente cerebrovascular (ACV)</field>
+            <field name="description">Un ACV puede dañar áreas del cerebro responsables de la visión, lo que puede resultar en pérdida de visión en uno o ambos ojos o alteraciones visuales como hemianopsia (pérdida de visión en un campo visual).</field>
+            <field name="code">CLN0004</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_5">
+            <field name="name">Tumores cerebrales</field>
+            <field name="description">Los tumores cerebrales, especialmente los que afectan el quiasma óptico (donde se cruzan los nervios ópticos), pueden causar pérdida de visión, visión doble o alteraciones en el campo visual.</field>
+            <field name="code">CLN0005</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_6">
+            <field name="name">Migrañas</field>
+            <field name="description">Las migrañas pueden estar acompañadas de auras visuales, que son alteraciones transitorias en la visión, como destellos de luz, líneas en zig-zag o pérdida temporal de visión en una parte del campo visual. Las migrañas severas también pueden causar dolor ocular.</field>
+            <field name="code">CLN0006</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_7">
+            <field name="name">Enfermedades metabólicas o genéticas</field>
+            <field name="description">Algunas enfermedades metabólicas o genéticas, como la retinosis pigmentaria o el síndrome de Usher, pueden afectar la retina y provocar pérdida de visión progresiva, generalmente en la adolescencia o en la adultez temprana.</field>
+            <field name="code">CLN0007</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_8">
+            <field name="name">Anemia</field>
+            <field name="description">La anemia grave puede reducir la cantidad de oxígeno que llega a los ojos, lo que puede provocar visión borrosa. En casos extremos, puede llevar a problemas oculares más graves si no se trata adecuadamente.</field>
+            <field name="code">CLN0008</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_9">
+            <field name="name">Síndrome de Sjögren</field>
+            <field name="description">Esta enfermedad autoinmune afecta las glándulas que producen las lágrimas, lo que lleva al ojo seco, causando irritación, enrojecimiento, y una visión borrosa temporal debido a la falta de lubricación.</field>
+            <field name="code">CLN0009</field>
+            <field name="type">clinical</field>
+        </record>
+
+        <record model="op.disease" id="disease_cln_10">
+            <field name="name">Hipotiroidismo</field>
+            <field name="description">El hipotiroidismo puede provocar ojos secos, hinchazón en los ojos, visión borrosa y, en algunos casos, exoftalmos (protrusión ocular) debido a la disfunción tiroidea, lo que afecta la apariencia y función de los ojos.</field>
+            <field name="code">CLN0010</field>
+            <field name="type">clinical</field>
+        </record>
+    </data>
+</odoo>

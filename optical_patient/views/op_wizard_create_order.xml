@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana wizard-->
+        <record model="ir.actions.act_window" id="op_wizard_create_order_action">
+            <field name="name">Crear orden de venta OP</field>
+            <field name="res_model">op.wizard.create_order</field>
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--Formulario wizard crear orden-->
+        <record model="ir.ui.view" id="op_wizard_create_order_form_view">
+            <field name="name">op_wizard_create_order_form_view</field>
+            <field name="model">op.wizard.create_order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p class="oe_grey">
+                        La orden de venta será creada en borrador para validarla previo a la confirmación.
+                    </p>
+                    <group name="header_data">
+                        <field name="partner_id"/>
+                        <field name="appointment_id" readonly="1"/>
+                    </group>
+                    <group name="product_info">
+                        <field name="accessories"/>
+                        <field name="include_ar"/>
+                        <field name="component_ar" attrs="{'invisible':[('include_ar','=',False)],'required':[('include_ar','=',True)]}"/>
+                        <field name="frame_id" invisible="1"/>
+                        <field name="design_id" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="create_sale_order" type="object" string="Crear y ver Orden" class="btn btn-primary" data-hotkey="q"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
