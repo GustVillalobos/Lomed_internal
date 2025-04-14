@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="op.specialty" id="specialty_opt">
+            <field name="name">Optometría</field>
+            <field name="prefix">DRO</field> 
+        </record>
+
+        <record model="op.specialty" id="specialty_oft">
+            <field name="name">Oftalmología</field> 
+            <field name="prefix">DRF</field> 
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.GRUPOS FUNCION PACIENTES OPTICA.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <!--Seccion categoria de modulo para optica-->
+        <record id="op_patient_section" model="ir.module.category">
+            <field name="name">Gestion de permisos de óptica</field>
+            <field name="description">Permisos</field>
+            <field name="sequence">99</field>
+        </record>
+
+        <!--Grupo de administradores de óptica-->
+        <record id="group_op_admin" model="res.groups">
+            <field name="name">Administración óptica</field>
+            <field name="category_id" ref="op_patient_section"/>
+        </record>
+
+        <!--Grupo de usuarios de óptica-->
+        <record id="group_op_user" model="res.groups">
+            <field name="name">Asesor óptica</field>
+            <field name="category_id" ref="op_patient_section"/>
+        </record>
+    </data>
+</odoo>
