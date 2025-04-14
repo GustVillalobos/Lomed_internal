@@ -20,7 +20,7 @@ class sv_technical_profile(models.Model):
     order_frequency = fields.Float(string="Frecuencia de compra",readonly=True,copy=False)
     sku = fields.Float(string="SKU",readonly=True,copy=False)
     branches = fields.Integer(string="Número de sucursales",store=True,copy=False,compute='compute_branches',readonly=True)
-    turnover = fields.Float("Compra mensual",readonly=True,copuy=False)
+    turnover = fields.Float("Compra mensual",readonly=True,copy=False)
     target_product = fields.Float(string="Producto Objetivo",copy=False,readonly=True)
     target_product_string = fields.Char(string="Producto Objetivo",store=False,readonly="True",copy=False,compute='compute_percent_tps')
     date_start = fields.Date(string="Fecha inicio",readonly=True,copy=False)
