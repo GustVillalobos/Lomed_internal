@@ -34,6 +34,7 @@ class op_appointment(models.Model):
     frame_id = fields.Many2one(string="Aro seleccionado",comodel_name='product.product')
     design_id = fields.Many2one(string="Producto seleccionado",comodel_name='product.product')
     order_id = fields.Many2one(string="Orden de venta",comodel_name='sale.order')
+    color = fields.Integer(string="Color",compute='_compute_color')
     comment = fields.Html("Comentario")
     '''Aclaración de sintaxis campos lensometria previa y receta por acrónimos:
     Estructura a seguir: etapa_ojo_valor
@@ -235,3 +236,15 @@ class op_appointment(models.Model):
             self.prv_le_avf = last_exam.fnl_le_avf
             self.prv_le_avc = last_exam.fnl_le_avc
             self.prv_design = last_exam.design_id.name
+    
+    @api.depends('state')
+    def _compute_color(self):
+        for r in self:
+            res = 4
+            if r.state == 'done':
+                res = 10
+            elif r.state == 'cancel':
+                res = 1
+            elif r.state == 'confirm':
+                res = 3
+            r.color = res

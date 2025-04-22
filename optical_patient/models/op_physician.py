@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 class op_professional(models.Model):
     _name='op.physician'
     _inherit = ['mail.thread']
-    _description = 'Perfil profecional'
+    _description = 'Perfil profesional'
 
     name = fields.Char("Nombre completo")
     code = fields.Char(string="Código",readonly=True,store=True)

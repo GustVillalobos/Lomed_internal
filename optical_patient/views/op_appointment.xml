@@ -301,35 +301,82 @@
 
         <!--Filtros consulta-->
         <record model="ir.ui.view" id="op_appointment_search_view">
-    <field name="name">op_appointment_search_view</field>
-    <field name="model">op.appointment</field>
-    <field name="arch" type="xml">
-        <search string="Filtros de consulta">
-            <field name="name" string="Examen" filter_domain="['|',('name','ilike',self),('patient_id','ilike',self)]"/>
-            <field name="physician_id"/>
-            <field name="reception_id"/>
-            <separator/>
-            <filter name="draft_state" string="Borrador" domain="[('state','=','draft')]"/>
-            <filter name="confirm_state" string="Confirmado" domain="[('state','=','confirm')]"/>
-            <filter name="done_state" string="Hecho" domain="[('state','=','done')]"/>
-            <filter name="cancel_state" string="Cancelado" domain="[('state','=','cancel')]"/>
-            <separator/>
-            <filter name="test_date" string="Fecha de examen" date="date"/>
-            <filter name="cd_filter" string="Fecha de confirmación" date="confirm_date"/>
-            <separator/>
-            <filter name="today" string="Examenes de hoy" domain="[('date','=',context_today())]"/>
-            <group expand="0" string="Agrupar por">
-                <filter name="group_patient" string="Paciente" domain="[]" context="{'group_by':'patient_id'}"/>
-                <filter name="group_reception" string="Sala de recepción" domain="[]" context="{'group_by':'reception_id'}"/>
-                <filter name="group_physician" string="Optometrista" domain="[]" context="{'group_by':'physician_id'}"/>
-                <separator/>
-                <filter name="group_date" string="Fecha de examen" domain="[]" context="{'group_by':'date'}"/>
-                <filter name="group_confirm_date" string="Fecha de confirmación" domain="[]" context="{'group_by':'confirm_date'}"/>
-            </group>
-        </search>
-    </field>
-</record>
+            <field name="name">op_appointment_search_view</field>
+            <field name="model">op.appointment</field>
+            <field name="arch" type="xml">
+                <search string="Filtros de consulta">
+                    <field name="name" string="Examen" filter_domain="['|',('name','ilike',self),('patient_id','ilike',self)]"/>
+                    <field name="physician_id"/>
+                    <field name="reception_id"/>
+                    <separator/>
+                    <filter name="draft_state" string="Borrador" domain="[('state','=','draft')]"/>
+                    <filter name="confirm_state" string="Confirmado" domain="[('state','=','confirm')]"/>
+                    <filter name="done_state" string="Hecho" domain="[('state','=','done')]"/>
+                    <filter name="cancel_state" string="Cancelado" domain="[('state','=','cancel')]"/>
+                    <separator/>
+                    <filter name="test_date" string="Fecha de examen" date="date"/>
+                    <filter name="cd_filter" string="Fecha de confirmación" date="confirm_date"/>
+                    <separator/>
+                    <filter name="today" string="Examenes de hoy" domain="[('date','=',context_today())]"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter name="group_patient" string="Paciente" domain="[]" context="{'group_by':'patient_id'}"/>
+                        <filter name="group_reception" string="Sala de recepción" domain="[]" context="{'group_by':'reception_id'}"/>
+                        <filter name="group_physician" string="Optometrista" domain="[]" context="{'group_by':'physician_id'}"/>
+                        <separator/>
+                        <filter name="group_date" string="Fecha de examen" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_confirm_date" string="Fecha de confirmación" domain="[]" context="{'group_by':'confirm_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
 
+        <!--Kanban examenes-->
+        <record model="ir.ui.view" id="op_appointment_kanban_view">
+            <field name="name">op_appointment_kanban_view</field>
+            <field name="model">op.appointment</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="patient_id"/>
+                    <field name="state"/>
+                    <field name="date"/>
+                    <field name="physician_id"/>
+                    <field name="reception_id"/>
+                    <field name="confirm_date"/>
+                    <field name="effective_date"/>
+                    <field name="time_service"/>
+                    <field name="color"/>
+                    <template>
+                        <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) }}">
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings mt4">
+                                    <strong class="o_kanban_record_title">
+                                    <span t-out="record.name.value"/>
+                                    </strong><br/>
+                                </div>
+                                <strong><field name="state" widget="label_selection" options="{'classes': {'draft': 'info', 'cancel': 'danger', 'done': 'success','confirm':'warning'}}"/></strong>
+                            </div>
+                            <div class="oe_kanban_body oe_kanban_details">
+                                
+                                <ul name="info_details">
+                                    <li t-if="record.patient_id.value"><span>Paciente:</span> <field name="patient_id"/></li>
+                                    <li t-if="record.physician_id.value"><span>Optometra:</span> <field name="physician_id"/></li>
+                                    <li t-if="record.reception_id.value"><span>Sala:</span> <field name="reception_id"/></li>
+                                </ul>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left"/>
+                                <div class="oe_kanban_bottom_right text-muted">
+                                    <span t-if="record.confirm_date.value">Confirmación:</span> <field t-if="record.confirm_date.value" name="confirm_date"/>
+                                </div>
+                            </div>
+                        </div>
+                        </t>
+                    </template>
+                </kanban>
+            </field>
+        </record>
 
     </data>
 </odoo>

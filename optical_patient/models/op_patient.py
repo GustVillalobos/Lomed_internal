@@ -142,8 +142,8 @@ class op_patient(models.Model):
         reception = self.get_reception()
         partner = {}
         partner['name'] = self.name if not self.is_minor else self.guardian_name + ' ' + self.guardian_last_name
-        partner['names'] = self.first_name if not self.is_minor else self.guardian_name
-        partner['last_names'] = self.last_name if not self.is_minor else self.guardian_last_name
+        partner['nombres'] = self.first_name if not self.is_minor else self.guardian_name
+        partner['apellidos'] = self.last_name if not self.is_minor else self.guardian_last_name
         partner['dui'] = self.document if not self.is_minor else self.guardian_document
         partner['company_type'] = 'person'
         partner['type'] = 'contact'
