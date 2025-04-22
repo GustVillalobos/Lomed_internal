@@ -18,7 +18,7 @@ class create_sale_order(models.TransientModel):
     include_ar = fields.Boolean("Incluir antirreflejo")
     accessories = fields.Boolean("Incluir accesorios",help="Agregar franela y estuche al pedido")
     partner_id = fields.Many2one(string="Contacto",comodel_name='res.partner')
-    frame_id = fields.Many2one(strign="Aro seleccionado",comodel_name='product.product')
+    frame_id = fields.Many2one(string="Aro seleccionado",comodel_name='product.product')
     design_id = fields.Many2one(string="Producto",comodel_name='product.product')
     component_ar = fields.Many2one(string="Componente AR",comodel_name='product.product',domain="[('type_optic','=','ar_component')]")
 
