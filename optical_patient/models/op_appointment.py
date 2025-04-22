@@ -161,7 +161,7 @@ class op_appointment(models.Model):
         self.ensure_one()
         self.state = 'cancel'
     
-    @api.model_create_multi
+    @api.model
     def create(self,vals):
         appointment = super(op_appointment,self).create(vals)
         dic = {'name':'EV'+str(appointment.id).zfill(6)}

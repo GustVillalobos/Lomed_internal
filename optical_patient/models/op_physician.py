@@ -33,7 +33,7 @@ class op_professional(models.Model):
     reception_ids = fields.Many2many(string="Salas autorizadas",comodel_name='op.reception')
     color = fields.Integer("Color",compute='_get_color')
 
-    @api.model_create_multi
+    @api.model
     def create(self,vals):
         if 'code' in vals and not vals.get('code'):
             _logger.info('Agregando código a profesional')

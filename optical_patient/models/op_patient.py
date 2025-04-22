@@ -70,7 +70,7 @@ class op_patient(models.Model):
             if r.name != name:
                 r.name = name
     
-    @api.model_create_multi
+    @api.model
     def create(self,vals):
         if 'first_name' in vals:
             vals['first_name'] = vals.get('first_name').title()
