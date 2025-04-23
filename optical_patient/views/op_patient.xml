@@ -201,5 +201,33 @@
                 </form>
             </field>
         </record>
+
+        <!--Filtros pacientes-->
+        <record model="ir.ui.view" id="op_patient_search_view">
+            <field name="name">op_patient_search_view</field>
+            <field name="model">op.patient</field>
+            <field name="arch" type="xml">
+                <search string="Filtros de paciente">
+                    <field name="name" string="paciente" filter_domain="['|','|','|',('name','ilike',self),('first_name','ilike',self),('last_name','ilike',self),('email','ilike',self)]"/>
+                    <field name="occupation"/>
+                    <field name="related_company_id"/>
+                    <field name="tag_ids"/>
+                    <separator/>
+                    <filter name="today_birthday" string="Cumpleañeros de hoy" domain="[('is_birthday_today','=',True)]"/>
+                    <separator/>
+                    <filter name="adults" string="Mayores de edad" domain="[('is_minor','=',False)]"/>
+                    <filter name="minor" string="Menores de edad" domain="[('is_minor','=',True)]"/>
+                    <separator/>
+                    <filter name="filter_male" string="Hombres" domain="[('gender','=','male')]"/>
+                    <filter name="filter_female" string="Mujeres" domain="[('gender','=','female')]"/>
+                    <filter name="filter_lgbt" string="Hombres" domain="[('gender','=','lgbt')]"/>
+
+                    <group expand="0" string="Agrupar por">
+                        <filter name="group_gender" string="Genero" domain="[]" context="{'group_by':'gender'}"/>
+                        <filter name="group_ocupation" string="Ocupación" domain="[]" context="{'group_by':'occupation'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
     </data>
 </odoo>

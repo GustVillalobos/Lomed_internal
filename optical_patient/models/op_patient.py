@@ -16,7 +16,7 @@ class op_patient(models.Model):
     _inherit= ['mail.thread','mail.activity.mixin']
     _description = 'Paciente'
 
-    name = fields.Char(string="Nombre completo",compute='_compute_patient_name',readonly=True)
+    name = fields.Char(string="Nombre completo",compute='_compute_patient_name',readonly=True,store=True)
     first_name = fields.Char("Nombres",required = True)
     last_name = fields.Char("Apellidos", required = True)
     birthdate = fields.Date("Fecha de nacimiento")
@@ -47,8 +47,8 @@ class op_patient(models.Model):
     appointment_ids = fields.One2many(string="Citas",comodel_name='op.appointment',inverse_name='patient_id')
     appointment_count = fields.Integer("Total citas",compute='_count_appointment')
     last_appointment_date = fields.Date("Última revisión",compute='_compute_last_date')
-    is_birthday_today = fields.Boolean(string="Es su cumpleaños hoy?",compute='_compute_is_birthday_today')
-    is_minor = fields.Boolean("Es menor",compute='_verify_is_minor')
+    is_birthday_today = fields.Boolean(string="Es su cumpleaños hoy?",compute='_compute_is_birthday_today',store=True)
+    is_minor = fields.Boolean("Es menor",compute='_verify_is_minor',store=True)
     #Información del guardian
     guardian_name = fields.Char("Nombres")
     guardian_last_name = fields.Char("Apellidos")
