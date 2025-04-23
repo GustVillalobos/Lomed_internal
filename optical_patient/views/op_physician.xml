@@ -149,11 +149,11 @@
                                 <field name="specialty_id"/>
                                 <field name="degree"/>
                                 <field name="email"/>
-                                <field name="employee_id"/>
+                                <field name="employee_id" options="{'no_open':True,'no_create':True,'no_create_edit':True}"/>
                             </group>
                         </group>
                         <group>
-                            <field name="reception_ids" widget="many2many_tags"/>
+                            <field name="reception_ids" widget="many2many_tags" groups="optical_patient.group_op_admin"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">

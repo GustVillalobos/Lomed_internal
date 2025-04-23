@@ -17,6 +17,7 @@
         <menuitem id="op_main_menu"  
         name="Óptica" 
         action="op_reception_action" 
+        groups="optical_patient.group_op_admin,optical_patient.group_op_user"
         sequence="20"
         web_icon="optical_patient,static/description/icon.png"/>
 
@@ -125,7 +126,7 @@
                         </div>
                         <group>
                             <group name="left_pane">
-                                <field name="recepcionist_id"/>
+                                <field name="recepcionist_id" options="{'no_open':True,'no_create':True,'no_create_edit':True}"/>
                                 <field name="physician_id"/>
                                 <field name="categ_id" groups="optical_patient.group_op_admin"/>
                             </group>

@@ -17,6 +17,7 @@
         <menuitem id="op_appointment_main_menu"
         parent="optical_patient.op_main_menu" 
         name="Registro" 
+        groups="optical_patient.group_op_admin"
         action="" 
         sequence="3"/>
 

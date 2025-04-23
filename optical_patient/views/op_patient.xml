@@ -145,7 +145,7 @@
                                 <field name="phone"/>
                                 <field name="mobile"/>
                                 <field name="email"/>
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','no_create':True,'no_create_edit':True}"/>
                             </group>
                         </group>
                         <notebook>
@@ -220,7 +220,7 @@
                     <separator/>
                     <filter name="filter_male" string="Hombres" domain="[('gender','=','male')]"/>
                     <filter name="filter_female" string="Mujeres" domain="[('gender','=','female')]"/>
-                    <filter name="filter_lgbt" string="Hombres" domain="[('gender','=','lgbt')]"/>
+                    <filter name="filter_lgbt" string="Diverso" domain="[('gender','=','lgbt')]"/>
 
                     <group expand="0" string="Agrupar por">
                         <filter name="group_gender" string="Genero" domain="[]" context="{'group_by':'gender'}"/>
