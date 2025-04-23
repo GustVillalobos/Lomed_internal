@@ -103,7 +103,10 @@
                                 <field name="frame_id" force_save="1" readonly="1" attrs="{'invisible':[('its_own_frame','=',False)]}"/>
                                 <field name="confirm_date" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('confirm_date','=',False)]}"/>
                                 <field name="effective_date" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('effective_date','=',False)]}"/>
-                                <field name="time_service" widget="float_time" readonly="1" attrs="{'invisible':['|',('state','=','draft'),('time_service','&lt;=',0)]}"/>
+                                <label for="time_service" string="Tiempo de atención" attrs="{'invisible':['|',('state','=','draft'),('time_service','&lt;=',0)]}"/>
+                                <div attrs="{'invisible':['|',('state','=','draft'),('time_service','&lt;=',0)]}">
+                                    <field name="time_service" widget="float_time" class="oe_inline" readonly="1"/> <span>( Minutos )</span>
+                                </div>
                             </group>
                         </group>
                         <notebook>

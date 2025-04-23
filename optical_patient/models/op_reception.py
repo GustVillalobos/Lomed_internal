@@ -41,7 +41,7 @@ class op_reception(models.Model):
         return{
             'type':'ir.actions.act_window'
             ,'name':'Todos los examenes de sala'
-            ,'view_mode':'tree,form'
+            ,'view_mode':'tree,kanban,form'
             ,'res_model':'op.appointment'
             ,'domain':[('reception_id','=',self.id)]
             ,'context':"{'create':True}"
@@ -52,7 +52,7 @@ class op_reception(models.Model):
         return{
             'type':'ir.actions.act_window'
             ,'name':'Examenes de hoy'
-            ,'view_mode':'tree,form'
+            ,'view_mode':'tree,kanban,form'
             ,'res_model':'op.appointment'
             ,'domain':[('reception_id','=',self.id)]
             ,'context':"{'create':True,'search_default_today':1}"
