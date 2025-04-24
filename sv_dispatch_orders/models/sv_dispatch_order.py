@@ -115,11 +115,13 @@ class sv_dispatch_route(models.Model):
     def button_confirm_route(self):
         self.ensure_one()
         max_days = self.get_max_days()
+        min_order = self.get_min_order()
         today = datetime.now()
         if not self.dispatch_date:
             self.dispatch_date = today.date()
-        if len(self.route_line_ids) <= 0:
-            raise UserError('Debe agregar por lo menos 1 pedido para entregar')
+        if min_order > 0 and len(self.route_line_ids) <= min_order:
+            msj = ' orden' if min_order <=1  else 'ordenes'
+            raise UserError(f'Debe agregar por lo menos {min_order} {msj} para entregar')
         if (self.dispatch_date - today.date()).days > max_days:
             raise ValidationError(f'No puedes confirmar rutas con mas de {max_days} días de anticipación')
         if not self.code:
@@ -306,6 +308,13 @@ class sv_dispatch_route(models.Model):
                 if vehicle:
                     res = vehicle.id
             r.vehicle_id = res
+    
+    def get_min_order(self):
+        res = 0
+        parameter = self.env['ir.config_parameter'].sudo().get_param('sv_route.min_order')
+        if parameter:
+            res = int(parameter)
+        return res
 
 class sv_route_dispatch_line(models.Model):
     _name = 'sv.route.dispatch.line'

@@ -17,3 +17,4 @@ class ResConfigSettings(models.TransientModel):
     clear_fields = fields.Boolean(string="Limpiar campos",config_parameter='sv_route.clear_fields')
     emp_in_charge = fields.Many2one(comodel_name='hr.employee',string="Encargado de despacho",config_parameter="sv_route.employee_in_charge")
     max_days = fields.Integer("Dias de anticipación",config_parameter="sv_route.max_days")
+    min_order = fields.Integer("Minimo ordenes",config_parameter="sv_route.min_order")

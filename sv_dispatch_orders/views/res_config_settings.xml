@@ -84,6 +84,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt12 o_settings_container" id="sv_route_setting_row4">
+                            <div class="col-12 col-lg-6 o_settig_box" id="route_sv_min_order">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="min_order" string="Minimo"/>
+                                    <field name="min_order" class="text-center" style="width: 10%; min-width: 4rem;"/>
+                                    <label for="min_order" string="ordenes para despachar"/>
+                                    <div class="text-muted">
+                                       Define el minimo de ordenes para poder confirmar un despacho.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </xpath>
             </field>
