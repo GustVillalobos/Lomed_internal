@@ -184,5 +184,19 @@
                 </xpath>
             </field>
         </record>
+
+        <!--Accion programada-->
+        <record id="monthly_profile_calculation_action" model="ir.cron">
+          <field name="name">Calculo mensual de perfil de cliente</field>
+          <field name="model_id" ref="sv_client_segmentation.model_sv_segmentation_settings"/>
+          <field name="user_id" ref="base.user_root"/>
+          <field name="state">code</field>
+          <field name="code">model._monthly_profile_calculation()</field>
+          <field name="interval_number">1</field>
+          <field name="interval_type">months</field>
+          <field name="numbercall">-1</field>
+          <field name="doall" eval="False"/>
+          <field name="active" eval="True"/>
+        </record>
     </data>
 </odoo>

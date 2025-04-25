@@ -108,6 +108,22 @@ class sv_segmentation_settings_line(models.Model):
             self.name="Config_"+self.categ_id.name
         else:
             self.name="Config_nameless"
+    
+    def _monthly_profile_calculation(self):
+        config_list = self.env['sv.segmentation.settings'].search([('state','=','current')])
+        for cl in config_list:
+            partner_list = self.env['res.partner'].search([
+                ('category_id','in',cl.reference_categ_id.id),
+                ('active','=',True),
+                ('customer_rank','>',0),
+                ('parent_id','=',False)
+                ])
+            for p in partner_list:
+                try:
+                    p.action_calculate_profile()
+                    _logger.info(f'Perfil calculado para {p.name}')
+                except Exception as error:
+                    _logger.info(f'Error al calcular perfil de {p.name}:\n '+str(error))
 
 class sv_partner_history_data(models.Model):
     _name='sv.partner.history.data'
