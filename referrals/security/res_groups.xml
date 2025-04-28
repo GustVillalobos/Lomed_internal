@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*GRUPOS FUNCION REFERENCIA MEDICA.*.*.*.*.*.*.*.*.*.-->
+        <!--*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <!--Grupo Genera referencias-->
+        <record id="create_group" model="res.groups">
+            <field name="name">Generar referencias</field>
+        </record>
+
+        <!--Grupo Valida referencia-->
+        <record id="validate_group" model="res.groups">
+            <field name="name">Validar referencias</field>
+        </record>
+
+        <!--Grupo administra referencia-->
+        <record id="admin_group" model="res.groups">
+            <field name="name">Administrar referencias</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Report action para referencia-->
+        <report id="patient_document"
+            string="Referencia de paciente"
+            model="medical.referrals"
+            report_type="qweb-pdf"
+            file="referrals.patient_document_view"
+            name="referrals.patient_document_view"
+            menu="True"
+            print_report_name="object.name"
+            />
+        <!--Agregando formato de papel al informe-->
+        <record id="referrals.patient_document" model="ir.actions.report">
+            <field name="paperformat_id" ref="report.paper_a4_clean"/>
+        </record>
+        
+        <!--Vista para reporte-->
+        <template id="patient_document_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style type="text/css">
+                                .center{
+                                    text-align:center;
+                                    vertical-align: middle;
+                                }
+                            </style>
+                            <!--Variables generales-->
+                            <t t-set="url" t-value="request.env['ir.config_parameter'].get_param('web.base.url')"/>
+                            <t t-set="mes" t-value="dict([('01','enero'),('02','febrero'),('03','Marzo'),('04','abril'),('05','mayo'),('06','junio'),('07','julio'),('08','agosto'),('09','septiembre'),('10','octubre'),('11','noviembre'),('12','diciembre')])"/>
+                            <t t-set="anio" t-value="dict([('2023','dos mil veintitres'),('2024','dos mil veinticuatro'),('2025','dos mil veinticinco'),('2026','dos mil veintiséis'),('2027','dos mil veintisiete'),('2028','dos mil veintiocho'),('2029','dos mil veintinueve'),('2030','dos mil treinta')])"/>
+                            <t t-set="generation_date" t-value="(o.generation_date - datetime.timedelta(hours=6))"/>
+                            <!--Encabezado-->
+                            <div class="row">
+                                <div class="col-3 center">
+                                    <img src="/referrals/static/src/img/logo_le.png" style="max-height: 70px;"/>
+                                </div>
+                                <div class="col-5">
+                                    <p><h4><strong>LENTEXPRESS</strong></h4>
+                                    Referencia a consulta oftalmológica.</p>
+                                </div>
+                                <div class="col-2">
+                                    <p style="font-size:11px"><b>Fecha de generación: </b>
+                                    <br/><span t-esc="generation_date.strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    <br/><b>Generado por:</b>
+                                    <br/><span t-field="o.create_uid"/></p>
+                                </div>
+                                <div class="col-2 center">
+                                    <span style="font-size:10px"><b>SELLO DE VALIDEZ</b></span><br/>
+                                    <img t-if="o.code_qr" t-att-src="url+'/report/barcode/QR/%s'%o.code_qr" style="height:60px;width:60px"/>
+                                </div>
+                            </div>
+                            <!--Cuerpo de documento-->
+                            <br/><br/><br/>
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-10" style="font-size:14px;">
+                                    <p>Estimado Dr.José Francisco López Gutierrez:<br/>
+                                    <br/>
+                                    Por medio de la presente, nos permitimos refereirle al paciente <span t-esc="o.patient_name"/>, portador del numero de DUI: <span t-esc="o.dui"/>
+                                    quien acudio a LENTEXPRESS el dia <span t-esc="generation_date.strftime('%d')"/> del mes de <span t-esc="' '+mes.get(generation_date.strftime('%m'))"/>
+                                    del año <span t-esc="generation_date.strftime('%Y')"/> para un examen visual rutinario. Durante la evaluación se detectaron los siguientes hallazgos
+                                    que consideramos requieren de una evaluación oftalmológica especializada:<br/>
+                                    </p>
+                                    <span t-esc="o.comments"/>
+                                    <br/>
+                                    <p>Agradecemos de antemano la atención que pueda brindarle al paciente, quedamos atentos a cualquier información adicional que requiera o instrucciones que
+                                    considere pertinentes.</p><br/><br/>
+                                    <p>Sin otro particular, me despido cordialmente.</p>
+                                    <br/><br/><br/><br/>
+                                </div>
+                            </div>
+                            <div class="row" style="font-size:12px">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-4 center">
+                                    <p>F.__________________________
+                                    <br/>Optometrista Responsable</p><br/>
+                                    ____________________________________
+                                </div>
+                                <div class="col-2"/>
+                                <div class="col-2" style="text-aling:right">
+                                    <table class="center" style="height:150px;width:150px">
+                                        <tr>
+                                            <td style="border:1px solid black;color:#ebe9e6"><br/><br/><br/><br/><br/>Sello</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--Fin page-->
+                    </t><!--Fin basci layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html_container-->
+        </template>
+    </data>
+</odoo>
