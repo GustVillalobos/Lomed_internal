@@ -35,7 +35,8 @@
         <!--Elemento de menú generar referencia-->
         <menuitem id="referrals_creators_menu"
         parent="referrals.referrals_main_menu" 
-        name="Todas las referencias" 
+        name="Todas las referencias"
+        groups="referrals.create_group,referrals.admin_group"
         action="referrals_action" 
         sequence="1"/>
 
@@ -43,6 +44,7 @@
         <menuitem id="referrals_validation_menu"
         parent="referrals.referrals_main_menu" 
         name="Validar referencia" 
+        groups="referrals.validate_group,referrals.admin_group"
         action="validation_action" 
         sequence="2"/>
 
