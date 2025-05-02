@@ -72,6 +72,7 @@ class validate_referral(models.TransientModel):
                 self.referral_id = referral.id
                 self.state = 'valid'
             elif referral and referral.redeemed:
+                self.referral_id = referral.id
                 self.state = 'redeemed'
             else:
                 self.state='invalid'

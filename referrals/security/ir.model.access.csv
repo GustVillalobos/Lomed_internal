@@ -1,7 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 referrals_all,referrals_all,model_medical_referrals,base.group_user,1,0,0,0
 referrals_crt,referrals_crt,model_medical_referrals,referrals.create_group,1,1,1,1
+referrals_vld,referrals_vld,model_medical_referrals,referrals.validate_group,1,1,0,0
 referrals_sys,referrals_sys,model_medical_referrals,base.group_system,1,1,1,1
+referrals_adm,referrals_adm,model_medical_referrals,referrals.admin_group,1,1,1,1
 validate_referrals_all,validate_referrals_all,model_validate_referrals,base.group_user,1,0,0,0
 validate_referrals_vld,validate_referrals_vld,model_validate_referrals,referrals.validate_group,1,1,1,1
+validate_referrals_crt,validate_referrals_crt,model_validate_referrals,referrals.create_group,1,1,0,0
 validate_referrals_sys,validate_referrals_sys,model_validate_referrals,base.group_system,1,1,1,1
+validate_referrals_adm,validate_referrals_adm,model_validate_referrals,referrals.admin_group,1,1,1,1
