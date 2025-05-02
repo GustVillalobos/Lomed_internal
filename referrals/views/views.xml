@@ -30,7 +30,7 @@
         parent="sale.sale_menu_root" 
         name="Referencias" 
         action="" 
-        sequence="39"/>
+        sequence="4"/>
 
         <!--Elemento de menú generar referencia-->
         <menuitem id="referrals_creators_menu"
