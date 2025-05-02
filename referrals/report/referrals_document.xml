@@ -29,7 +29,7 @@
                                 }
                             </style>
                             <!--Variables generales-->
-                            <t t-set="url" t-value="request.env['ir.config_parameter'].get_param('web.base.url')"/>
+                            <t t-set="url" t-value="request.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
                             <t t-set="mes" t-value="dict([('01','enero'),('02','febrero'),('03','Marzo'),('04','abril'),('05','mayo'),('06','junio'),('07','julio'),('08','agosto'),('09','septiembre'),('10','octubre'),('11','noviembre'),('12','diciembre')])"/>
                             <t t-set="anio" t-value="dict([('2023','dos mil veintitres'),('2024','dos mil veinticuatro'),('2025','dos mil veinticinco'),('2026','dos mil veintiséis'),('2027','dos mil veintisiete'),('2028','dos mil veintiocho'),('2029','dos mil veintinueve'),('2030','dos mil treinta')])"/>
                             <t t-set="generation_date" t-value="(o.generation_date - datetime.timedelta(hours=6))"/>
