@@ -46,7 +46,8 @@
                                     <p style="font-size:11px"><b>Fecha de generación: </b>
                                     <br/><span t-esc="generation_date.strftime('%d-%m-%Y %H:%M:%S')"/>
                                     <br/><b>Generado por:</b>
-                                    <br/><span t-field="o.create_uid"/></p>
+                                    <br/><span t-field="o.create_uid"/>
+                                    <br/><span t-esc="o.name"/></p>
                                 </div>
                                 <div class="col-2 center">
                                     <span style="font-size:10px"><b>SELLO DE VALIDEZ</b></span><br/>

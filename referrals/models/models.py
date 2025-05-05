@@ -67,7 +67,7 @@ class validate_referral(models.TransientModel):
         if self.barcode:
             barcode =  self.barcode.replace('\'','-')
             _logger.info('Code depurado: '+barcode)
-            referral = self.env['medical.referrals'].search([('code_qr','=',barcode)], limit = 1)
+            referral = self.env['medical.referrals'].search(['|',('code_qr','=',barcode),('name','=',barcode)], limit = 1)
             if referral and not referral.redeemed:
                 self.referral_id = referral.id
                 self.state = 'valid'
