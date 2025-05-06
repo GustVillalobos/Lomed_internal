@@ -152,7 +152,7 @@ class sv_technical_profile(models.Model):
         if len(frequency) > 0:
             total = sum(frequency.values())
             months = len(frequency)
-            average = total/months
+            average = total/months if total > 0 and months > 0 else 0
         return average   
 
     def get_sku_value(self):
@@ -196,7 +196,7 @@ class sv_technical_profile(models.Model):
         if len(total_sku) > 0:
             total = sum(total_sku.values())
             months = len(total_sku)
-            average = total/months
+            average = total/months if total > 0 and months > 0 else 0
         return average
     
     def get_turnover_value(self):
@@ -231,7 +231,7 @@ class sv_technical_profile(models.Model):
         if len(turnover_months) > 0:
             total = sum(turnover_months.values())
             months = len(turnover_months)
-            average = total/months
+            average = total/months if total > 0 and months > 0 else 0
         
         return average
     
@@ -265,8 +265,8 @@ class sv_technical_profile(models.Model):
         if len(percent) > 0:
             total = sum(percent.values())
             months = len(percent)
-            average = total/months
-            result_value = round(average/self.turnover,2)
+            average = total/months if total > 0 and months > 0 else 0
+            result_value = round(average/self.turnover,2) if average > 0 and self.turnover > 0 else 0
 
         return result_value
     
