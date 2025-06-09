@@ -1,0 +1,66 @@
+<section class="oe_container oe_dark">
+    <div class="col-md-12">
+        <h2 class="oe_slogan">MIS Color Picker Widget</h2>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="oe_row">
+        The MIS Color Picker Widget is a custom field widget for Odoo that allows users to select colors using a modern
+        and intuitive color picker. This widget supports both HEX and RGB color formats and provides a set of popular
+        colors for quick selection. It utilizes the <a href="https://simonwep.github.io/pickr">Pickr</a> lightweight and
+        fast JavaScript library for the color picker functionality.
+    </div>
+    <div class="oe_row oe_spaced">
+        <h4 class="oe_slogan">Screen Shot</h4>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="color_picker.png" style="height:300px; width:auto">
+        </div>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h4 class="oe_slogan">Features</h4>
+        <ul>
+            <li>Easy integration with Odoo forms</li>
+            <li>Supports HEX & RGB color format</li>
+            <li>Includes a set of popular colors for quick selection</li>
+            <li>User-friendly interface with color preview</li>
+            <li>Compatible with Odoo 14.0 and above</li>
+        </ul>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h4 class="oe_slogan">Installation</h4>
+        <ol>
+            <li>Download the module from the Odoo App Store.</li>
+            <li>Extract the downloaded file to your Odoo addons directory.</li>
+            <li>Restart your Odoo server.</li>
+            <li>Update the app list by navigating to Apps &gt; Update Apps List.</li>
+            <li>Search for "MIS Color Picker Widget" and install the module.</li>
+        </ol>
+    </div>
+</section>
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h4 class="oe_slogan">Usage</h4>
+        <ol>
+            <li>Navigate to the form where you want to use the color picker widget.</li>
+            <li>Add a new field with the type "Char" to your model.</li>
+            <p>Example:</p>
+            <pre><code>from odoo import models, fields
+class ColorModel(models.Model):
+    _name = 'color.model'
+    _description = 'Color Model'
+
+    name = fields.Char(string='Name', required=True)
+    color = fields.Char(string='Color')
+</code></pre>
+            <li>In the form view, set the widget attribute of the field to "mis_color_picker".</li>
+            <p>Example:</p>
+            <pre><code>&lt;field name="color" widget="mis_color_picker"/&gt;</code></pre>
+            <li>Save the changes and refresh the form view. The color picker widget should now be available for the
+                specified field.</li>
+        </ol>
+    </div>
+</section>
