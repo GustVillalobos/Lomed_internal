@@ -19,6 +19,28 @@ class op_project(models.Model):
     detail = fields.Text("Detalles")
     code = fields.Char("Código")
     reference_ids = fields.One2many(comodel_name='op.project.contact',string="Referencias",inverse_name='project_id')
+    patient_ids = fields.One2many(comodel_name='op.patient', string="Pacientes", inverse_name='project_id')
+    patient_count = fields.Integer("Total pacientes", compute='_compute_patient_count')
+
+    def get_patient_list(self):
+        self.ensure_one()
+        return{
+            'type':'ir.actions.act_window'
+            ,'name':'Pacientes '+self.name
+            ,'view_mode':'tree,form'
+            ,'res_model':'op.patient'
+            ,'domain':[('project_id','=',self.id)]
+            ,'context':"{'create':False}"
+        }
+    
+    @api.depends('patient_ids')
+    def _compute_patient_count(self):
+        for r in self:
+            res = 0
+            if r.patient_ids:
+                res = len(r.patient_ids)
+            r.patient_count = res
+
 
 class op_project_contact(models.Model):
     _name = 'op.project.contact'
