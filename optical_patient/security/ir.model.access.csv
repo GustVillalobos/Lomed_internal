@@ -39,3 +39,11 @@ op_co_wizard_all,op_co_wizard_all,model_op_wizard_create_order,base.group_user,1
 op_co_wizard_usr,op_co_wizard_usr,model_op_wizard_create_order,optical_patient.group_op_user,1,1,1,0
 op_co_wizard_adm,op_co_wizard_adm,model_op_wizard_create_order,optical_patient.group_op_admin,1,1,1,1
 op_co_wizard_sys,op_co_wizard_sys,model_op_wizard_create_order,base.group_system,1,1,1,1
+op_project_all,op_project_all,model_op_project,base.group_user,1,0,0,0
+op_project_usr,op_project_usr,model_op_project,optical_patient.group_op_user,1,0,0,0
+op_project_adm,op_project_adm,model_op_project,optical_patient.group_op_admin,1,1,1,0
+op_project_sys,op_project_sys,model_op_project,base.group_system,1,1,1,1
+op_project_contact_all,op_project_contact_all,model_op_project_contact,base.group_user,1,0,0,0
+op_project_contact_usr,op_project_contact_usr,model_op_project_contact,optical_patient.group_op_user,1,1,1,0
+op_project_contact_adm,op_project_contact_adm,model_op_project_contact,optical_patient.group_op_admin,1,1,1,1
+op_project_contact_sys,op_project_contact_sys,model_op_project_contact,base.group_system,1,1,1,1

@@ -49,6 +49,7 @@ class op_patient(models.Model):
     last_appointment_date = fields.Date("Última revisión",compute='_compute_last_date')
     is_birthday_today = fields.Boolean(string="Es su cumpleaños hoy?",compute='_compute_is_birthday_today',store=True)
     is_minor = fields.Boolean("Es menor",compute='_verify_is_minor',store=True)
+    project_id = fields.Many2one(comodel_name='op.project',string="Proyecto relacionado",readonly=True)
     #Información del guardian
     guardian_name = fields.Char("Nombres")
     guardian_last_name = fields.Char("Apellidos")

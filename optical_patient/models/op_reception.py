@@ -26,6 +26,7 @@ class op_reception(models.Model):
     sequence_id = fields.Many2one(string="Numeración de examenes",comodel_name='ir.sequence')
     color = fields.Integer("Color")
     categ_id = fields.Many2one(string="Categoria para contactos",comodel_name='res.partner.category')
+    project_id = fields.Many2one(comodel_name='op.project',string="Proyecto")
     
     @api.depends('appointment_ids')
     def _compute_today_appointment(self):
@@ -73,6 +74,8 @@ class op_reception(models.Model):
     
     def action_create_patient(self):
         ctx={}
+        if self.project_id:
+            ctx['default_project_id'] = self.project_id.id
         return{
             'name':_('Nuevo paciente'),
             'type': 'ir.actions.act_window',

@@ -35,6 +35,7 @@
         'views/op_wizard_create_order.xml',
         'views/op_appointment.xml',
         'views/views.xml',
+        'views/op_project.xml',
         'security/ir.model.access.csv',
     ],
     # only loaded in demonstration mode

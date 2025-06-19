@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana project-->
+        <record model="ir.actions.act_window" id="op_project_action">
+            <field name="name">Proyectos</field>
+            <field name="res_model">op.project</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Proyectos</p>
+            </field>
+        </record>
+
+        <!--Elemento de menú project-->
+        <menuitem id="op_project_menu" 
+        parent="optical_patient.op_appointment_main_menu"
+        name="Proyectos" 
+        action="op_project_action" 
+        sequence="2"/>
+
+        <!--Lista de proyectos-->
+        <record model="ir.ui.view" id="op_project_list_view">
+            <field name="name">op_project_list_view</field>
+            <field name="model">op.project</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Formulario de proyectos-->
+        <record model="ir.ui.view" id="op_project_form_view">
+            <field name="name">op_project_form_view</field>
+            <field name="model">op.project</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" string="Titulo del proyecto"/>
+                            <h1>
+                                <field name="name" placeholder="Proyecto alpha"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="code"/>
+                            <field name="detail"/>
+                        </group>
+                        <group string="Contactos y referencias">
+                            <field name="reference_ids" nolabel="1" colspan="2">
+                                <tree editable="top">
+                                    <field name="name"/>
+                                    <field name="email"/>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                    <field name="type"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

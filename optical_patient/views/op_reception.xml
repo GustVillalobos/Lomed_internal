@@ -134,6 +134,7 @@
                                 <field name="sequence_id"/>
                                 <field name="color" widget="color_picker"/>
                                 <field name="user_id" groups="base.group_system"/>
+                                <field name="project_id" groups="optical_patient.group_op_admin"/>
                             </group>
                         </group>
                     </sheet>

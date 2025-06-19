@@ -185,6 +185,7 @@
                             <page name="other_info" string="Otra información">
                                 <group>
                                     <field name="partner_id"/>
+                                    <field name="project_id"/>
                                     <field name="create_date"/>
                                     <field name="create_uid"/>
                                     <field name="write_date"/>
@@ -225,6 +226,8 @@
                     <group expand="0" string="Agrupar por">
                         <filter name="group_gender" string="Genero" domain="[]" context="{'group_by':'gender'}"/>
                         <filter name="group_ocupation" string="Ocupación" domain="[]" context="{'group_by':'occupation'}"/>
+                        <separator/>
+                        <filter name="group_project" string="Proyecto" domain="[]" context="{'group_by':'project_id'}"/>
                     </group>
                 </search>
             </field>
