@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion programada-->
+        <record id="restart_remaining_time" model="ir.cron">
+          <field name="name">Reestablecer tiempo restante</field>
+          <field name="model_id" ref="hr.model_hr_employee"/>
+          <field name="user_id" ref="base.user_root"/>
+          <field name="state">code</field>
+          <field name="code">model._reset_remaining()</field>
+          <field name="interval_number">1</field>
+          <field name="interval_type">weeks</field>
+          <field name="numbercall">-1</field>
+          <field name="doall" eval="False"/>
+          <field name="active" eval="True"/>
+        </record>
+
+        <!--Accion programada-->
+        <record id="close_daily_attendance" model="ir.cron">
+          <field name="name">Cerrar asistencias</field>
+          <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+          <field name="user_id" ref="base.user_root"/>
+          <field name="state">code</field>
+          <field name="code">model._close_attendance()</field>
+          <field name="interval_number">1</field>
+          <field name="interval_type">weeks</field>
+          <field name="numbercall">-1</field>
+          <field name="doall" eval="False"/>
+          <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

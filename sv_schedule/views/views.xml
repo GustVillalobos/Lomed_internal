@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Vista heredada para resource.calendar-->
+        <record id="inherited_form_view_schedule" model="ir.ui.view">
+            <field name="name">inherited_form_view_schedule</field>
+            <field name="model">resource.calendar</field>
+            <field name="inherit_id" ref="resource.resource_calendar_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='tz']" position="after">
+                        <field name="tolerance" widget="float_time"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada para resource.calendar.attendance-->
+        <record id="inherited_form_view_schedule_line" model="ir.ui.view">
+            <field name="name">inherited_form_view_schedule_line</field>
+            <field name="model">resource.calendar.attendance</field>
+            <field name="inherit_id" ref="resource.view_resource_calendar_attendance_tree"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//tree" position="inside">
+                        <field name="type"/>
+                        <field name="enable_rep_time" widget="boolean_toggle"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada para hr.employee-->
+        <record id="inherited_form_schedule_employee" model="ir.ui.view">
+            <field name="name">inherited_form_schedule_employee</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='tz']" position="after">
+                        <field name="remaining" widget="float_time"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada para hr.employee-->
+        <record id="inherited_list_schedule_attendance" model="ir.ui.view">
+            <field name="name">inherited_list_schedule_attendance</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//tree" position="inside">
+                        <field name="unworked_time" widget="float_time"/>
+                        <field name="replacement_time" widget="float_time"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

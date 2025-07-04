@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Grupo usuario de compaña-->
+        <record id="workdays_user" model="res.groups">
+            <field name="name">Usuario de jornada</field>
+        </record>
+
+        <!--Grupo administración de compaña-->
+        <record id="workdays_admin" model="res.groups">
+            <field name="name">Administracion de jornada</field>
+        </record>
+    </data>
+</odoo>

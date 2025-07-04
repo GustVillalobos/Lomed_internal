@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Acción de ventana Jornada-->
+        <record id="workday_control_action" model="ir.actions.act_window">
+            <field name="name">Jornada visual</field>
+            <field name="res_model">workday.control</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_filter_next_7_days':1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Jornadas</p>
+            </field>
+        </record>
+
+        <!--Menú jornada-->
+        <menuitem 
+            id="workday_control_menu" 
+            name="Jornadas"
+            action="workday_control_action"
+            parent="sale.sale_order_menu"
+            sequence="100"
+        />
+
+        <!--vista lista jornada-->
+        <record model="ir.ui.view" id="workday_control_list_view">
+            <field name="name">workday_control_list_view</field>
+            <field name="model">workday.control</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Vista formulario jornada-->
+        <record model="ir.ui.view" id="workday_control_form_view">
+            <field name="name">workday_control_form_view</field>
+            <field name="model">workday.control</field>
+            <field name="arch" type="xml">
+                <form string="Jornada">
+                    <header>
+                        <!--Botones de acciones principales-->
+                        <button name="send_to_approve" type="object" class="btn-primary" string="Solicitar aprovación" attrs="{'invisible':['|',('stage','!=','created'),('active','=',False)]}"/>
+                        <button name="action_schedule" type="object" class="btn-primary" string="Agendar" attrs="{'invisible':['|',('stage','!=','required'),('active','=',False)]}"/>
+                        <button name="action_authorize" type="object" class="btn-primary" string="Autorizar viaticos" attrs="{'invisible':['|',('stage','!=','scheduled'),('active','=',False)]}"/>
+                        <button name="action_cancel_workday" type="object" class="btn-secondary" string="Cancelar" attrs="{'invisible':['|',('active','=',False),('active','=',False)]}"/>
+                        <!--Campo de estado-->
+                        <field name="stage" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <!--Invisible fields-->
+                        <field name="active" invisible="1"/>
+                        <!--Archivado notificación-->
+                        <widget name="web_ribbon" title="Cancelado" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
+                        <!--Botones de acciones secundarias-->
+                        <div class="oe_button_box" name="button_box">
+                            <button name="get_order_list" type="object" icon="fa-tags" class="oe_stat_button">
+                                <field name="order_count" widget="statinfo" string="Pedidos"/>
+                            </button>
+                            <button name="get_order_list" type="object" icon="fa-usd" class="oe_stat_button">
+                                <field name="total_sale" widget="statinfo" string="Venta"/>
+                            </button>
+                            <button name="update_income_field" type="object" icon="fa-usd" class="oe_stat_button">
+                                <field name="actual_income" widget="statinfo" string="Ingresado"/>
+                            </button>
+                            <button name="get_calendar_event_list" type="object" icon="fa-calendar" class="oe_stat_button" attrs="{'invisible':[('calendare_event_count','&lt;=',0)]}">
+                                <field name="calendare_event_count" widget="statinfo" string="Programado"/>
+                            </button>
+                            <button name="%(workdays_control.expense_report)d" type="action" icon="fa-print" class="oe_stat_button" string="Solicitud de viaticos" attrs="{'invisible':['|',('stage','=','created'),('active','=',False)]}"/>
+                        </div>
+                        <!--titulo-->
+                        <div class="oe_title">
+                        <label for="name" string="Jornada"/>
+                        <h1 class="mt0">
+                            <field name="name" placeholder="Titulo de la jornada" required="1" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                        </h1>
+                        </div>
+                        <!--Informacion o encabezado-->
+                        <group name="general_info">
+                            <field name="partner_id" class="oe_title" required="1" domain="[('category_id','in',(5))]" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                            <field name="manager_id" class="oe_title" required="1" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                            <label for="date_from" string="Período" class="oe_inline"/>
+                            <div>
+                                <field name="date_from" class="oe_inline" required="1" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/> - <field name="date_to" class="oe_inline" required="1" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                            </div>
+                            <label for="hour_from" string="Horario: " class="oe_inline"/>
+                            <div>
+                                <field name="hour_from" widget="float_time" required="1" class="oe_inline" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/> a <field name="hour_to" widget="float_time" required="1" class="oe_inline" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                            </div>
+                            <field name="days" class="oe_inline"/>
+                            <field name="fuel_cost" class="oe_inline" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}"/>
+                            <field name="total_cost" class="oe_inline"/>
+                        </group>
+                        <!--Conformación de grupo-->
+                        <group string="Equipo a cargo" name="team_ids">
+                            <field name="team_member_ids" nolabel="1" colspan="2" attrs="{'readonly':[('stage','in',('scheduled','approved'))]}">
+                                <tree editable="bottom">
+                                    <field name="employee_id" domain="[('campaign_employee','=',True)]"/>
+                                    <field name="role"/>
+                                    <field name="food_expense"/>
+                                    <field name="days"/>
+                                    <field name="total_expense"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--Vista busqueda jornada-->
+        <record id="workdays_control_search_view" model="ir.ui.view">
+            <field name="name">workdays_control_search_view</field>
+            <field name="model">workday.control</field>
+            <field name="arch" type="xml">
+                <search string="Jornadas">
+                    <field name="name" string="Jornada" filter_domain="['|',('name','ilike',self),('partner_id','ilike',self)]"/>
+                    <separator/>
+                    <filter name="canceled" string="Cancelados" domain="[('active','=',False)]"/>
+                    <separator/>
+                    <filter name="filter_today" string="Inicia hoy" domain="[('date_from','=',(context_today()))]"/>
+                    <filter name="filter_next_7_days" string="Inicia proximos 7 días" domain="[('date_from','&gt;=',context_today()),('date_from','&lt;=', (context_today() + relativedelta(days=7)))]"/>
+                    <filter name="filter_next_30_days" string="Inicia proximos 30 días" domain="[('date_from','&gt;=',context_today()),('date_from','&lt;=', (context_today() + relativedelta(days=30)))]"/>
+                    <separator/>
+                    <filter name="filter_start_date" string="Fecha de inicio" date="date_from"/>
+                    <filter name="filter_end_date" string="Fecha finalización" date="date_to"/>
+                    <separator/>
+                    <group expand="0" name="group_by" string="Agrupar por">
+                        <filter name="filter_partner_id" string="Contacto" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <separator/>
+                        <filter name="filter_date_from" string="Fecha de inicio" domain="[]" context="{'group_by':'date_from'}"/>
+                        <filter name="filter_date_to" string="Fecha finalización" domain="[]" context="{'group_by':'date_to'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

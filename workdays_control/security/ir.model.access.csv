@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+workday_all,workday_all,model_workday_control,base.group_user,1,0,0,0
+workday_usr,workday_usr,model_workday_control,workdays_control.workdays_user,1,1,1,0
+workday_adm,workday_adm,model_workday_control,workdays_control.workdays_admin,1,1,1,1
+workday_sys,workday_sys,model_workday_control,base.group_system,1,1,1,1
+workday_team_all,workday_team_all,model_workday_team_line,base.group_user,1,0,0,0
+workday_team_usr,workday_team_usr,model_workday_team_line,workdays_control.workdays_user,1,1,1,1
+workday_team_adm,workday_team_adm,model_workday_team_line,workdays_control.workdays_admin,1,1,1,1
+workday_team_sys,workday_team_sys,model_workday_team_line,base.group_system,1,1,1,1

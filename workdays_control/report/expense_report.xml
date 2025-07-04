@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Report action for workday.control-->
+        <report id="expense_report"
+                string="Solicitud de viaticos"
+                model="workday.control"
+                report_type="qweb-pdf"
+                file="workdays_control.expense_document_view"
+                name="workdays_control.expense_document_view"
+                menu="False"
+                print_report_name="'Solicitud de viaticos: - '+object.name"
+                />
+
+        <record id="workdays_control.expense_report" model="ir.actions.report">
+            <field name="paperformat_id" ref="report.paper_a4_clean"/>
+        </record>
+
+        <!--Template view for workday.control-->    
+        <template id="expense_document_view">
+            <t t-set="company" t-value="env.company"/>
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style type="text/css">
+                                thead tr th{
+                                    border:1px solid #FFFFFF; 
+                                    font-size:13px; 
+                                    text-align:center;
+                                    vertical-align: middle;
+                                    }
+                                thead{
+                                    border:1px solid black; 
+                                    background-color:#1d195c;
+                                    color:#fff
+                                    }
+                                tbody tr td{
+                                    border:0.5px solid black; 
+                                    font-size:12px;
+                                    vertical-align: middle;
+                                    }
+                            </style>
+                            <!--Encabezado-->
+                            <div class="row">
+                                <div class="col-3">
+                                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height:95px;width:auto;z-index:0" alt="logo"/>
+                                </div>
+                                <div class="col-9">
+                                    <h4><span t-esc="company.name"/></h4>
+                                    <h6><t t-if="o.stage == 'approved'"><b>Viaticos aprobados para: </b></t><t t-else=""><b>Solicitud de viaticos para: </b></t> <span t-esc="o.name"/></h6>
+                                </div>
+                            </div><!--Fin Header-->
+                            <br/>
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-10">
+                                    <b><span>Encargado:</span></b> <span t-field="o.manager_id"/><br/>
+                                    <b><span>Cliente:</span></b> <span t-field="o.partner_id"/><br/>
+                                    <b><span>Desde:</span></b> <span t-esc="o.date_from.strftime('%d-%m-%Y')"/> <b>Hasta:</b> <span t-esc="o.date_to.strftime('%d-%m-%Y')"/><br/> 
+                                    <b>Iniando:</b> <span t-esc="o.convert_to_time_format(o.hour_from)"/> <b>Finaliza:</b> <span t-esc="o.convert_to_time_format(o.hour_to)"/><br/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-10">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Participante</th>
+                                                <th>Rol</th>
+                                                <th>Días participa</th>
+                                                <th>Viaticos</th>
+                                                <th>Totales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="food_expense_total" t-value="0.0"/>
+                                            <t t-foreach="o.team_member_ids" t-as="tm">
+                                                <tr>
+                                                    <td><span t-field="tm.employee_id"/></td>
+                                                    <td><span t-field="tm.role"/></td>
+                                                    <td style="text-align:center"><span t-field="tm.days"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-esc="tm.food_expense" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-field="tm.total_expense" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <t t-set="food_expense_total" t-value="food_expense_total + tm.total_expense"/>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-6"/>
+                                <div class="col-5">
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><b><span>Viaticos alimentos:</span></b></td>
+                                            <td style="text-align:right"><span>$</span><span t-esc="food_expense_total" t-options="{'widget': 'float', 'precision':2}"/></td>                                        
+                                        </tr>
+                                        <tr>
+                                            <td><b><span>Viaticos transporte:</span></b></td>
+                                            <td style="text-align:right"><span>$</span><span t-esc="o.fuel_cost" t-options="{'widget': 'float', 'precision':2}"/></td>                                        
+                                        </tr>
+                                        <tr>
+                                            <td><b><span>Total:</span></b></td>
+                                            <td style="text-align:right"><span>$</span><span t-esc="o.total_cost" t-options="{'widget': 'float', 'precision':2}"/></td>                                        
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--Fin page-->
+                    </t><!--Fin basci_layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html_container-->
+        </template>
+
+        <!--Plantilla de correo para enviar al encargado-->
+        <record id="workday_mail_approve" model="mail.template">
+            <field name="name">Correo de aprobación de jornada</field>
+            <field name="model_id" ref="workdays_control.model_workday_control"/>
+            <field name="mail_server_id" ref="mail_server.business_mail"/>
+            <field name="email_from">lentexpressempresarial@lomed.com.sv</field>
+            <field name="email_to">{{object.manager_id.login}}</field>
+            <field name="subject">Aprobacion para jornada: {{object.name}}</field>
+            <field name="body_html" type="html">
+                <p>Estimado:</p>
+                <h1><t t-out="object.manager_id.partner_id.name"/></h1>
+                <p>Éste correo es para solicitar la aprobacion de una jornada de examenes visuales, para el cliente: <t t-out="object.partner_id.name"/>, 
+                los detalles de la jornada serían los siguientes:
+                </p>
+                <ul>
+                    <li>Fechas: <strong><t t-out="object.date_from.strftime('%d-%m-%Y')"/></strong> al <strong><t t-out="object.date_to.strftime('%d-%m-%Y')"/></strong></li>
+                    <li>Horario: <strong><t t-out="object.convert_to_time_format(object.hour_from)"/></strong> a <strong><t t-out="object.convert_to_time_format(object.hour_to)"/></strong></li>
+                </ul>
+                <p>El equipo que atenderá la jornada sería el siguiente:</p>
+                <ul>
+                    <t t-foreach="object.team_member_ids" t-as="tm">
+                        <li>
+                            <strong><t t-out="tm.employee_id.name"/></strong> como <strong> <t t-out="object.get_role(tm.role)"/></strong> 
+                        </li>
+                    </t>
+                </ul>
+                <br/>
+                <p>Saludos cordiales,</p>
+            </field>
+        </record>
+    </data>
+</odoo>

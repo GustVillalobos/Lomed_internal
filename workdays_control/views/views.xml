@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Vista heredada para empleados-->
+        <record id="workdays_employee_form_view" model="ir.ui.view">
+            <field name="name">workdays_employee_form_view</field>
+            <field name="model">hr.employee</field>
+            <field name="priority">150</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='tz']" position="after">
+                        <field name="campaign_employee"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada para pedido de venta-->
+        <record id="workdays_sale_order_form_view" model="ir.ui.view">
+            <field name="name">workdays_sale_order_form_view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='origin']" position="before">
+                        <!--{invisible:[('caja_id','!=',11)]}-->
+                        <field name="workday_id" attrs="{'invisible':[('register_id','!=',11)]}"/>
+                    </xpath>
+                    <xpath expr="//group[@name='order_details']" position="inside">
+                        <field name="_allowed_employees" invisible="1"/>
+                        <field name="optometrist_id" attrs="{'invisible':[('workday_id','=',False)],'required':[('register_id','=',11)]}" domain="[('id','in',_allowed_employees)]"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+    </data>
+</odoo>
