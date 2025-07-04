@@ -29,7 +29,7 @@
                     </xpath>
                     <xpath expr="//group[@name='order_details']" position="inside">
                         <field name="_allowed_employees" invisible="1"/>
-                        <field name="optometrist_id" attrs="{'invisible':[('workday_id','=',False)],'required':[('register_id','=',11)]}" domain="[('id','in',_allowed_employees)]"/>
+                        <field name="optometrist_id" attrs="{'invisible':[('workday_id','=',False)],'required':[('caja_id','=',11)]}" domain="[('id','in',_allowed_employees)]"/>
                     </xpath>
                 </data>
             </field>
