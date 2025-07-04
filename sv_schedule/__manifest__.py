@@ -19,7 +19,7 @@
     'version': '16.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr_payroll_community','hr_attendance'],
+    'depends': ['base','hr_payroll','hr_attendance'],
 
     # always loaded
     'data': [
