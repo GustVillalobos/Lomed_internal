@@ -23,7 +23,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//tree" position="inside">
-                        <field name="type"/>
+                        <!--<field name="type"/>-->
                         <field name="enable_rep_time" widget="boolean_toggle"/>
                     </xpath>
                 </data>

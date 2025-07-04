@@ -22,12 +22,12 @@ class sv_resource_calendar_attendance(models.Model):
     _inherit = 'resource.calendar.attendance'
 
     enable_rep_time = fields.Boolean("Repone tiempo")
-    type = fields.Selection(selection=[
+    '''type = fields.Selection(selection=[
         ('work','Trabajar'),
         ('rest','Fin de semana'),
         ('reposition','Compensatorio'),
         ('leave','Permiso')
-    ],default = 'work',string="Tipo")
+    ],default = 'work',string="Tipo")'''
 
 class sv_employee_calendar(models.Model):
     _inherit = 'hr.employee'
@@ -150,7 +150,7 @@ class sv_payslip_run(models.Model):
                     msj = ''
                     if not schedule.two_weeks_calendar:
                         while control_date.date() <= date_end.date():
-                            is_work_day = schedule.attendance_ids.filtered(lambda att:att.dayofweek == str(control_date.weekday()) and att.type == 'work' and att.day_period == 'morning')
+                            is_work_day = schedule.attendance_ids.filtered(lambda att:att.dayofweek == str(control_date.weekday()) and att.work_entry_type_id.is_leave == False and att.day_period == 'morning')
                             is_holyday = self.env['resource.calendar.leaves'].search([('date_from','>=',control_date),('date_from','<=',control_date.replace(hour=23,minute=59,second=59)),('resource_id','=',False)])
                             is_present = attendance.filtered(lambda at:at.check_in.date() == control_date.date())
                             if is_work_day and len(is_present)<= 0 and not is_holyday:
