@@ -25,7 +25,7 @@
                 <data>
                     <xpath expr="//field[@name='origin']" position="before">
                         <!--{invisible:[('caja_id','!=',11)]}-->
-                        <field name="workday_id" attrs="{'invisible':[('register_id','!=',11)]}"/>
+                        <field name="workday_id" attrs="{'invisible':[('caja_id','!=',11)]}"/>
                     </xpath>
                     <xpath expr="//group[@name='order_details']" position="inside">
                         <field name="_allowed_employees" invisible="1"/>
