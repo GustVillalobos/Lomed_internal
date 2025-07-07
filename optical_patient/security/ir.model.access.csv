@@ -24,7 +24,7 @@ op_physician_user,op_physician_user,model_op_physician,optical_patient.group_op_
 op_physician_admin,op_physician_admin,model_op_physician,optical_patient.group_op_admin,1,1,1,1
 op_physician_sys,op_physician_sys,model_op_physician,base.group_system,1,1,1,1
 op_specialty_all,op_specialty_all,model_op_specialty,base.group_user,1,0,0,0
-op_specialty_user,op_specialty_user,model_op_specialty,optical_patient.group_op_user,1,1,1,0
+op_specialty_user,op_specialty_user,model_op_specialty,optical_patient.group_op_user,1,1,0,0
 op_specialty_admin,op_specialty_admin,model_op_specialty,optical_patient.group_op_admin,1,1,1,1
 op_specialty_sys,op_specialty_sys,model_op_specialty,base.group_system,1,1,1,1
 op_appointment_all,op_appointment_all,model_op_appointment,base.group_user,1,0,0,0
@@ -32,7 +32,7 @@ op_appointment_user,op_appointment_user,model_op_appointment,optical_patient.gro
 op_appointment_admin,op_appointment_admin,model_op_appointment,optical_patient.group_op_admin,1,1,1,1
 op_appointment_sys,op_appointment_sys,model_op_appointment,base.group_system,1,1,1,1
 op_reception_all,op_reception_all,model_op_reception,base.group_user,1,0,0,0
-op_reception_usr,op_reception_usr,model_op_reception,optical_patient.group_op_user,1,1,1,0
+op_reception_usr,op_reception_usr,model_op_reception,optical_patient.group_op_user,1,1,0,0
 op_reception_adm,op_reception_adm,model_op_reception,optical_patient.group_op_admin,1,1,1,1
 op_reception_sys,op_reception_sys,model_op_reception,base.group_system,1,1,1,1
 op_co_wizard_all,op_co_wizard_all,model_op_wizard_create_order,base.group_user,1,0,0,0

@@ -36,5 +36,11 @@
             <field name="color">9</field>
             <field name="active">True</field>
         </record>
+
+        <record model="op.patient.tags" id="tag_07">
+            <field name="name">Stellest</field>
+            <field name="color">2</field>
+            <field name="active">True</field>
+        </record>
     </data>
 </odoo>
