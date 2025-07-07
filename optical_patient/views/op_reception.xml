@@ -17,7 +17,7 @@
         <menuitem id="op_main_menu"  
         name="Óptica" 
         action="op_reception_action" 
-        groups="optical_patient.group_op_admin,optical_patient.group_op_user"
+        groups="optical_patient.group_op_admin,optical_patient.group_op_user,optical_patient.group_op_project"
         sequence="20"
         web_icon="optical_patient,static/description/icon.png"/>
 
