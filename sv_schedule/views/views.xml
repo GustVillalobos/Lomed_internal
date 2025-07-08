@@ -40,6 +40,9 @@
                     <xpath expr="//field[@name='tz']" position="after">
                         <field name="remaining" widget="float_time"/>
                     </xpath>
+                    <xpath expr="//group[@name='payroll_group']" position="inside">
+                        <field name="ignore_attendance" widget="boolean_toggle"/>
+                    </xpath>
                 </data>
             </field>
         </record>
@@ -52,8 +55,8 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//tree" position="inside">
-                        <field name="unworked_time" widget="float_time"/>
-                        <field name="replacement_time" widget="float_time"/>
+                        <field name="unworked_time" widget="float_time" readonly="1"/>
+                        <field name="replacement_time" widget="float_time" readonly="1"/>
                     </xpath>
                 </data>
             </field>

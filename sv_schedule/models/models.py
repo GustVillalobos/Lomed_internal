@@ -137,7 +137,7 @@ class sv_payslip_run(models.Model):
                 holiday = 0
                 attendance = self.env['hr.attendance'].search([('employee_id','=',p.employee_id.id),('check_in','>=',date_start),('check_in','<=',date_end)])
                 #Calculando tiempo no trabajado
-                if attendance:
+                if attendance and not p.employee_id.ignore_attendance:
                     for a in attendance:
                         if a.unworked_time > 0:
                             unworked_time += a.unworked_time
