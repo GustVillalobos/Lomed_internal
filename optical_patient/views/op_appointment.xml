@@ -97,8 +97,8 @@
                             <group>
                                 <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <field name="patient_id" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <label for="physician_id" string="Oftalmologo" attrs="{'invisible':[('project_id','!=',False)]}"/>
-                                <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','=',False)]}"/>
+                                <label for="physician_id" string="Oftalmologo" attrs="{'invisible':[('project_id','=',False)]}"/>
+                                <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','!=',False)]}"/>
                                 <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group>
