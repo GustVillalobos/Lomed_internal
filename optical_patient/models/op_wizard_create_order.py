@@ -44,9 +44,9 @@ class create_sale_order(models.TransientModel):
         sale_order['x_prism_eye_right_location'] = ppst.get(self.appointment_id.fnl_re_prism_pst)
         sale_order['x_prism_eye_left_location'] = ppst.get(self.appointment_id.fnl_le_prism_pst)
         if self.appointment_id.its_own_frame:
-            sale_order['x_aro_propio'] = self.appointment_id.frame_mark+'/'+self.appointment_id.frame_code
+            sale_order['x_aro_propio'] = self.appointment_id.frame_mark if self.appointment_id.frame_mark else ''+'/'+self.appointment_id.frame_code if self.appointment_id.frame_code else ''
         else:
-            sale_order['x_aro'] = self.appointment_id.frame_mark+'/'+self.appointment_id.frame_code
+            sale_order['x_aro'] = self.appointment_id.frame_mark if self.appointment_id.frame_mark else ''+'/'+self.appointment_id.frame_code if self.appointment_id.frame_code else ''
         sale_order['x_distance_pupilar'] = self.appointment_id.dnp_re+'/'+self.appointment_id.dnp_le
         sale_order['x_heigh_wafer_eye'] = self.appointment_id.blaze_height
         sale_order['x_heigh_pupilar_eye'] = self.appointment_id.pupillary_height

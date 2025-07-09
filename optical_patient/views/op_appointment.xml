@@ -82,6 +82,7 @@
                         <group style="display:none;">
                             <field name="_barcode_scanned" widget="barcode_handler"/>
                             <field name="order_id"/>
+                            <field name="project_id"/>
                         </group>
                         <div name="button_box" class="oe_button_box">
                             <button name="get_order" type="object" string="Venta" class="oe_stat_button" icon="fa-usd" attrs="{'invisible':[('order_id','=',False)]}"/>
@@ -96,7 +97,9 @@
                             <group>
                                 <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <field name="patient_id" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                <field name="physician_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <label for="physician_id" string="Oftalmologo" attrs="{'invisible':[('project_id','!=',False)]}"/>
+                                <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','=',False)]}"/>
+                                <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group>
                                 <field name="its_own_frame" widget="boolean_toogle"/>

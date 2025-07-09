@@ -149,7 +149,8 @@
                                 <field name="specialty_id"/>
                                 <field name="degree"/>
                                 <field name="email"/>
-                                <field name="employee_id" options="{'no_open':True,'no_create':True,'no_create_edit':True}"/>
+                                <field name="employee_id" options="{'no_open':True,'no_create':True,'no_create_edit':True}" attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                                <field name="partner_id" options="{'no_open':True,'no_create':True,'no_create_edit':True}" attrs="{'invisible':[('employee_id','!=',False)]}"/>
                             </group>
                         </group>
                         <group>

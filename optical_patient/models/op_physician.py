@@ -23,6 +23,7 @@ class op_professional(models.Model):
     specialty_id = fields.Many2one(string="Especialidad",comodel_name='op.specialty',required=True)
     degree = fields.Char("Titulo",tracking=True)
     employee_id = fields.Many2one(string="Empleado relacionado",comodel_name='hr.employee',tracking=True)
+    partner_id = fields.Many2one(string="Contacto relacionado", comodel_name="res.partner")
     gender = fields.Selection([
         ('female','Mujer'),
         ('male','Hombre'),
@@ -41,10 +42,15 @@ class op_professional(models.Model):
         physician = super(op_professional,self).create(vals)
         return physician
 
-    @api.onchange('employee_id')
+    @api.onchange('employee_id','partner_id')
     def update_name(self):
         self.ensure_one()
-        self.name = self.employee_id.name
+        res = ''
+        if self.employee_id and not self.partner_id:
+            res = self.employee_id.name
+        if not self.employee_id and self.partner_id:
+            res = self.partner_id.name
+        self.name = res
 
     def generate_code(self,val):
         specialty = self.env['op.specialty'].browse(int(val))

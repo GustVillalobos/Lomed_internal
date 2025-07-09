@@ -28,6 +28,7 @@ class op_appointment(models.Model):
     date = fields.Date("Fecha de examen")
     physician_id = fields.Many2one(string="Optometrista",comodel_name='op.physician',tracking=True)
     reception_id = fields.Many2one(string="Sala de recepción",comodel_name='op.reception')
+    project_id = fields.Many2one(string="Proyecto",comodel_name='op.project',related='reception_id.project_id',store=False)
     confirm_date = fields.Datetime("Fecha de confirmación",tracking=True)
     effective_date = fields.Datetime("Fin atención",tracking=True)
     time_service = fields.Float("Tiempo de atención")
@@ -188,9 +189,9 @@ class op_appointment(models.Model):
     
     def new_order(self):
         self.ensure_one()
-        ctx = {'default_partner_id':self.patient_id.partner_id.id,
+        ctx = {'default_partner_id':self.patient_id.partner_id.id if not self.project_id else self.physician_id.partner_id.id,
                'default_appointment_id':self.id,
-               'default_frame_id':self.frame_id.id,
+               'default_frame_id':self.frame_id.id if self.frame_id else False,
                'default_design_id':self.design_id.id,
                }
         return{

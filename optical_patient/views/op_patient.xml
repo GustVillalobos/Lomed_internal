@@ -173,12 +173,12 @@
                             <page name="legal_guardian" string="Encargado" attrs="{'invisible':[('is_minor','=',False)]}">
                                 <group name="guardian_info" string="Información del padre y/o tutor legal">
                                     <group>
-                                        <field name="guardian_name" attrs="{'required':[('is_minor','=',True)]}"/>
-                                        <field name="guardian_last_name" attrs="{'required':[('is_minor','=',True)]}"/>
+                                        <field name="guardian_name" attrs="{'required':[('is_minor','=',True),('project_id','=',False)]}"/>
+                                        <field name="guardian_last_name" attrs="{'required':[('is_minor','=',True),('project_id','=',False)]}"/>
                                     </group>
                                     <group>
-                                        <field name="guardian_document" attrs="{'required':[('is_minor','=',True)]}"/>
-                                        <field name="relationship" attrs="{'required':[('is_minor','=',True)]}"/>
+                                        <field name="guardian_document" attrs="{'required':[('is_minor','=',True),('project_id','=',False)]}"/>
+                                        <field name="relationship" attrs="{'required':[('is_minor','=',True),('project_id','=',False)]}"/>
                                     </group>
                                 </group>
                             </page>
