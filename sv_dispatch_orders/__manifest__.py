@@ -20,14 +20,20 @@
     'version': '16.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','sale_management','fleet'],
+    'depends': ['base','account','sale_management','fleet','hr'],
 
     # always loaded
     'data': [
         'data/data.xml',
-        'views/views.xml',
+        'data/sequence.xml',
         'security/ir.model.access.csv',
+        'views/views.xml',
         'views/res_config_settings.xml',
+        'views/res_company.xml',
+        'views/sv_trackers.xml',
+        'views/gc_groups.xml',
+        'views/gc_tags.xml',
+        'views/gc_task.xml',
         'views/templates.xml',
     ],
     'installable': True,

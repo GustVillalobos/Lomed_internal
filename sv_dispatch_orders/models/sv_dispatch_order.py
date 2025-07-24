@@ -165,6 +165,7 @@ class sv_dispatch_route(models.Model):
         invoice_list = order.invoice_ids.filtered(lambda i:i.state=='posted' and i.move_type=='out_invoice' and i.payment_state != 'reversed')
         final_invoice = False
         deposit_id = self.get_deposit_id()
+        msj = ""
         if invoice_list and len(invoice_list) > 1:
             for i in invoice_list:
                 is_final = i.invoice_line_ids.filtered(lambda l: l.product_id.id == deposit_id and l.price_unit < 0)
@@ -174,7 +175,8 @@ class sv_dispatch_route(models.Model):
             is_advance = invoice_list.invoice_line_ids.filtered(lambda l: l.product_id.id == deposit_id)
             if not is_advance:
                 final_invoice = invoice_list
-        
+        if msj != "":
+            raise UserError(msj)
         return final_invoice
     
     def get_active_line(self,order_id):

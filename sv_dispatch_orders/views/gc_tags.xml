@@ -1,0 +1,67 @@
+<odoo>
+    <data>
+        <!--Window action for gc.tags-->
+        <record id="gc_tags_action" model="ir.actions.act_window">
+            <field name="name">Etiquetas</field>
+            <field name="res_model">gc.tag</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Etiquetas</p>
+            </field>
+        </record>
+
+        <!--Menu item for gc.tag-->
+        <menuitem 
+        id="gc_tag_menu" 
+        name="Etiquetas"
+        action="gc_tags_action"
+        parent="sv_tracker_main_menu"
+        sequence="4"
+        />
+
+        <!--List view for gc.tag-->
+        <record model="ir.ui.view" id="gc_tag_list_view">
+            <field name="name">gc_tag_list_view</field>
+            <field name="model">gc.tag</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="color" widget="mis_color_picker"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for gc.tag-->
+        <record id="gc_tag_form_view" model="ir.ui.view">
+            <field name="name">gc_tag_form_view</field>
+            <field name="model">gc.tag</field>
+            <field name="arch" type="xml">
+                <form>
+                    <!--Invisible fields-->
+                    <field name="gc_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <header>
+                        <button name="upload_tag" string="Subir etiqueta" type="object" class="btn btn-primary" attrs="{'invisible':['|',('id','=',False),('gc_id','not in',(0,False))]}"/>
+                        <button name="update_tag" string="Actualizar" type="object" class="btn btn-secondary" attrs="{'invisible':['|',('id','=',False),('gc_id','in',(0,False))]}"/>
+                        <button name="delete_tag" string="Eliminar" type="object" class="btn btn-secondary" attrs="{'invisible':['|',('id','=',False),('gc_id','in',(0,False))]}"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
+                        <label for="name" string="Etiqueta"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Etiqueta"/></h1>
+                        </div>
+                        <group>
+                            <field name="gc_id" groups="base.group_system" readonly="1" widget="text"/>
+                            <field name="color" widget="mis_color_picker"/>
+                            <field name="last_sync" readonly="1"/>
+                        </group>
+                        <group string="Respuesta API">
+                            <field name="gc_response" nolabel="1" readonly="1" colspan="2" groups="base.group_system"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

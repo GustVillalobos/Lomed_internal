@@ -1,0 +1,3 @@
+sv_envelope_admin_delivery,sv_envelope_admin_delivery,model_sv_delivery_envelope,base.group_system,1,1,1,1
+sv_envelope_user_return,sv_envelope_user_return,model_sv_returns_envelope,base.group_user,1,1,1,1
+sv_envelope_user_delivery,sv_envelope_user_delivery,model_sv_delivery_envelope,base.group_user,1,1,1,0

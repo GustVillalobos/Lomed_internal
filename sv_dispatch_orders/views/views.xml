@@ -14,7 +14,7 @@
     <!--Menu item general-->
      <menuitem 
      id="sv_route_module" 
-     name="Reparto de ordenes"
+     name="Gestión de rutas"
      action="sv_route_action"
      sequence="13"
      groups='sv_dispatch_orders.sv_logistic_manager,sv_dispatch_orders.sv_logistic_user,sv_dispatch_orders.sv_logistic_recepcionist'
@@ -67,18 +67,18 @@
                     </h1>
                 </div>
                 <group>
-                    <group name="lef_side_info">
-                        <field name="code"/>
-                        <field name="employee_id" domain="[('department_id','=',department_id)]"/>
-                    </group>
-                    <group name="right_side_info">
-                        <field name="active_routes" readonly="1"/>
-                        <field name="tour_date" readonly="1"/>
-                    </group>
-                </group>
-                <group>
-                    <field name="description" nolabel="1" colspan="2" placeholder="Descripción de la ruta..."/>
-                </group>
+                   <group name="lef_side_info">
+                       <field name="code"/>
+                       <field name="employee_id" domain="[('department_id','=',department_id)]"/>
+                   </group>
+                   <group name="right_side_info">
+                       <field name="active_routes" readonly="1"/>
+                       <field name="tour_date" readonly="1"/>
+                   </group>
+                 </group>
+                 <group>
+                     <field name="description" placeholder="Descripción de la ruta..." colspan="2" nolabel="1"/>
+                 </group>
             </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" groups="base.group_user"/>
@@ -240,24 +240,26 @@
                     <page name="works_collected" string="Trabajos recibidos" attrs="{'invisible':[('state','=','draft')]}">
                         <field name="collected_works_ids" nolabel="1">
                             <tree editable="bottom">
+                                <field name="partner_id"/>
                                 <field name="name"/>
-                                 <field name="date_sent" readonly="1"/>
-                                <field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio','propio'))]}"/>
+                                <field name="date_sent" readonly="1"/>
                                 <field name="state" readonly="1" widget="badge" decoration-success="state == 'received'" decoration-info="state == 'collected'" decoration-warning="state == 'waiting'" decoration-danger="state == 'rejected'"/>
                                 <field name="comments"/>
-                                <field name="delivery_id" invisible="1"/>
-                                <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
-                                <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','!=','collected')]}"/>
-                                <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                                <!--<field name="delivery_id" invisible="1"/>-->
+                                <field name="parent_state" invisible="1"/>
+                                <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':['|',('state','not in',('collected','waiting')),('parent_state','not in',('close','done'))]}"/>
+                                <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':['|',('state','!=','collected'),('parent_state','not in',('close','done'))]}"/>
+                                <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':['|',('state','not in',('collected','waiting')),('parent_state','not in',('close','done'))]}"/>
                             </tree>
                             <kanban class="o_kanban_mobile">
                               <field name="name"/>
                               <field name="date_sent"/>
                               <field name="partner_id"/>
                               <field name="state"/>
+                              <field name="parent_state"/>
                               <templates>
                                 <t t-name="kanban-box">
-                                  <div t-attf-class="oe_kanban_card {{'oe_kanban_color_' + kanban_getcolor(10) }}">
+                                  <div t-attf-class="oe_kanban_global_click oe_kanban_card {{'oe_kanban_color_' + kanban_getcolor(10) }}">
                                     <div class="row">
                                       <div class="col-8">
                                         <h2>Sobre número: <t t-out="record.name.value"/></h2>
@@ -272,11 +274,15 @@
                                         <span><b>Recolectado el: </b></span><t t-out="record.date_sent.value"/>
                                       </div>
                                     </div>
-                                    <div class="row">
-                                      <div class="col-12">
-                                        <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
-                                <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','!=','collected')]}"/>
-                                <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary" attrs="{'invisible':[('state','not in',('collected','waiting'))]}"/>
+                                    <div class="row" style="text-align:center">
+                                      <div class="col-4">
+                                        <button name="action_cancel" type="object" string="Rechazar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary btn-sm" attrs="{'invisible':['|',('state','not in',('collected','waiting')),('parent_state','not in',('close','done'))]}"/>
+                                      </div>
+                                      <div class="col-4">
+                                      <button name="action_consult" type="object" string="Consultar" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary btn-sm" attrs="{'invisible':['|',('state','!=','collected'),('parent_state','not in',('close','done'))]}"/>
+                                      </div>
+                                      <div class="col-4">
+                                      <button name="action_receive" type="object" string="Recibir" groups="sv_dispatch_orders.sv_logistic_recepcionist" class="btn btn-primary btn-sm" attrs="{'invisible':['|',('state','not in',('collected','waiting')),('parent_state','not in',('close','done'))]}"/>
                                       </div>
                                     </div>
                                   </div>
@@ -489,7 +495,7 @@
       </field>
     </record>
 
-    <record id="sv_partner_envelope_form" model="ir.ui.view">
+    <!--<record id="sv_partner_envelope_form" model="ir.ui.view">
         <field name="name">sv_partner_envelope_form</field>
         <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
@@ -511,25 +517,37 @@
                     </page>
                 </xpath>
             </field>
-    </record>
+    </record>-->
     <!--Form for delivery envelope-->
     <record model="ir.ui.view" id="sv_returns_envelope_form">
       <field name="name">sv_returns_envelope_form</field>
       <field name="model">sv.returns.envelope</field>
       <field name="arch" type="xml">
-        <form string="Retur">
+        <form string="Return">
             <div class="oe_title">
                 <h1>
-                    <field name="name" placeholder="Numero de sobre..."/>
+                    <field name="partner_id" placeholder="Cliente"/>
                 </h1>
             </div>
             <group>
-             	<field name="partner_id" attrs="{'readonly':[('name','not in',('P','p','0','Propio','propio'))]}"/>
+             	<field name="name" readonly="1"/>
              	<field name="date_sent" readonly="1"/>
             </group>
            <field name="comments" placeholder="Comentario, aclaración, etc..." colspan="4"/>
         </form>
       </field>
+    </record>
+
+    <!--form inherited for sale.order-->
+    <record id="sv_sale_order_related_envelope" model="ir.ui.view">
+        <field name="name">sv_sale_order_related_envelope</field>
+        <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='order_details']" position="inside">
+                    <field name="envelope_id" domain="[('state','=','received')]"/>
+                </xpath>
+            </field>
     </record>
     </data>
 </odoo>

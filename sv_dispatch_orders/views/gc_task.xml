@@ -1,0 +1,161 @@
+<odoo>
+    <data>
+        <!--Window action for gc.task-->
+        <record id="gc_task_action" model="ir.actions.act_window">
+            <field name="name">Tarea</field>
+            <field name="res_model">gc.task</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Tareas</p>
+            </field>
+        </record>
+
+        <!--Window action for gc.task.template-->
+        <record id="gc_task_template_action" model="ir.actions.act_window">
+            <field name="name">Plantilla de tarea</field>
+            <field name="res_model">gc.task.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Plantilla de tarea</p>
+            </field>
+        </record>
+
+        <!--Menu item for gc.task-->
+        <menuitem 
+        id="gc_task_menu" 
+        name="Tarea"
+        action="gc_task_action"
+        parent="sv_tracker_main_menu"
+        sequence="5"
+        />
+
+        <!--Menu item for gc.task.template-->
+        <menuitem 
+        id="gc_task_template_menu" 
+        name="Plantilla de tarea"
+        action="gc_task_template_action"
+        parent="sv_tracker_main_menu"
+        groups="base.group_system,sv_dispatch_orders.sv_logistic_manager"
+        sequence="6"
+        />
+
+        <!--List view for sv.task-->
+        <record model="ir.ui.view" id="gc_task_list_view">
+            <field name="name">gc_task_list_view</field>
+            <field name="model">gc.task</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="max_delay"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--List view for sv.task.template-->
+        <record model="ir.ui.view" id="gc_task_template_list_view">
+            <field name="name">gc_task_template_list_view</field>
+            <field name="model">gc.task.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="date_from"/>
+                    <field name="max_delay"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for gc.task-->
+        <record id="gc_task_form_view" model="ir.ui.view">
+            <field name="name">gc_task_form_view</field>
+            <field name="model">gc.task</field>
+            <field name="arch" type="xml">
+                <form>
+                    <!--Invisible fields-->
+                    <field name="gc_id" invisible="1"/>
+                    <header>
+                        <button name="upload_task" string="Subir tarea" type="object" class="btn btn-primary" attrs="{'invisible':['|',('id','=',False),('gc_id','not in',(0,False))]}"/>
+                    </header>
+                    <sheet>
+                        <label for="name" string="Tarea"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Nombre de la tarea"/></h1>
+                        </div>
+                        <group>
+                            <field name="description" nolabel="1" placeholder="Descripción de la tarea" colspan="2"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="gc_id" groups="base.group_system" readonly="1" widget="text"/>
+                                <field name="tracker_id"/>
+                                <field name="lat"/>
+                                <field name="lng"/>
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <label for="max_delay" string="Retraso tolerado"/>
+                                <div>
+                                    <field name="max_delay" class="oe_inline"/> <span class="oe_inline">Minutos</span>
+                                </div>
+                                <label for="min_stay_duration" string="Estancia minima"/>
+                                <div>
+                                    <field name="min_stay_duration" class="oe_inline"/> <span class="oe_inline">Minutos</span>
+                                </div>
+                            </group>
+                        </group>
+                        <group string="Respuesta API">
+                            <field name="gc_response" nolabel="1" readonly="1" colspan="2" groups="base.group_system"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Form view for gc.task.template-->
+        <record id="gc_task_template_form_view" model="ir.ui.view">
+            <field name="name">gc_task_template_form_view</field>
+            <field name="model">gc.task.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <label for="name" string="Tarea"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Nombre de la plantilla de tarea"/></h1>
+                        </div>
+                        <group>
+                            <field name="description" nolabel="1" placeholder="Descripción de la tarea" colspan="2"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="tracker_id"/>
+                                <field name="partner_id"/>
+                                <label for="duration_value" string="Duración"/>
+                                <div>
+                                    <field name="duration_value" class="oe_inline"/> <field name="interval" class="oe_inline"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <label for="max_delay" string="Retraso tolerado"/>
+                                <div>
+                                    <field name="max_delay" class="oe_inline"/> <span class="oe_inline">Minutos</span>
+                                </div>
+                                <label for="min_stay_duration" string="Estancia minima"/>
+                                <div>
+                                    <field name="min_stay_duration" class="oe_inline"/> <span class="oe_inline">Minutos</span>
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

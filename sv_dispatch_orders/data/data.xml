@@ -4,57 +4,49 @@
         <record id="sv_route_1" model="sv.route">
             <field name="name">AMSS 1</field>
             <field name="code">S1</field>
-            <field name="description">San Salvador n°1</field>
         </record>
         <record id="sv_route_2" model="sv.route">
             <field name="name">AMSS 2</field>
             <field name="code">S2</field>
-            <field name="description">San Salvador n°2</field>
         </record>
         <record id="sv_route_3" model="sv.route">
             <field name="name">AMSS 3</field>
             <field name="code">S3</field>
-            <field name="description">Escalon - Santa Tecla</field>
         </record>
         <record id="sv_route_4" model="sv.route">
             <field name="name">AMSS 4</field>
             <field name="code">S4</field>
-            <field name="description">Apopa, Soyapango y Nejapa</field>
         </record>
         <record id="sv_route_5" model="sv.route">
             <field name="name">AMSS 5</field>
             <field name="code">S5</field>
-            <field name="description">San Salvador n°5</field>
         </record>
         <record id="sv_route_6" model="sv.route">
             <field name="name">AMSS 6</field>
             <field name="code">S6</field>
-            <field name="description">San Salvador n°6</field>
         </record>
         <record id="sv_route_7" model="sv.route">
             <field name="name">AMSS 7</field>
             <field name="code">S7</field>
-            <field name="description">San Salvador n°7</field>
         </record>
         <record id="sv_route_8" model="sv.route">
             <field name="name">Clinica</field>
             <field name="code">CL</field>
-            <field name="description">Global 1 y 2</field>
         </record>
         <record id="sv_route_9" model="sv.route">
-            <field name="name">Ahuachapán</field>
+            <field name="name">Ahuachapan</field>
             <field name="code">AH</field>
         </record>
         <record id="sv_route_10" model="sv.route">
-            <field name="name">Metapán</field>
+            <field name="name">Metapan</field>
             <field name="code">MT</field>
         </record>
         <record id="sv_route_11" model="sv.route">
             <field name="name">San Miguel</field>
-            <field name="code">SM1</field>
+            <field name="code">SM</field>
         </record>
         <record id="sv_route_12" model="sv.route">
-            <field name="name">San Miguel 2</field>
+            <field name="name">San Miguel</field>
             <field name="code">SM2</field>
         </record>
         <record id="sv_route_13" model="sv.route">
@@ -67,7 +59,7 @@
         </record>
         <record id="sv_route_15" model="sv.route">
             <field name="name">Sonsonate</field>
-            <field name="code">SA</field>
+            <field name="code">SO</field>
         </record>
         <record id="sv_logistic_manager" model="res.groups">
             <field name="name">Administrador de logistica</field>
@@ -76,7 +68,7 @@
             <field name="name">Gestor de logistica</field>
         </record>
         <record id="sv_logistic_recepcionist" model="res.groups">
-            <field name="name">Liquidación de ruta</field>
+            <field name="name">Liquidacion de ruta</field>
         </record>
     </data>
 </odoo>

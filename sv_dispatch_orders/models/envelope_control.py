@@ -12,7 +12,7 @@ from odoo import api, fields, models,_
 from odoo.exceptions import ValidationError,UserError
 _logger = logging.getLogger(__name__)
 
-class sv_delivery_envelope(models.Model):
+'''class sv_delivery_envelope(models.Model):
     _name='sv.delivery.envelope'
     _description='Registro de entrega de sobres'
 
@@ -48,17 +48,18 @@ class sv_delivery_envelope(models.Model):
     @api.depends('total_return')
     def compute_total_remaining(self):
         for r in self:
-            r.total_remaining = r.total_delivered - r.total_return
+            r.total_remaining = r.total_delivered - r.total_return'''
     
 class sv_returns_envelope(models.Model):
     _name='sv.returns.envelope'
     _description='Registro de retorno de sobres'
 
-    name = fields.Char("Número de sobre",required=True)
+    name = fields.Char("Número de sobre")
     dispatch_id = fields.Many2one(string="Despacho de ruta",comodel_name='sv.route.dispatch')
     partner_id = fields.Many2one(string="Cliente",comodel_name='res.partner')
-    delivery_id = fields.Many2one(comodel_name='sv.delivery.envelope',string="Despacho de sobre",compute='compute_delivery_id',store=True)
+    #delivery_id = fields.Many2one(comodel_name='sv.delivery.envelope',string="Despacho de sobre")
     date_sent = fields.Datetime("Fecha de retorno")
+    parent_state = fields.Selection(string="Estado ruta",related='dispatch_id.state')
     state = fields.Selection([
         ('collected','Recolectado'),
         ('received','Recibido'),
@@ -67,7 +68,16 @@ class sv_returns_envelope(models.Model):
     ],default='collected',string="Estado",copy=False)
     comments = fields.Text("Comentarios")
 
-    @api.depends('name')
+    @api.model
+    def create(self,vals):
+        if 'partner_id' in vals:
+            vals['name'] = self.env['ir.sequence'].next_by_code('SB1')
+            vals['date_sent'] = datetime.now()
+        model = super(sv_returns_envelope,self).create(vals)
+        _logger.info("Recurso: "+str(vals))
+        return model
+
+    '''@api.depends('name')
     def compute_delivery_id(self):
         for r in self:
             envelope_number = 0
@@ -77,8 +87,7 @@ class sv_returns_envelope(models.Model):
             try:
                 envelope_number = int(r.name)
             except Exception as error:
-                x = error
-                #raise UserError('Error: '+str(error))
+                raise UserError('Error: '+str(error))
             if envelope_number > 0:
                 res = self.env['sv.delivery.envelope'].search([('number_from','<=',envelope_number),('number_to','>=',envelope_number),('usable','=',True)],limit=1)
                 exist_other = self.env['sv.returns.envelope'].search([('name','=',str(envelope_number)),('state','!=','rejected'),('dispatch_id','!=',r.dispatch_id.id)])
@@ -90,7 +99,7 @@ class sv_returns_envelope(models.Model):
             r.delivery_id = res.id if res else False
             r.date_sent = datetime.now()
             if res:
-                r.partner_id = res.partner_id.id
+                r.partner_id = res.partner_id.id'''
     
     def action_receive(self):
         self.ensure_one()
@@ -104,7 +113,12 @@ class sv_returns_envelope(models.Model):
         self.ensure_one()
         self.state = 'rejected'
 
-class sv_envelope_partner(models.Model):
+class SvSaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    envelope_id = fields.Many2one(comodel_name='sv.returns.envelope',string="Sobre relacionado")
+
+'''class sv_envelope_partner(models.Model):
     _inherit='res.partner'
 
-    envelope_delivered_ids = fields.One2many(comodel_name='sv.delivery.envelope',inverse_name='partner_id',string="Sobres despachados")
+    envelope_delivered_ids = fields.One2many(comodel_name='sv.delivery.envelope',inverse_name='partner_id',string="Sobres despachados")'''

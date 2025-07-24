@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="envelope_sequence" model="ir.sequence">
+            <field name="name">Secuencia de sobres</field>
+            <field name="code">SB1</field>
+            <field name="implementation">no_gap</field>
+            <field name="prefix">SB</field>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+            <field name="number_next_actual">1</field>
+        </record>
+    </data>
+</odoo>

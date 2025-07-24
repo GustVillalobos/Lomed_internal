@@ -1,0 +1,172 @@
+<odoo>
+    <data>
+        <!--Window action for gc.tracker-->
+        <record id="sv_tracker_action" model="ir.actions.act_window">
+            <field name="name">Rastreadores</field>
+            <field name="res_model">gc.tracker</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_filter_group":1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Rastreadores</p>
+            </field>
+        </record>
+
+        <!--Menu item for gc.tracker-->
+        <menuitem 
+        id="sv_tracker_main_menu" 
+        name="GlobalCom - GPS"
+        action=""
+        parent="sv_dispatch_orders.sv_route_module"
+        sequence="3"
+        />
+        
+        <!--Menu item for gc.tracker-->
+        <menuitem 
+        id="sv_tracker_menu" 
+        name="Rastreadores"
+        action="sv_tracker_action"
+        parent="sv_tracker_main_menu"
+        sequence="2"
+        />
+
+        <!--Server action for update trackers-->
+        <record id="update_tracker_action" model="ir.actions.server">
+            <field name="name">Update tracker list</field>
+            <field name="model_id" ref="sv_dispatch_orders.model_gc_tracker"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.update_tracker_list()
+            </field>
+        </record>
+
+        <!--Menu item for gc.tracker-->
+        <menuitem 
+        id="sv_update_tracker_menu" 
+        name="Actualizar listados"
+        action="update_tracker_action"
+        parent="sv_tracker_main_menu"
+        sequence="1"
+        />
+
+        <!--List view for gc.tracker-->
+        <record model="ir.ui.view" id="sv_trackers_list_view">
+            <field name="name">sv_trackers_list_view</field>
+            <field name="model">gc.tracker</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="model"/>
+                    <field name="tariff_date_due"/>
+                    <field name="last_sync_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for gc.tracker-->
+        <record id="sv_tracker_form_view" model="ir.ui.view">
+            <field name="name">sv_tracker_form_view</field>
+            <field name="model">gc.tracker</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="tracker_id" invisible="1"/>
+                    <header>
+                        <!--<button name="upload_tracker" string="Subir rastreador" type="object" class="btn btn-primary" attrs="{'invisible':['|',('id','=',False),('tracker_id','!=',0)]}"/>-->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="read_tracker_data" type="object" string="Actualizar" icon="fa-refresh" class="oe_stat_button" attrs="{'invisible':['|',('id','=',False),('tracker_id','=',0)]}"/>
+                            <button name="get_last_location" type="object" string="Última posición" icon="fa-location-arrow" class="oe_stat_button" attrs="{'invisible':['|',('id','=',False),('tracker_id','=',0)]}"/>
+                        </div>
+                        <label for="name" string="Rastreador"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Nombre del rastreador" attrs="{'readonly':[('tracker_id','!=',0)]}"/></h1>
+                        </div>
+                        <group>
+                            <group name="left_group">
+                                <field name="tracker_id" readonly="1" groups="base.group_system" widget="text"/>
+                                <field name="model" attrs="{'readonly':[('tracker_id','!=',0)]}"/>
+                                <field name="device_id" attrs="{'readonly':[('tracker_id','!=',0)]}"/>
+                                <field name="phone" attrs="{'readonly':[('tracker_id','!=',0)]}"/>
+                                <field name="group_id" readonly="1"/>
+                                <field name="employee_id"/>
+                            </group>
+                            <group name="right_group">
+                                <field name="blocked" readonly="1"/>
+                                <field name="creation_date" readonly="1"/>
+                                <field name="tariff_date_due" readonly="1"/>
+                                <field name="last_sync_date" readonly="1"/>
+                                <field name="company_id" groups="base.group_system"/>
+                                <field name="tag_ids" widget="many2many_tags" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook groups="sv_dispatch_orders.sv_logistic_manager">
+                            <page string="Última ubicación" name="last_location">
+                                <group>
+                                    <field name="lat" readonly="1" />
+                                    <field name="long" readonly="1" />
+                                    <label for="presition" string="Precisión"/>
+                                    <div>
+                                        <field name="presition" class="oe_inline" readonly="1"/> <span attrs="{'invisible':[('presition','=',1)]}" class="oe_inline">metros</span> <span attrs="{'invisible':[('presition','!=',1)]}" class="oe_inline">metro</span>
+                                    </div>
+                                    <field name="satellites" readonly="1"/>
+                                    <field name="date_position" readonly="1"/>
+                                    <field name="heading" readonly="1"/>
+                                    <label for="speed" string="Velocidads"/>
+                                    <div>
+                                        <field name="speed" readonly="1" class="oe_inline"/> <span class="oe_inline">Km/h</span>
+                                    </div>
+                                </group>
+                            </page>
+                            <page name="task_tmpl_ids" string="Tareas recurrentes">
+                                <group>
+                                    <field name="task_template_ids" nolabel="1" colspan="2">
+                                        <tree>
+                                            <field name="sequence" widget="handle"/>
+                                            <field name="name"/>
+                                            <field name="description"/>
+                                            <field name="date_from"/>
+                                            <field name="min_stay_duration"/>
+                                            <button name="create_task" type="object" string="Crear tarea" class="btn btn-primary"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="api_response" string="Respuesta API" groups="base.group_system">
+                                <group>
+                                    <field name="gc_response" nolabel="1" readonly="1" colspan="2" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--search view for gc.tracker-->
+        <record id="gc_tracker_search_view" model="ir.ui.view">
+            <field name="name">gc_tracker_search_view</field>
+            <field name="model">gc.tracker</field>
+            <field name="arch" type="xml">
+                <search string="Rastreadores">
+                    <field name="name" string="Rastreador" filter_domain="['|',('name','ilike',self),('group_id','ilike',self)]"/>
+                    <field name="device_id" string="Imei" filter_domain="[('device_id','ilike',self)]"/>
+                    <filter name="blocked_dev" string="Bloqueados" domain="[('blocked','=',True)]"/>
+                    <separator/>
+                    <filter name="filter_tariff_date_due" string="Vencimiento de tarifa" date="tariff_date_due"/>
+                    <filter name="filter_last_sync_date" string="Última sincronización" date="last_sync_date"/>
+                    <separator/>
+                    <group expand="0" name="group_by" string="Agrupar por">
+                        <filter name="filter_group" string="Grupo" domain="[]" context="{'group_by':'group_id'}"/>
+                        <separator/>
+                        <filter name="filter_tariff_date" string="Vencimiento de tarifa" domain="[]" context="{'group_by':'tariff_date_due'}"/>
+                        <filter name="filter_last_sync" string="Última sincronización" domain="[]" context="{'group_by':'last_sync_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

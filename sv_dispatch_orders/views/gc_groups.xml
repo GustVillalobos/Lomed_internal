@@ -1,0 +1,70 @@
+<odoo>
+    <data>
+        <!--Window action for gc.groups-->
+        <record id="gc_groups_action" model="ir.actions.act_window">
+            <field name="name">Grupos</field>
+            <field name="res_model">gc.group</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Grupos</p>
+            </field>
+        </record>
+
+        <!--Menu item for gc.groups-->
+        <menuitem 
+        id="gc_groups_menu" 
+        name="Grupos"
+        action="gc_groups_action"
+        parent="sv_tracker_main_menu"
+        sequence="3"
+        />
+
+        <!--List view for sv.tracker-->
+        <record model="ir.ui.view" id="gc_group_list_view">
+            <field name="name">gc_group_list_view</field>
+            <field name="model">gc.group</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <header>
+                        <button name="update_list_reload" type="object" string="Actualizar listado" class="btn btn-primary"/>
+                    </header>
+                    <field name="name"/>
+                    <field name="color" widget="mis_color_picker"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for gc.group-->
+        <record id="gc_group_form_view" model="ir.ui.view">
+            <field name="name">gc_group_form_view</field>
+            <field name="model">gc.group</field>
+            <field name="arch" type="xml">
+                <form>
+                    <!--Invisible fields-->
+                    <field name="gc_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <header>
+                        <button name="upload_group" string="Subir grupo" type="object" class="btn btn-primary" attrs="{'invisible':['|',('id','=',False),('gc_id','not in',(0,False))]}"/>
+                        <button name="update_group" string="Actualizar" type="object" class="btn btn-secondary" attrs="{'invisible':['|',('id','=',False),('gc_id','in',(0,False))]}"/>
+                        <button name="delete_group" string="Eliminar" type="object" class="btn btn-secondary" attrs="{'invisible':['|',('id','=',False),('gc_id','in',(0,False))]}"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Archivado" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
+                        <label for="name" string="Nombre de grupo"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Nombre del grupo"/></h1>
+                        </div>
+                        <group>
+                            <field name="gc_id" groups="base.group_system" readonly="1" widget="text"/>
+                            <field name="color" widget="mis_color_picker"/>
+                            <field name="last_sync" readonly="1"/>
+                        </group>
+                        <group string="Respuesta API">
+                            <field name="gc_response" nolabel="1" readonly="1" colspan="2" groups="base.group_system"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
