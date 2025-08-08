@@ -67,7 +67,10 @@
                             boder: solid 1px #000;
                             font-size:10px;
                         }
-
+                        .full-size-field .o_field_widget{
+                            width:100%;
+                            height: 100%;
+                        }
                     </style>
                     <header>
                         <button name="action_confirm" type="object" string="Confirmar" class="btn btn-primary" attrs="{'invisible':[('state','!=','draft')]}"/>
@@ -99,7 +102,7 @@
                                 <field name="patient_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 <label for="physician_id" string="Oftalmologo" attrs="{'invisible':[('project_id','=',False)]}"/>
                                 <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','!=',False)]}"/>
-                                <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}" domain="[('reception_ids','in',reception_id)]"/>
                             </group>
                             <group>
                                 <field name="its_own_frame" widget="boolean_toogle"/>
@@ -219,7 +222,7 @@
                                     </table>
                                 </div>
                                 <group string="Producto a facturar">
-                                    <field name="design_id"/>
+                                    <field name="design_id" domain="[('categ_id.show_optic','=',True)]"/>
                                 </group>
                             </page>
                             <page name="contact_lens_care" string="Regimen de cuidado y reemplazo" attrs="{'invisible':[('is_contact_lens','=',False)]}">
@@ -255,14 +258,14 @@
                                         <tbody>
                                             <tr>
                                                 <td>Ojo der.</td>
-                                                <td><field name="dnp_re" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td rowspan="2"><field name="dip" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td rowspan="2"><field name="pupillary_height" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td rowspan="2"><field name="blaze_height" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field"><field name="dnp_re" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field" rowspan="2"><field name="dip" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field" rowspan="2"><field name="pupillary_height" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field" rowspan="2"><field name="blaze_height" attrs="{'readonly':[('state','=','done')]}"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Ojo izq.</td>
-                                                <td><field name="dnp_le" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field" ><field name="dnp_le" attrs="{'readonly':[('state','=','done')]}"/></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -279,10 +282,10 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><field name="frame_mark" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td><field name="frame_code" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td><field name="frame_zise" attrs="{'readonly':[('state','=','done')]}"/></td>
-                                                <td><field name="frame_color" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field"><field name="frame_mark" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field"><field name="frame_code" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field"><field name="frame_zise" attrs="{'readonly':[('state','=','done')]}"/></td>
+                                                <td class="full-size-field"><field name="frame_color" attrs="{'readonly':[('state','=','done')]}"/></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -290,7 +293,7 @@
                             </page>
                             <page name="other_info" string="Otra información">
                                 <group>
-                                    <field name="reception_id" readonly="1"/>
+                                    <field name="reception_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                                     <field name="create_uid"/>
                                     <field name="create_date"/>
                                 </group>

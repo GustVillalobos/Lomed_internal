@@ -48,3 +48,8 @@ class sv_sale_order(models.Model):
             ,'domain':[('order_id','=',self.id)]
             ,'context':"{'create':False}"
         }
+
+class OpticalPatientProductCategory(models.Model):
+    _inherit = 'product.category'
+
+    show_optic = fields.Boolean("Mostrar en ópticas")
