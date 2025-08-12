@@ -29,7 +29,8 @@
         <menuitem id="op_physician_main_menu"
         parent="optical_patient.op_main_menu" 
         name="Profesionales" 
-        action="" 
+        action=""
+        groups="optical_patient.group_op_admin"
         sequence="3"/>
 
         <!--Elemento de menú profecionales-->
