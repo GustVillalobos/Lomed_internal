@@ -19,7 +19,8 @@ class create_sale_order(models.TransientModel):
     accessories = fields.Boolean("Incluir accesorios",help="Agregar franela y estuche al pedido")
     partner_id = fields.Many2one(string="Contacto",comodel_name='res.partner')
     frame_id = fields.Many2one(string="Aro seleccionado",comodel_name='product.product')
-    design_id = fields.Many2one(string="Producto",comodel_name='product.product')
+    #design_id = fields.Many2one(string="Producto",comodel_name='product.product')
+    design_id = fields.Many2one(string="Producto",comodel_name='product.template')
     component_ar = fields.Many2one(string="Componente AR",comodel_name='product.product',domain="[('type_optic','=','ar_component')]")
 
     def create_sale_order(self):
@@ -63,7 +64,7 @@ class create_sale_order(models.TransientModel):
             usr_lang = self.env.user.lang
             line['name'] = pl.with_context(lang = usr_lang).name
             line['product_id'] = pl.id
-            line['product_uom_qty'] = 1 if pl.id != self.design_id.id else 2
+            line['product_uom_qty'] = 1 if pl.id not in (self.design_id.product_variant_ids[0].id,self.design_id.product_variant_ids[1].id) else 2
             line['order_id'] = order.id
             try:
                 self.env['sale.order.line'].create(line)
@@ -81,9 +82,11 @@ class create_sale_order(models.TransientModel):
     def get_product_list(self):
         self.ensure_one()
         list = []
-        list.append(self.design_id.id)
         if self.include_ar:
             list.append(self.component_ar.id)
+            list.append(self.design_id.product_variant_ids[0].id)
+        if not self.include_ar:
+            list.append(self.design_id.product_variant_ids[1].id)
         if self.frame_id:
             list.append(self.frame_id.id)
         if self.accessories:
