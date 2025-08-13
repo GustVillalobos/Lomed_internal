@@ -48,7 +48,7 @@ class create_sale_order(models.TransientModel):
             sale_order['x_aro_propio'] = self.appointment_id.frame_mark if self.appointment_id.frame_mark else ''+'/'+self.appointment_id.frame_code if self.appointment_id.frame_code else ''
         else:
             sale_order['x_aro'] = self.appointment_id.frame_mark if self.appointment_id.frame_mark else ''+'/'+self.appointment_id.frame_code if self.appointment_id.frame_code else ''
-        sale_order['x_distance_pupilar'] = self.appointment_id.dnp_re+'/'+self.appointment_id.dnp_le
+        sale_order['x_distance_pupilar'] = self.appointment_id.dnp_re if self.appointment_id.dnp_re else ''+'/'+self.appointment_id.dnp_le if self.appointment_id.dnp_le else ''
         sale_order['x_heigh_wafer_eye'] = self.appointment_id.blaze_height
         sale_order['x_heigh_pupilar_eye'] = self.appointment_id.pupillary_height
         sale_order['x_size_aro'] = self.appointment_id.frame_zise
