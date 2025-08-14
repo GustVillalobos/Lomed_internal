@@ -131,7 +131,7 @@
                                 <field name="categ_id" groups="optical_patient.group_op_admin"/>
                             </group>
                             <group name="right_pane">
-                                <field name="sequence_id"/>
+                                <field name="sequence_id" groups="optical_patient.group_op_admin,base.group_system"/>
                                 <field name="color" widget="color_picker"/>
                                 <field name="user_id" groups="base.group_system"/>
                                 <field name="project_id" groups="optical_patient.group_op_admin"/>

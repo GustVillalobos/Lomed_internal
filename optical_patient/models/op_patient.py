@@ -206,7 +206,7 @@ class op_medical_history(models.Model):
     _description = 'Historia clinica'
 
     name = fields.Char("Nombre",related="patient_id.name")
-    disease_id = fields.Many2one(string="Padecimiento",comodel_name='op.disease',domain="[('type','=','clinical')]")
+    disease_id = fields.Many2one(string="Padecimiento",comodel_name='op.disease',domain="[('type','=','clinical')]",required=True)
     diagnosis_date = fields.Date("Fecha de diagnóstico")
     underwent_surgery = fields.Boolean("Cirugía",help="Marque esta opción en caso el paciente haya sido sometido a cirugía")
     comment = fields.Text("Comentarios")
@@ -217,7 +217,7 @@ class op_optical_history(models.Model):
     _description = 'Historial óptico'
 
     name = fields.Char("Nombre",related='patient_id.name')
-    disease_id = fields.Many2one(string="Padecimiento",comodel_name='op.disease',domain="[('type','=','optical')]")
+    disease_id = fields.Many2one(string="Padecimiento",comodel_name='op.disease',domain="[('type','=','optical')]",required=True)
     personal = fields.Boolean("Personal")
     underwent_surgery = fields.Boolean("Cirugía",help="Marque esta opción en caso el paciente haya sido sometido a cirugía")
     family = fields.Boolean("Familiar")

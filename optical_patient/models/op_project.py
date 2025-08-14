@@ -15,7 +15,7 @@ class op_project(models.Model):
     _inherit = ['mail.thread']
     _description = 'Proyecto'
 
-    name = fields.Char("Proyecto")
+    name = fields.Char("Proyecto",required=True)
     detail = fields.Text("Detalles")
     code = fields.Char("Código")
     reference_ids = fields.One2many(comodel_name='op.project.contact',string="Referencias",inverse_name='project_id')

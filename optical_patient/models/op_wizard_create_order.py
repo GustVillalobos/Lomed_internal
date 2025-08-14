@@ -86,7 +86,10 @@ class create_sale_order(models.TransientModel):
             list.append(self.component_ar.id)
             list.append(self.design_id.product_variant_ids[0].id)
         if not self.include_ar:
-            list.append(self.design_id.product_variant_ids[1].id)
+            if self.design_id.product_variant_count > 2:
+                list.append(self.design_id.product_variant_ids[1].id)
+            else:
+                list.append(self.design_id.product_variant_ids[0].id)
         if self.frame_id:
             list.append(self.frame_id.id)
         if self.accessories:
