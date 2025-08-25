@@ -33,8 +33,8 @@ class op_appointment(models.Model):
     effective_date = fields.Datetime("Fin atención",tracking=True)
     time_service = fields.Float("Tiempo de atención")
     frame_id = fields.Many2one(string="Aro seleccionado",comodel_name='product.product')
-    #design_id = fields.Many2one(string="Producto seleccionado",comodel_name='product.product')
-    design_id = fields.Many2one(string="Producto seleccionado",comodel_name='product.template')
+    design_id = fields.Many2one(string="Producto seleccionado",comodel_name='product.product')
+    new_design_id = fields.Many2one(string="Producto seleccionado",comodel_name='product.template')
     order_id = fields.Many2one(string="Orden de venta",comodel_name='sale.order')
     color = fields.Integer(string="Color",compute='_compute_color')
     comment = fields.Html("Comentario")
@@ -193,7 +193,7 @@ class op_appointment(models.Model):
         ctx = {'default_partner_id':self.patient_id.partner_id.id if not self.project_id else self.physician_id.partner_id.id,
                'default_appointment_id':self.id,
                'default_frame_id':self.frame_id.id if self.frame_id else False,
-               'default_design_id':self.design_id.id,
+               'default_design_id':self.new_design_id.id,
                }
         return{
             'name':_('Nueva orden de venta'),
@@ -237,7 +237,7 @@ class op_appointment(models.Model):
             self.prv_re_avf = last_exam.fnl_re_avf
             self.prv_le_avf = last_exam.fnl_le_avf
             self.prv_le_avc = last_exam.fnl_le_avc
-            self.prv_design = last_exam.design_id.name
+            self.prv_design = last_exam.new_design_id.name
     
     @api.depends('state')
     def _compute_color(self):

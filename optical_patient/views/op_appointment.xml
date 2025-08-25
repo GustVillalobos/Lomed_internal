@@ -222,7 +222,7 @@
                                     </table>
                                 </div>
                                 <group string="Producto a facturar">
-                                    <field name="design_id" domain="[('categ_id.show_optic','=',True),('sale_ok','=',True)]"/>
+                                    <field name="new_design_id" domain="[('categ_id.show_optic','=',True),('sale_ok','=',True)]"/>
                                 </group>
                             </page>
                             <page name="contact_lens_care" string="Regimen de cuidado y reemplazo" attrs="{'invisible':[('is_contact_lens','=',False)]}">
