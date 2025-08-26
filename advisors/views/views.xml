@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana BD Asesores-->
+        <record model="ir.actions.act_window" id="partner_advisor_action">
+            <field name="name">Asesores registrados</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="domain">[('is_advisor','=',True)]</field>
+            <field name="context">{'search_default_group_company':True}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Asesores</p>
+            </field>
+        </record>
+
+        <!--Elemento de menú padecimiento-->
+        <menuitem id="advisor_menu_item" 
+        parent="sale.sale_order_menu"
+        name="Asesores ópticos" 
+        action="partner_advisor_action" 
+        sequence="70"/>
+
+        <!--Vista heredada pedido de venta-->
+        <record id="advisor_sale_order_form_view" model="ir.ui.view">
+            <field name="name">advisor_sale_order_form_view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='partner_details']" position="inside">
+                        <field name="advisor_id" domain="[('parent_id','=',partner_id),('is_advisor','=',True)]" options="{'no_open':True,'no_create':True}" attrs="{'readonly':[('state','in',('sale','done'))]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada contacto-->
+        <record id="partner_advisor_form_view" model="ir.ui.view">
+            <field name="name">partner_advisor_form_view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//form/sheet/group/group[1]" position="inside">
+                        <field name="is_advisor" widget="boolean_toggle" attrs="{'invisible':['|',('company_type','!=','person'),('parent_id','=',False)]}"/>
+                    </xpath>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="get_advisor_sales" type="object" icon="fa-shopping-basket" string="Ventas asesor" attrs="{'invisible':[('is_advisor','=',False)]}" groups="account.group_account_invoice"/>
+                    </xpath>
+                    <xpath expr="//field[@name='child_ids']/form/sheet/group/group[1]" position="inside">
+                        <field name="is_advisor" widget="boolean_toggle" attrs="{'invisible':[('type','!=','contact')]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada Factura-->
+        <record id="invoice_advisor_form_view" model="ir.ui.view">
+            <field name="name">invoice_advisor_form_view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@id='header_left_group']" position="inside">
+                        <field name="advisor_name"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
