@@ -47,7 +47,7 @@
             </field>
         </record>
 
-        <!--Vista heredada para hr.employee-->
+        <!--Vista heredada para hr.attendance-->
         <record id="inherited_list_schedule_attendance" model="ir.ui.view">
             <field name="name">inherited_list_schedule_attendance</field>
             <field name="model">hr.attendance</field>
@@ -56,7 +56,7 @@
                 <data>
                     <xpath expr="//tree" position="inside">
                         <field name="unworked_time" widget="float_time" readonly="1"/>
-                        <field name="replacement_time" widget="float_time" readonly="1"/>
+                        <field name="replacement_time" widget="float_time"  force_save="1" readonly="1"/>
                     </xpath>
                 </data>
             </field>

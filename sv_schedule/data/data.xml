@@ -28,5 +28,10 @@
           <field name="doall" eval="False"/>
           <field name="active" eval="True"/>
         </record>
+
+        <record id="input_other_absence" model="hr.payslip.input.type_sv">
+            <field name="name">Otras ausencias</field>
+            <field name="code">absence</field>
+        </record>
     </data>
 </odoo>

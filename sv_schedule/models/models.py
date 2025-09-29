@@ -58,7 +58,11 @@ class sv_hr_attendance(models.Model):
             rem = 0
             #capture info
             tz = pytz.timezone(self.env.user.tz or 'UTC')
-            check_in = datetime.strptime(vals.get('check_in'),'%Y-%m-%d %H:%M:%S')
+            check_in = False
+            if isinstance(vals.get('check_in'),datetime):
+                check_in = vals.get('check_in')
+            else:
+                check_in = datetime.strptime(vals.get('check_in'),'%Y-%m-%d %H:%M:%S')
             check_in_utc = pytz.utc.localize(check_in)
             check_in_locale = check_in_utc.astimezone(tz)
             day = check_in_locale.weekday()
@@ -129,6 +133,8 @@ class sv_payslip_run(models.Model):
         self.ensure_one()
         date_start = datetime.combine(self.x_inicia_corte,time(0,0,0))#x_inicia_corte
         date_end = datetime.combine(self.x_fin_corte,time(23,59,59))#x_fin_corte
+        mid_date = date_start + timedelta(days=7)
+        weeks={date_start.strftime("%U"):0,date_end.strftime("%U"):0,mid_date.strftime("%U"):0}
         if self.slip_ids:
             for p in self.slip_ids:
                 schedule = p.employee_id.resource_calendar_id
@@ -156,11 +162,28 @@ class sv_payslip_run(models.Model):
                             if is_work_day and len(is_present)<= 0 and not is_holyday:
                                 absense +=1
                                 msj = msj + control_date.strftime("[%d-%m-%Y],")
-                                _logger.info(f'Ausencias calculadas {absense}')
+                                if weeks[control_date.strftime("%U")] < 1:
+                                    weeks[control_date.strftime("%U")] = 1
                             if is_holyday and is_present:
                                 for att in is_present:
                                     holiday += att.worked_hours
                             control_date = control_date + timedelta(days=1)
+                        #Calculando descuentos de 7mo
+                        total_leaves = sum(weeks.values())
+                        if total_leaves < 2:
+                            discount_day_off= total_leaves
+                        else:
+                            discount_day_off = 2
+                        if discount_day_off > 0:
+                            abs_input = self.get_input_id('sv_schedule.input_other_absence')
+                            msg = 'Descuento de 7mo por ausencia injustificada'
+                            exist = p.input_line_ids.filtered(lambda ili:ili.input_type_id.id == abs_input)
+                            if not exist:
+                                self.create_input_lines(abs_input,msg,discount_day_off,p.id)
+                            else:
+                                exist.amount = discount_day_off
+                        _logger.info(f'Ausencias calculadas {absense}')
+                        _logger.info("Result: "+str(weeks))
                 if unworked_time > 0:
                     input = self.get_input_id('rrhh_sv_cm.input_type_unwork_time')
                     exist = p.input_line_ids.filtered(lambda ili:ili.input_type_id.id == input)
