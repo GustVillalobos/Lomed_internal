@@ -29,7 +29,7 @@
           <field name="active" eval="True"/>
         </record>
 
-        <record id="input_other_absence" model="hr.payslip.input.type_sv">
+        <record id="input_other_absence" model="hr.payslip.input.type">
             <field name="name">Otras ausencias</field>
             <field name="code">absence</field>
         </record>
