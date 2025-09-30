@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Seccion categoria de plan-->
+        <record id="loyalty_plan_section" model="ir.module.category">
+            <field name="name">Plan de fidelización</field>
+            <field name="description">Permisos</field>
+            <field name="sequence">99</field>
+        </record>
+
+        <!--Grupo de administradores de óptica-->
+        <record id="loyalty_plan_adm" model="res.groups">
+            <field name="name">Administración plan de fidelización</field>
+            <field name="category_id" ref="loyalty_plan_section"/>
+        </record>
+
+    </data>
+</odoo>

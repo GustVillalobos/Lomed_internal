@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*..**.*.*.*.*..*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <!-- .*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.* VISTAS PARA PLAN DE FIDELIZACION .*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <!--.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*..**.*.*.*.*..*.*.*.*.*.*.*.*.*.*.*.*.*.*.-->
+
+        <!--Window action for loyalty.plan-->
+        <record id="loyalty_plan_action" model="ir.actions.act_window">
+            <field name="name">Plan de fidelización</field>
+            <field name="res_model">loyalty.plan</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Plan de fidelización</p>
+            </field>
+        </record>
+
+        <!--Menu item general-->
+        <menuitem 
+        id="loyalty_plan_module" 
+        name="Fidelización"
+        action="loyalty_plan_action"
+        sequence="30"
+        groups='loyalty_plan_adm'
+        web_icon='sv_loyalty,static/description/icon.png'
+        />
+
+        <!--Menu item plan de fidelización-->
+        <menuitem 
+        id="loyalty_plan_menu" 
+        name="Planes"
+        action="loyalty_plan_action"
+        sequence="1"
+        parent="loyalty_plan_module"
+        />
+
+        <!--List view for loyalty.plan-->
+        <record model="ir.ui.view" id="loyalty_plan_tree_view">
+            <field name="name">loyalty_plan_tree_view</field>
+            <field name="model">loyalty.plan</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="start"/>
+                    <field name="end"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Kanban Profecionales-->
+        <record model="ir.ui.view" id="loyalty_plan_kanban_view">
+            <field name="name">loyalty_plan_kanban_view</field>
+            <field name="model">loyalty.plan</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="start"/>
+                    <field name="end"/>
+                    <field name="note"/>
+                    <template>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click {{'oe_kanban_color_' + kanban_getcolor(5) }}">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title">
+                                        <span t-out="record.name.value"/>
+                                        </strong><br/>
+                                        <span t-out="record.code.value"/>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_body oe_kanban_details">
+                                    <ul name="info_details">
+                                        <li t-if="record.start.value"><span>Inicia:</span> <field name="start"/></li>
+                                        <li t-if="record.end.value"><span>Termina:</span> <field name="end"/></li>
+                                        <li t-if="record.partner_count.value > 0"><span>Participantes:</span> <field name="partner_count"/></li>
+                                    </ul>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                </div>
+                            </div>
+                        </t>
+                    </template>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Form view for loyalty.plan-->
+        <record model="ir.ui.view" id="loyalty_plan_form_view">
+            <field name="name">loyalty_plan_form_view</field>
+            <field name="model">loyalty.plan</field>
+            <field name="arch" type="xml">
+                <form string="Plan de fidelización">
+                    <!--Campos invisibles-->
+                    <header>
+                    <!--Acciones principales-->
+                        <button name="enable_point_system" string="Habilitar sistema de puntos" type="object" class="btn-primary" attrs="{'invisible':[('use_points','=',True)]}"/>
+                        <button name="diable_point_system" string="Deshabilitar sistema de puntos" type="object" class="btn-primary" attrs="{'invisible':[('use_points','!=',True)]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="get_partner_list" type="object" icon="fa-users" atts="{'invisible':[('partner_count','&lt;=',0)]}">
+                                <field name="partner_count" string="Participantes" widget="statinfo"/>
+                            </button>
+                            <button name="get_rank_list" type="object" icon="fa-cubes" atts="{'invisible':[('partner_count','&lt;=',0)]}">
+                                <field name="rank_count" string="Rangos" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <field name="code" attrs="{'invisible':[('code','=',False)]}" readonly="1"/>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Titulo del plan"/></h1>
+                        </div>
+                        <group attrs="{'invisible':[('use_points','=',False)]}">
+                            <group>
+                                <field name="use_points" readonly="1"/>
+                                <field name="mode" attrs="{'required':[('use_points','=',True)]}"/>
+                            </group>
+                            <group/>
+                        </group>
+                        <notebook>
+                            <page name="primary_page" string="Periodo">
+                                <group>
+                                    <label for="start" string="Período"/>
+                                    <div>
+                                        <field name="start" widget="daterange" class="oe_inline" options="{'related_end_date':'end'}"/> -
+                                        <field name="end" widget="daterange" class="oe_inline" options="{'related_start_date':'start'}"/>
+                                    </div>
+                                </group>
+                                <field name="note" colspan="2" placeholder="... Descripción del plan, anotaciones o aclaraciones"/>
+                            </page>
+                            <page name="point_system_tab" string="Configuración de sistema de puntos" attrs="{'invisible':['|',('use_points','=',False),('mode','in',('none','point_pd'))]}">
+                                <group>
+                                    <field name="config_line_ids" nolabel="1" colspan="2">
+                                        <tree>
+                                            <field name="product_ids" widget="many2many_tags"/>
+                                            <field name="amount" attrs="{'invisible':[('mode','!=','point_pa')]}"/>
+                                            <field name="points" attrs="{'invisible':[('mode','=','point_po')]}"/>
+                                            <field name="enablers" widget="many2many_tags"/>
+                                            <field name="mode" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--Window action for loyalty.plan.rank-->
+        <record id="loyalty_plan_rank_action" model="ir.actions.act_window">
+            <field name="name">Rangos</field>
+            <field name="res_model">loyalty.plan.rank</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_plan':1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Rangos</p>
+            </field>
+        </record>
+
+        <!--Menu item rangos-->
+        <menuitem 
+        id="loyalty_plan_rank_menu" 
+        name="Rangos"
+        action="loyalty_plan_rank_action"
+        sequence="2"
+        parent="loyalty_plan_module"
+        />
+
+        <!--List view for loyalty.plan.rank-->
+        <record model="ir.ui.view" id="loyalty_plan_rank_tree_view">
+            <field name="name">loyalty_plan_rank_tree_view</field>
+            <field name="model">loyalty.plan.rank</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="plan_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for loyalty.plan.rank-->
+        <record model="ir.ui.view" id="loyalty_plan_rank_form_view">
+            <field name="name">loyalty_plan_rank_form_view</field>
+            <field name="model">loyalty.plan.rank</field>
+            <field name="arch" type="xml">
+                <form string="Rangos">
+                    <!--Campos invisibles-->
+                    <header>
+                    <!--Acciones principales-->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                           <button name="get_partner_list" type="object" icon="fa-users" attrs="{'invisible':[('partner_count','&lt;=',0)]}">
+                                <field name="partner_count" string="Participantes" widget="statinfo"/>
+                           </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Rango"/></h1>
+                        </div>
+                        <group name="plan_pane">
+                            <field name="plan_id"/>
+                        </group>
+                        <group name="benefit_pane" string="Beneficios">
+                            <field name="benefit_ids" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="type" widget="badge"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Search view for loyalty.plan.rank-->
+        <record model="ir.ui.view" id="loyalty_plan_search_view">
+            <field name="name">loyalty_plan_search_view</field>
+            <field name="model">loyalty.plan.rank</field>
+            <field name="arch" type="xml">
+                <search string="Rangos">
+                    <field name="name" string="Rango" filter_domain="['|',('name','ilike',self),('benefit_ids.name','ilike',self)]"/>
+                    <separator/>
+                    <filter name="inactive" string="Archivado" domain="[('active','=',False)]"/>
+                    <separator/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Plan" name="group_plan" context="{'group_by':'plan_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Window action for loyalty.plan.benefits-->
+        <record id="loyalty_plan_benefit_action" model="ir.actions.act_window">
+            <field name="name">Beneficios</field>
+            <field name="res_model">loyalty.plan.benefit</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_rank':1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Beneficios</p>
+            </field>
+        </record>
+
+        <!--Menu item beneficios-->
+        <menuitem 
+        id="loyalty_plan_benefit_menu" 
+        name="Beneficios"
+        action="loyalty_plan_benefit_action"
+        sequence="3"
+        parent="loyalty_plan_module"
+        />
+
+        <!--List view for loyalty.plan.benefit-->
+        <record model="ir.ui.view" id="loyalty_plan_benefit_tree_view">
+            <field name="name">loyalty_plan_benefit_tree_view</field>
+            <field name="model">loyalty.plan.benefit</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="type" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for loyalty.plan.benefit-->
+        <record model="ir.ui.view" id="loyalty_plan_benefit_form_view">
+            <field name="name">loyalty_plan_benefit_form_view</field>
+            <field name="model">loyalty.plan.benefit</field>
+            <field name="arch" type="xml">
+                <form string="Beneficios">
+                    <!--Campos invisibles-->
+                    <header>
+                    <!--Acciones principales-->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                           
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Beneficio"/></h1>
+                        </div>
+                        <group name="type_pane">
+                            <field name="type" widget="radio"/>
+                        </group>
+                        <notebook>
+                            <page name="expense_tab" string="Inversión" attrs="{'invisible':[('type','!=','expense')]}">
+                                <group>
+                                    <field name="note" nolabel="1" placeholder="...Anotaciones, Detalles y condiciones" colspan="2"/>
+                                </group>
+                            </page>
+                            <page name="rectification_tab" string="Rectificaciones" attrs="{'invisible':[('type','!=','rectification')]}">
+                                <group>
+                                    <field name="quantity" help="Cantidad de rectificaciones mensuales habilitadas mientras mantenga la condición de limite de venta"/>
+                                    <field name="requirement" help="Monto mínimo de ventas que se necesita para aplicar a la rectificación"/>
+                                </group>
+                            </page>
+                            <page name="courtesy_tab" string="Cortesias" attrs="{'invisible':[('type','!=','courtesy')]}">
+                                <group>
+                                    <field name="aplicable_products" widget="many2many_tags"/>
+                                    <field name="optional_discount"/>
+                                </group>
+                            </page>
+                            <page name="price_tab" string="Precio especial" attrs="{'invisible':[('type','!=','price')]}">
+                                <group>
+                                    <field name="price_list_ids" nolabel="1" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="product_tmpl_id"/>
+                                            <field name="fixed_price"/>
+                                            <field name="start"/>
+                                            <field name="end"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="event_tab" string="Evento" attrs="{'invisible':[('type','!=','event')]}">
+                                <group>
+                                    <field name="note" nolabel="1" placeholder="...Anotaciones, Detalles y condiciones" colspan="2"/>
+                                </group>
+                            </page>
+                            <page name="promo_tab" string="Promoción X + 1" attrs="{'invisible':[('type','!=','promo')]}">
+                                <group>
+                                    <field name="note" nolabel="1" placeholder="...Anotaciones, Detalles y condiciones" colspan="2"/>
+                                </group>
+                            </page>
+                        </notebook> 
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Search view for loyalty.plan.benefit-->
+        <record model="ir.ui.view" id="loyalty_plan_benefit_search_view">
+            <field name="name">loyalty_plan_benefit_search_view</field>
+            <field name="model">loyalty.plan.benefit</field>
+            <field name="arch" type="xml">
+                <search string="Beneficios">
+                    <field name="name" string="Beneficio" filter_domain="['|',('name','ilike',self),('rank_id','ilike',self)]"/>
+                    <field name="type"/>
+                    <separator/>
+                    <filter name="inactive" string="Archivado" domain="[('active','=',False)]"/>
+                    <separator/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Rango" name="group_rank" context="{'group_by':'rank_id'}"/>
+                        <separator/>
+                        <filter string="Tipo" name="group_type" context="{'group_by':'type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

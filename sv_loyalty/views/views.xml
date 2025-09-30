@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="loyalty_partner_benefit" model="ir.ui.view">
+            <field name="name">loyalty_partner_benefit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[@name='sales_purchases']" position="inside">
+                        <group string="Plan de fidelización">
+                            <field name="plan_id"/>
+                            <field name="rank_id" attrs="{'invisible':[('plan_id','=',False)]}"/>
+                        </group>
+                    </xpath>
+                    <xpath expr="//notebook" position="inside">
+                        <page name="benfefit_tab" string="Beneficios disponibles" attrs="{'invisible':[('rank_id','=',False)]}">
+                            <group>
+                                <field name="benefit_ids" nolabel="1" colspan="2">
+                                    <tree create="0" delete="0" editable="bottom">
+                                        <field name="benefit_id" readonly="1"/>
+                                        <field name="benefit_type" widget="badge" optional="show" decoration-info="benefit_type != False"/>
+                                        <field name="file_name" optional="hide"/>
+                                        <field name="document" filename="file_name" attrs="{'readonly':[('benefit_type','not in',('expense','event'))]}"/>
+                                        <field name="event_id" attrs="{'readonly':[('benefit_type','!=','event')]}"/>
+                                        <field name="product_tmpl_id" attrs="{'readonly':[('benefit_type','!=','promo')]}"/>
+                                        <field name="min_qty" attrs="{'readonly':[('benefit_type','!=','promo')]}"/>
+                                        <field name="state" widget="badge" decoration-info="state == 'available'" decoration-warning="state == 'assigned'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'"/>
+                                        <button name="action_assign_benefit" type="object" class="btn-primary" help="Asignar beneficio" icon="fa-handshake-o" attrs="{'invisible':[('state','!=','available')]}"/>
+                                        <button name="action_complete_benefit" type="object" class="btn-success" help="Beneficio consumido" icon="fa-check" attrs="{'invisible':[('state','!=','assigned')]}"/>
+                                        <button name="action_cancel_benefit" type="object" class="btn-danger" help="Cancelar beneficio" icon="fa-times-circle" attrs="{'invisible':[('state','in',('cancel','done'))]}"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </xpath>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="action_show_points" type="object" icon="fa-trophy" string="Mostrar puntos" attrs="{'invisible':[('plan_id','=',False)]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada product.pricelist-->
+        <record id="loyalty_plan_pricelist_form_view" model="ir.ui.view">
+            <field name="name">loyalty_plan_pricelist_form_view</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='pricelist_settings']" position="inside">
+                        <field name="is_public" widget="boolean_toggle"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada product.category-->
+        <record id="loyalty_product_category_form_view" model="ir.ui.view">
+            <field name="name">loyalty_product_category_form_view</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='first']" position="inside">
+                        <field name="available_in_plan" widget="boolean_toggle"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

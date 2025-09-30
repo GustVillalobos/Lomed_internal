@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Report action para sistema de puntos-->
+        <report id="point_system_report"
+            string="Reporte de puntos"
+            model="loyalty.plan.resume_wizard"
+            report_type="qweb-pdf"
+            file="sv_loyalty.point_system_report_view"
+            name="sv_loyalty.point_system_report_view"
+            menu="False"
+            print_report_name="object.partner_id.name"
+            />
+        
+        <!--añadiendo formato de papel-->
+        <record id="sv_loyalty.point_system_report" model="ir.actions.report">
+            <field name="paperformat_id" ref="report.paper_a4_clean"/>
+        </record>
+
+        <!--Vista para reporte de sistema de puntos-->
+        <template id="point_system_report_view">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+                <t t-foreach="docs" t-as="o">
+                  <t t-set="lang" t-value="env.user.lang"/>
+                  <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <!--Encabezado-->
+                            <div class="row">
+                                <div class="col-3 center">
+                                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 85px;"/>
+                                </div>
+                                <div class="col-5">
+                                    <p><h4><strong><span t-esc="company.name"/></strong></h4>
+                                    Comprobante de acumulación de puntos</p>
+                                </div>
+                                <div class="col-2">
+                                    <p style="font-size:11px"><b>Fecha de generación: </b>
+                                    <br/><span t-esc="(o.create_date - datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    <br/><b>Generado por:</b>
+                                    <br/><span t-field="o.create_uid"/>
+                                    <br/></p>
+                                </div>
+                                <div class="col-2 center">
+                                    
+                                </div>
+                            </div><!--FIn encabezado-->
+                            <!--Cuerpo del documento-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3><span t-field="o.partner_id"/></h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 card" style="border-radius:15px">
+                                    <table class="table table-striped table-sm">
+                                        <tr>
+                                            <td><span>Puntos obtenidos: </span></td>
+                                            <td><span t-esc="o.points_earned"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>Puntos por confirmar: </span> </td>
+                                            <td><span t-esc="o.points_pending"/></td>
+                                        </tr>
+                                         <tr>
+                                            <td><span>Puntos totales: </span></td>
+                                            <td><span t-esc="o.total_points"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-10" style="font-size:11px">
+                                    <h6 style="text-align:center">ORDENES DE TRABAJO INCLUIDAS</h6>
+                                    <table class="table table-striped table-sm">
+                                        <thead style="background-color:gray;color:#fff">
+                                            <th style="width:33%">Orden</th>
+                                            <th style="width:34%">Paciente</th>
+                                            <th style="width:33%">Fecha</th>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.order_ids" t-as="order">
+                                                <tr>
+                                                    <td><span t-field="order.name"/></td>
+                                                    <td><span t-field="order.paciente"/></td>
+                                                    <td style="text-align:right"><span t-esc="(order.date_order - datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="footer" style="text-align:right;font-family:Cambria">
+                                <span t-esc="o.name" style="font-size:11px"/> <strong> Página <span class="page"/> / <span class="topage"/></strong>
+                            </div>
+                        </div><!--Fin page-->
+                    </t><!--Fin basic_layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html_container-->
+        </template>
+    </data>
+</odoo>
