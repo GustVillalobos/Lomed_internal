@@ -222,7 +222,12 @@
                     <filter name="filter_male" string="Hombres" domain="[('gender','=','male')]"/>
                     <filter name="filter_female" string="Mujeres" domain="[('gender','=','female')]"/>
                     <filter name="filter_lgbt" string="Diverso" domain="[('gender','=','lgbt')]"/>
-
+                    <separator/>
+                    <group string="Pacientes inactivos">
+                        <filter string="Hace 6 meses" name="last_6_month" domain="[('last_appointment_date','&lt;',(context_today() - relativedelta(months=6)))]"/>
+                        <filter string="Hace 9 meses" name="last_9_month" domain="[('last_appointment_date','&lt;',(context_today() - relativedelta(months=9)))]"/>
+                        <filter string="Hace 1 año" name="last_year" domain="[('last_appointment_date','&lt;',(context_today() - relativedelta(years=1)))]"/>
+                    </group>
                     <group expand="0" string="Agrupar por">
                         <filter name="group_gender" string="Genero" domain="[]" context="{'group_by':'gender'}"/>
                         <filter name="group_ocupation" string="Ocupación" domain="[]" context="{'group_by':'occupation'}"/>

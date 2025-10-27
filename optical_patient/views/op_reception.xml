@@ -113,6 +113,9 @@
                             <button class="oe_stat_button" type="object" icon="fa-bookmark" name="get_today_apponitment">
                                 <field name="today_appointment" string="De hoy" widget="statinfo"/>
                             </button>
+                            <button class="oe_stat_button" type="object" icon="fa-user-md" name="action_open_office">
+                                <span>Consultorio</span>
+                            </button>
                         </div>
                         <!--Campos invisibles-->
                         <div style="display:none;">

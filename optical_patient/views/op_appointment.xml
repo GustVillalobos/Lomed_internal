@@ -13,6 +13,19 @@
             </field>
         </record>
 
+        <!--Accion de ventana consulta optometra-->
+        <record model="ir.actions.act_window" id="op_office_action">
+            <field name="name">Consultorio</field>
+            <field name="res_model">op.appointment</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="domain">[('state','=','confirm')]</field>
+            <field name="context">{'search_default_my_exams':1}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Examen visual</p>
+            </field>
+        </record>
+
         <!--Menú consulta-->
         <menuitem id="op_appointment_main_menu"
         parent="optical_patient.op_main_menu" 

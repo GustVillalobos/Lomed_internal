@@ -19,7 +19,7 @@
     'version': '16.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','account','product'],
+    'depends': ['base','sale','account','product','bus'],
 
     # always loaded
     'data': [
@@ -38,6 +38,11 @@
         'views/op_project.xml',
         'security/ir.model.access.csv',
     ],
+    'assets':{
+        'web.assets_backend':[
+            'optical_patient/static/src/js/exam_autorefresh.js',
+            ]
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

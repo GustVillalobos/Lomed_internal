@@ -46,7 +46,7 @@ class op_patient(models.Model):
     partner_id = fields.Many2one(string="Contacto relacionado",comodel_name='res.partner')
     appointment_ids = fields.One2many(string="Citas",comodel_name='op.appointment',inverse_name='patient_id')
     appointment_count = fields.Integer("Total citas",compute='_count_appointment')
-    last_appointment_date = fields.Date("Última revisión",compute='_compute_last_date')
+    last_appointment_date = fields.Date("Última revisión",compute='_compute_last_date',store=True)
     is_birthday_today = fields.Boolean(string="Es su cumpleaños hoy?",compute='_compute_is_birthday_today',store=True)
     is_minor = fields.Boolean("Es menor",compute='_verify_is_minor',store=True)
     project_id = fields.Many2one(comodel_name='op.project',string="Proyecto relacionado",readonly=True)

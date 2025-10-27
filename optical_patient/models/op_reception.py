@@ -99,3 +99,15 @@ class op_reception(models.Model):
                 self.physician_id = physician.id
             elif not physician and employee:
                 self.recepcionist_id = employee.id
+    
+    def action_open_office(self):
+        self.ensure_one()
+        ctx = {'default_reception_id':self.id,'create':False}
+        return{
+            'name':_(f'Consultorio {self.name}'),
+            'type': 'ir.actions.act_window',
+            'view_mode':'kanban,form',
+            'res_model':'op.appointment',
+            'context':ctx,
+            'domain':[('reception_id','=',self.id),('state','=','confirm')],
+        }
