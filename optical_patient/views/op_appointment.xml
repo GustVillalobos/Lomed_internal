@@ -358,7 +358,7 @@
             <field name="name">op_appointment_kanban_view</field>
             <field name="model">op.appointment</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_mobile" sample="1">
+                <kanban class="o_kanban_mobile" js_class="optic_exam_autorefresh">
                     <field name="name"/>
                     <field name="patient_id"/>
                     <field name="state"/>
