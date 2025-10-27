@@ -144,12 +144,32 @@ class op_appointment(models.Model):
         if self.time_service > 0:
             self.time_service = 0
         self.state = 'draft'
+        self.env['bus.bus']._sendone(
+                f'consultorio_ch_{record.reception_id.id}',
+                {'type':'optic.exam_updated',
+                 'exam_id':record.id,
+                 'name':record.name, 
+                 'reception_id':record.reception_id.id
+                 },
+                 None
+            )
+        return True
     
     def action_confirm(self):
         self.ensure_one()
         if not self.confirm_date:
             self.confirm_date = datetime.now()
         self.state = 'confirm'
+        self.env['bus.bus']._sendone(
+                f'consultorio_ch_{record.reception_id.id}',
+                {'type':'optic.exam_updated',
+                 'exam_id':record.id,
+                 'name':record.name, 
+                 'reception_id':record.reception_id.id
+                 },
+                 None
+            )
+        return True
 
     def action_done(self):
         self.ensure_one()
