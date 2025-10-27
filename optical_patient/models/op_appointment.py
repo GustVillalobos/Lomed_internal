@@ -138,13 +138,13 @@ class op_appointment(models.Model):
     
 
     def action_draft(self):
-        self.ensure_one()
-        if self.effective_date:
-            self.effective_date = False
-        if self.time_service > 0:
-            self.time_service = 0
-        self.state = 'draft'
-        self.env['bus.bus']._sendone(
+        for record in self:
+            if record.effective_date:
+                record.effective_date = False
+            if record.time_service > 0:
+                record.time_service = 0
+            record.state = 'draft'
+            self.env['bus.bus']._sendone(
                 f'consultorio_ch_{record.reception_id.id}',
                 {'type':'optic.exam_updated',
                  'exam_id':record.id,
@@ -156,11 +156,14 @@ class op_appointment(models.Model):
         return True
     
     def action_confirm(self):
-        self.ensure_one()
-        if not self.confirm_date:
-            self.confirm_date = datetime.now()
-        self.state = 'confirm'
-        self.env['bus.bus']._sendone(
+        for record in self:
+            if not record.confirm_date:
+                record.confirm_date = datetime.now()
+            record.state = 'confirm'
+            channel_name = 'op.appointment.refresh'
+            message_data = {'model_name':self._name}
+            #_logger.info(str(message_data))
+            self.env['bus.bus']._sendone(
                 f'consultorio_ch_{record.reception_id.id}',
                 {'type':'optic.exam_updated',
                  'exam_id':record.id,
