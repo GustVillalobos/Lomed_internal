@@ -116,6 +116,7 @@
                                 <label for="physician_id" string="Oftalmologo" attrs="{'invisible':[('project_id','=',False)]}"/>
                                 <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','!=',False)]}"/>
                                 <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}" domain="[('reception_ids','in',reception_id)]"/>
+                                <field name="employee_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group>
                                 <field name="its_own_frame" widget="boolean_toogle"/>
@@ -358,7 +359,7 @@
             <field name="name">op_appointment_kanban_view</field>
             <field name="model">op.appointment</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_mobile" js_class="optic_exam_autorefresh">
+                <kanban js_class="optic_exam_autorefresh">
                     <field name="name"/>
                     <field name="patient_id"/>
                     <field name="state"/>

@@ -27,6 +27,7 @@ class op_appointment(models.Model):
     ],default='draft',string="Estado",tracking=True)
     date = fields.Date("Fecha de examen")
     physician_id = fields.Many2one(string="Optometrista",comodel_name='op.physician',tracking=True)
+    employee_id = fields.Many2one(string="Asesor",comodel_name="hr.employee")
     reception_id = fields.Many2one(string="Sala de recepción",comodel_name='op.reception')
     project_id = fields.Many2one(string="Proyecto",comodel_name='op.project',related='reception_id.project_id',store=False)
     confirm_date = fields.Datetime("Fecha de confirmación",tracking=True)

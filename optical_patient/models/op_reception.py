@@ -62,7 +62,8 @@ class op_reception(models.Model):
     def action_create_record(self):
         ctx = {'default_date':date.today(),
                'default_reception_id':self.id,
-               'default_physician_id':self.physician_id.id}
+               'default_physician_id':self.physician_id.id,
+               'default_employee_id':self.recepcionist_id.id}
         return{
             'name':_('Nuevo examen visual'),
             'type': 'ir.actions.act_window',
