@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Window action for sale summary-->
+        <record model="ir.actions.act_window" id="summary_action">
+            <field name="name">Resumen de ventas</field>
+            <field name="res_model">sales.summary</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--Menu item for sale summary-->
+        <menuitem id="summary_main_menu" 
+        parent="crm.crm_menu_root" 
+        name="Informes Lomed" 
+        action=""
+        groups="sales_summary_portal.group_summary_user" 
+        sequence="7"/>
+
+        <!--Menu item for sale summary-->
+        <menuitem id="summary_menu_partner_profile" 
+        parent="summary_main_menu" 
+        name="Perfil comercial" 
+        action="summary_action" 
+        sequence="1"/>
+
+        <!--Form view for sale summary-->
+        <record model='ir.ui.view' id="summary_form_view">
+            <field name="name">summary_form_view</field>
+            <field name="model">sales.summary</field>
+            <field name="arch" type="xml">
+                <form string="Resumen de ventas">
+                    <header>
+                        <button name="load_summary_data" string="Cargar datos" class="btn-primary" type="object"/>
+                        <button name="action_print_summary" string="Imprimir" class="btn-primary" type="object"/>
+                    </header>
+                    <group>
+                        <group name="date_pane"> 
+                            <field name="partner_ids" widget="many2many_tags" domain="[('user_id','=',uid)]"/>
+                            <label for="date_from" string="Período"/>
+                            <div>
+                                <field name="date_from" widget="daterange" class="oe_inline" options="{'related_end_date':'date_to'}"/> -
+                                <field name="date_to" widget="daterange" class="oe_inline" options="{'related_start_date':'date_from'}"/>
+                            </div>
+                        </group>
+                        <group name="complementary_info">
+                            <field name="summary_mode"/>
+                            <field name="period" attrs="{'invisible':[('summary_mode','!=','grouped')],'required':[('summary_mode','=','grouped')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="summary_lines" string="Resultados">
+                            <field name="summary_line_ids" nolabel="1" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="period_label"/>
+                                    <field name="order_count"/>
+                                    <field name="top_products"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

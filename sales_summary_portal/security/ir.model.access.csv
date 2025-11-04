@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sale_summary_all,sale_summary_all,model_sales_summary,base.group_user,1,0,0,0
+sale_summary_usr,sale_summary_usr,model_sales_summary,sales_summary_portal.group_summary_user,1,1,1,1
+sale_summary_adm,sale_summary_adm,model_sales_summary,base.group_system,1,1,1,1
+sale_summary_line_all,sale_summary_line_all,model_sales_summary_line,base.group_user,1,0,0,0
+sale_summary_line_usr,sale_summary_line_usr,model_sales_summary_line,sales_summary_portal.group_summary_user,1,1,1,1
+sale_summary_line_adm,sale_summary_line_adm,model_sales_summary_line,base.group_system,1,1,1,1

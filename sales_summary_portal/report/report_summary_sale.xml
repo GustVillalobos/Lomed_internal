@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="report_sales_summary"
+        model="sales.summary"
+        string="Resumen de ventas"
+        report_type="qweb-pdf"
+        name="sales_summary_portal.summary_report_view"
+        file="sales_summary_portal.summary_report_view"
+        print_report_name="'Resumen_ventas_'+(object.date_from.strftime('%d-%m-%Y') or '') + (object.date_to.strftime('%d-%m-%Y') or '')"
+        />
+
+        <!--añadiendo formato de papel-->
+        <record id="sales_summary_portal.report_sales_summary" model="ir.actions.report">
+            <field name="paperformat_id" ref="report.paper_a4_clean"/>
+        </record>
+
+        <template id="summary_report_view">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style type="text/css">
+                                thead tr th{
+                                    border:1px solid black;
+                                    color:#fff;
+                                    font-size:12px; 
+                                    text-align:center;
+                                    vertical-align: middle;
+                                    }
+                                thead{
+                                    border:1px solid black; 
+                                    background-color:#1d195c;
+                                    color:#fff
+                                    }
+                                 tbody tr{
+                                    border:1px solid black; 
+                                    }
+                                tbody tr td{
+                                    border:1px solid black; 
+                                    font-size:11px;
+                                    text-align:left;
+                                    vertical-align: middle;
+                                    }
+                                .footer-list{
+                                    border:1px solid black; 
+                                    background-color:#1d195c;
+                                    color:#fff
+                                }
+                                .footer-list td{
+                                    border:1px solid black; 
+                                    font-size:12px; 
+                                    text-align:center;
+                                    vertical-align: middle;
+                                }
+                                .client-name {
+                                    border:0.3px solid black; 
+                                    font-size:9px;
+                                    background-color:#c2e0f2;
+                                    }
+                                .client-name td{
+                                    text-align:center
+                                    }
+                            </style>
+                            <!--Encabezado-->
+                            <div class="row">
+                                <div class="col-3 center">
+                                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 85px;"/>
+                                </div>
+                                <div class="col-5">
+                                    <p><h4><strong><span t-esc="company.name"/></strong></h4>
+                                    INFORME DE PERFIL COMERCIAL DE CLIENTE</p>
+                                </div>
+                                <div class="col-2">
+                                    <p style="font-size:11px"><b>Fecha de generación: </b>
+                                    <br/><span t-esc="(doc.create_date - datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    </p>
+                                </div>
+                                <div class="col-2 center">
+                                    
+                                </div>
+                            </div><!--FIn encabezado-->
+                            <strong>Generado por:</strong> <t t-esc="doc.env.user.name"/><br/>
+                            <strong>Periodo evaluado:</strong>
+                                <strong><span>Del</span></strong>
+                                <t t-esc="doc.date_from.strftime('%d-%m-%Y')"/> <strong><span>al</span></strong> <t t-esc="doc.date_to.strftime('%d-%m-%Y')"/><br/>
+                            <strong>Modo:</strong> <span t-field="doc.summary_mode"/><br/>
+
+                            <table class="table table-sm o_main_table" style="width:100%;border-collapse:collapse;">
+                                <thead>
+                                    <tr>
+                                        <th>Período</th>
+                                        <th>Órdenes</th>
+                                        <th>Top 10 Productos</th>
+                                    </tr>
+                                </thead>
+                                <t t-set="clients" t-value="doc.summary_line_ids.mapped('partner_id').sorted(key=lambda r: r.name)"/>
+                                <tbody>
+                                    <t t-foreach="clients" t-as="client">
+                                        <tr class="client-name">
+                                            <td colspan="3"><span t-esc="client.name"/></td>
+                                        </tr>
+                                        <t t-foreach="doc.summary_line_ids.filtered(lambda c:c.partner_id.id == client.id)" t-as="line">
+                                            <tr>
+                                                <td><t t-esc="line.period_label or 'General'"/></td>
+                                                <td><t t-esc="line.order_count"/></td>
+                                                <td><t t-raw="line.top_products.replace('\n','&lt;br/&gt;')"/></td>
+                                            </tr>
+                                        </t>                                    
+                                    </t> 
+                                </tbody>
+                            </table>
+
+                            <p style="margin-top:15px;font-size:12px;color:#666;text-align:right;">
+                                Generado el <t t-esc="doc.create_date.strftime('%d-%m-%Y')"/>
+                            </p>
+                        </div>
+                    </t><!--Fin layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html container-->
+        </template>
+    </data>
+</odoo>
