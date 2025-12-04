@@ -117,6 +117,7 @@
                                 <label for="physician_id" string="Optometra" attrs="{'invisible':[('project_id','!=',False)]}"/>
                                 <field name="physician_id" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}" domain="[('reception_ids','in',reception_id)]"/>
                                 <field name="employee_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="supplier_code"/>
                             </group>
                             <group>
                                 <field name="its_own_frame" widget="boolean_toogle"/>
