@@ -63,7 +63,7 @@ class SalesSummary(models.TransientModel):
                 partner = sale['partner_id'][0] if sale['partner_id'] else False
                 order_count = sale['partner_id_count']
 
-                order_ids = SaleOrder.search([('partner_id', '=', partner)]).ids
+                order_ids = sales.search([('partner_id', '=', partner)]).ids
                 OrderLine = self.env['sale.order.line']
                 lines_data = OrderLine.read_group(
                     [('order_id', 'in', order_ids), ('product_id.categ_id.show_optic', '=', True)],
