@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Datos exclusivos LOMED El Salvador-->
+        <!--Etiquetas Padre-->
+        <record id="missing_information_tag" model="helpdesk.tag">
+            <field name="name">FALTA DE INFORMACIÓN</field>
+            <field name="is_parent">True</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="damaged_frame_tag" model="helpdesk.tag">
+            <field name="name">ARO EN MAL ESTADO</field>
+            <field name="is_parent">True</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="technical_imposibility_tag" model="helpdesk.tag">
+            <field name="name">IMPOSIBILIDAD TÉCNICA</field>
+            <field name="is_parent">True</field>
+            <field name="color">10</field>
+        </record>
+
+        <!--Etiquetas complementarias-->
+        <record id="prescription_incomplete_tag" model="helpdesk.tag">
+            <field name="name">Receta incompleta</field>
+            <field name="parent_tag_id" ref="missing_information_tag"/>
+            <field name="color">1</field>
+        </record>
+
+        <record id="system_data_tag" model="helpdesk.tag">
+            <field name="name">Datos en sistema</field>
+            <field name="parent_tag_id" ref="missing_information_tag"/>
+            <field name="color">4</field>
+        </record>
+
+        <record id="inconsistency_tag" model="helpdesk.tag">
+            <field name="name">Inconsistencia</field>
+            <field name="parent_tag_id" ref="missing_information_tag"/>
+            <field name="color">7</field>
+        </record>
+
+        <record id="label_in_odoo_tag" model="helpdesk.tag">
+            <field name="name">Con viñeta en Odoo</field>
+            <field name="parent_tag_id" ref="missing_information_tag"/>
+            <field name="color">10</field>
+        </record>
+
+        <record id="corridor_tag" model="helpdesk.tag">
+            <field name="name">Corredores</field>
+            <field name="parent_tag_id" ref="missing_information_tag"/>
+            <field name="color">2</field>
+        </record>
+
+        <record id="frame_defect_tag" model="helpdesk.tag">
+            <field name="name">Receta incompleta</field>
+            <field name="parent_tag_id" ref="damaged_frame_tag"/>
+            <field name="color">1</field>
+        </record>
+
+        <record id="frame_defect_tag" model="helpdesk.tag">
+            <field name="name">Aro con defecto</field>
+            <field name="parent_tag_id" ref="damaged_frame_tag"/>
+            <field name="color">2</field>
+        </record>
+
+        <record id="frame_paint_removal_tag" model="helpdesk.tag">
+            <field name="name">Aro con despinte</field>
+            <field name="parent_tag_id" ref="damaged_frame_tag"/>
+            <field name="color">5</field>
+        </record>
+
+        <record id="frame_cristalized_tag" model="helpdesk.tag">
+            <field name="name">Aro cristalizado</field>
+            <field name="parent_tag_id" ref="damaged_frame_tag"/>
+            <field name="color">8</field>
+        </record>
+
+        <record id="frame_other_damage_tag" model="helpdesk.tag">
+            <field name="name">Aro con detalles</field>
+            <field name="parent_tag_id" ref="damaged_frame_tag"/>
+            <field name="color">11</field>
+        </record>
+
+        <record id="out_material_tag" model="helpdesk.tag">
+            <field name="name">Material agotado</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">3</field>
+        </record>
+
+        <record id="frame_diameter_tag" model="helpdesk.tag">
+            <field name="name">Diametro del aro</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">6</field>
+        </record>
+
+        <record id="material_not_available_tag" model="helpdesk.tag">
+            <field name="name">Material no disponible</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">9</field>
+        </record>
+
+        <record id="exceeds_power_tag" model="helpdesk.tag">
+            <field name="name">Excede graduación</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">1</field>
+        </record>
+
+        <record id="frame_not_suitable_tag" model="helpdesk.tag">
+            <field name="name">Aro no adecuado</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">3</field>
+        </record>
+
+        <record id="client_required_material_tag" model="helpdesk.tag">
+            <field name="name">Base solicitada</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">6</field>
+        </record>
+
+        <record id="material_not_suitable_tag" model="helpdesk.tag">
+            <field name="name">Material no adecuado</field>
+            <field name="parent_tag_id" ref="technical_imposibility_tag"/>
+            <field name="color">9</field>
+        </record>
+    </data>
+</odoo>

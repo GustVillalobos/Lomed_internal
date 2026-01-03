@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Accion de ventana categorias padre-->
+        <record model="ir.actions.act_window" id="parent_tag_action">
+            <field name="name">Categorias padre</field>
+            <field name="res_model">helpdesk.tag</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('is_parent','=',True)]</field>
+            <field name="context">{'default_is_parent':True}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Categorias padre</p>
+            </field>
+        </record>
+
+        <!--Menú cateogrias padre-->
+        <menuitem id="parent_tag_menu"
+        parent="helpdesk.helpdesk_menu_config" 
+        name="Categorías padre" 
+        action="parent_tag_action" 
+        sequence="16"/>
+
+        <!--Vista heredada categorias-->
+        <record id="helpdesk_tag_inherited_form" model="ir.ui.view">
+            <field name="name">helpdesk_tag_inherited_form</field>
+            <field name="model">helpdesk.tag</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_tag_view_tree"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='name']" position="after">
+                        <field name="is_parent" invisible="1"/>
+                        <field name="parent_id" attrs="{'readonly':[('is_parent','=',True)]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada formulario tickets-->
+        <record id="helpdesk_ticket_inherited_form" model="ir.ui.view">
+            <field name="name">helpdesk_ticket_inherited_form</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='tag_ids']" position="before">
+                        <field name="parent_tag_id" required="1"/>
+                    </xpath>
+                    <xpath expr="//field[@name='tag_ids']" position="attributes">
+                        <attribute name="domain">[('parent_id','=',parent_tag_id),('active','=',True)]</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
