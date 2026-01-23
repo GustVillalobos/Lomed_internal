@@ -16,13 +16,13 @@ class HelpdeskTagSv(models.Model):
     _inherit = 'helpdesk.tag'
 
     is_parent = fields.Boolean("Categoria padre")
-    parent_id = fields.Many2one(comodel_name='helpdesk.tag',string="Categoria padre",domain="[('is_parent','=',True),('active','=',True)]")
+    parent_id = fields.Many2one(comodel_name='helpdesk.tag',string="Categoria padre",domain="[('is_parent','=',True)]")
 
 class HelpdeskTicketSv(models.Model):
     _inherit = 'helpdesk.ticket'
 
     code = fields.Char("Código",readonly=True)
-    parent_tag_id = fields.Many2one(comodel_name='helpdesk.tag',string="Categoria padre",domain="[('is_parent','=',True),('active','=',True)]")
+    parent_tag_id = fields.Many2one(comodel_name='helpdesk.tag',string="Categoria padre",domain="[('is_parent','=',True)]")
     ticket_type = fields.Selection([
         ('Reclamo','Reclamo'),
         ('Consulta','Consulta')
