@@ -50,7 +50,7 @@
                         <field name="parent_tag_id" required="1"/>
                     </xpath>
                     <xpath expr="//field[@name='tag_ids']" position="attributes">
-                        <attribute name="domain">[('parent_id','=',parent_tag_id),('active','=',True)]</attribute>
+                        <attribute name="domain">[('parent_id','=',parent_tag_id)]</attribute>
                     </xpath>
                 </data>
             </field>
