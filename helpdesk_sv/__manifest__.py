@@ -19,7 +19,7 @@
     'version': '16.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','helpdesk'],
+    'depends': ['base','helpdesk','sale'],
 
     # always loaded
     'data': [
