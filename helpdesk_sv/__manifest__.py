@@ -25,7 +25,7 @@
     'data': [
         'views/views.xml',
         'data/data.xml',
-        'views/sequence.xml',
+        'data/sequence.xml',
     ],
     'images':['static/description/icon.png'],
     'license':'LGPL-3',
