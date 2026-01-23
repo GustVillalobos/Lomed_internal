@@ -43,11 +43,39 @@
             <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
             <field name="arch" type="xml">
                 <data>
+                    <xpath expr="//field[@name='user_id']" position="before">
+                        <field name="code" attrs="{'invisible':[('code','=',False)]}"/>
+                    </xpath>
                     <xpath expr="//field[@name='tag_ids']" position="before">
                         <field name="parent_tag_id" required="1"/>
                     </xpath>
                     <xpath expr="//field[@name='tag_ids']" position="attributes">
                         <attribute name="domain">[('parent_id','=',parent_tag_id),('active','=',True)]</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredad orden de venta-->
+        <record id="helpdesk_sale_order_form_view" model="ir.ui.view">
+            <field name="name">helpdesk_sale_order_form_view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook" position="inside">
+                        <page name="helpdesk_ticket_lines" string="Consultas y reclamos">
+                            <field name="ticket_ids" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="ticket_type"/>
+                                    <field name="priority" widget="priority"/>
+                                    <field name="stage_id"/>
+                                </tree>
+                            </field>
+                        </page>
                     </xpath>
                 </data>
             </field>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Secuencias de códigos de tickets-->
+         <record id="consultation_sequence" model="ir.sequence">
+            <field name="name">Secuencia tickets de consulta</field>
+            <field name="code">CSTT</field>
+            <field name="prefix">T01-</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <record id="claim_sequence" model="ir.sequence">
+            <field name="name">Secuencia tickets de reclamo</field>
+            <field name="code">CLMT</field>
+            <field name="prefix">T02-</field>
+            <field name="padding">6</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>
