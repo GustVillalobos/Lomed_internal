@@ -53,12 +53,6 @@
         </record>
 
         <record id="frame_defect_tag" model="helpdesk.tag">
-            <field name="name">Receta incompleta</field>
-            <field name="parent_id" ref="damaged_frame_tag"/>
-            <field name="color">1</field>
-        </record>
-
-        <record id="frame_defect_tag" model="helpdesk.tag">
             <field name="name">Aro con defecto</field>
             <field name="parent_id" ref="damaged_frame_tag"/>
             <field name="color">2</field>
