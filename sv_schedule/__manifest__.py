@@ -23,10 +23,10 @@
 
     # always loaded
     'data': [
+        'data/data.xml',
         'views/views.xml',
         'security/ir.model.access.csv',
         'report/report_wizard_attendance.xml',
-        'data/data.xml',
     ],
     'images':[],
     'license':'LGPL-3',
