@@ -1,1 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hr_report_wizard_all,hr_report_wizard_all,model_report_wizard_attendance,base.group_user,1,0,0,0
+hr_report_wizard_usr,hr_report_wizard_usr,model_report_wizard_attendance,hr_attendance.group_hr_attendance_user,1,1,1,0
+hr_report_wizard_adm,hr_report_wizard_adm,model_report_wizard_attendance,hr_attendance.group_hr_attendance_manager,1,1,1,0
+hr_report_wizard_sys,hr_report_wizard_sys,model_report_wizard_attendance,base.group_system,1,1,1,1

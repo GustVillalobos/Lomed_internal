@@ -3,11 +3,11 @@
     <data>
         <!--Accion programada-->
         <record id="restart_remaining_time" model="ir.cron">
-          <field name="name">Reestablecer tiempo restante</field>
+          <field name="name">Actualizar horario y tolerancia</field>
           <field name="model_id" ref="hr.model_hr_employee"/>
           <field name="user_id" ref="base.user_root"/>
           <field name="state">code</field>
-          <field name="code">model._reset_remaining()</field>
+          <field name="code">model._update_employee_schedule()</field>
           <field name="interval_number">1</field>
           <field name="interval_type">weeks</field>
           <field name="numbercall">-1</field>
@@ -23,15 +23,60 @@
           <field name="state">code</field>
           <field name="code">model._close_attendance()</field>
           <field name="interval_number">1</field>
-          <field name="interval_type">weeks</field>
+          <field name="interval_type">days</field>
           <field name="numbercall">-1</field>
           <field name="doall" eval="False"/>
           <field name="active" eval="True"/>
         </record>
 
+         <!--Accion programada-->
+        <record id="verify_absence_holiday" model="ir.cron">
+          <field name="name">Verificar asuetos y ausencias</field>
+          <field name="model_id" ref="hr.model_hr_employee"/>
+          <field name="user_id" ref="base.user_root"/>
+          <field name="state">code</field>
+          <field name="code">model._verify_attendance()</field>
+          <field name="interval_number">1</field>
+          <field name="interval_type">days</field>
+          <field name="numbercall">-1</field>
+          <field name="doall" eval="False"/>
+          <field name="active" eval="True"/>
+        </record>
+
+        <!--Quitar _sv for enterprise-->
         <record id="input_other_absence" model="hr.payslip.input.type">
             <field name="name">Otras ausencias</field>
             <field name="code">absence</field>
+        </record>
+
+        <!--Creando tipos de ausencia ausencia injustificada-->
+        <record id="unjustify_absence_leavetype" model="hr.leave.type">
+          <field name="name">Ausencia injustificada</field>
+          <field name="request_unit">day</field>
+          <field name="time_type">leave</field>
+          <field name="leave_validation_type">no_validation</field>
+          <field name="requires_allocation">no</field>
+          <field name="color">1</field>
+        </record>
+
+        <!--Creando tipos de ausencia Con permiso-->
+        <record id="justify_absence_leavetype" model="hr.leave.type">
+          <field name="name">Ausencia con permiso</field>
+          <field name="request_unit">day</field>
+          <field name="time_type">leave</field>
+          <field name="leave_validation_type">hr</field>
+          <field name="requires_allocation">no</field>
+          <field name="color">3</field>
+        </record>
+
+        <!--Creando tipos de ausencia enfermedad-->
+        <record id="sickness_leavetype" model="hr.leave.type">
+          <field name="name">Incapacidad</field>
+          <field name="request_unit">day</field>
+          <field name="time_type">leave</field>
+          <field name="leave_validation_type">hr</field>
+          <field name="requires_allocation">no</field>
+          <field name="color">5</field>
         </record>
     </data>
 </odoo>

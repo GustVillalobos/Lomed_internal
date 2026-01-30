@@ -23,7 +23,6 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//tree" position="inside">
-                        <!--<field name="type"/>-->
                         <field name="enable_rep_time" widget="boolean_toggle"/>
                     </xpath>
                 </data>
@@ -39,6 +38,7 @@
                 <data>
                     <xpath expr="//field[@name='tz']" position="after">
                         <field name="remaining" widget="float_time"/>
+                        <field name="schedule_template_id"/>
                     </xpath>
                     <xpath expr="//group[@name='payroll_group']" position="inside">
                         <field name="ignore_attendance" widget="boolean_toggle"/>
@@ -58,6 +58,20 @@
                         <field name="unworked_time" widget="float_time" readonly="1"/>
                         <field name="replacement_time" widget="float_time"  force_save="1" readonly="1"/>
                     </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista heredada para hr.leave-->
+        <record id="schedule_hr_leave_type_form_view" model="ir.ui.view">
+            <field name="name">schedule_hr_leave_type_form_view</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//field[@name='holiday_status_id']" position="after">
+                        <field name="inability_type" widget="radio"  attrs="{'invisible':[('holiday_status_id','!=',%(sv_schedule.sickness_leavetype)d)],'required':[('holiday_status_id','=',%(sv_schedule.sickness_leavetype)d)]}"/>
+                   </xpath>
                 </data>
             </field>
         </record>

@@ -1,0 +1,126 @@
+<odoo>
+    <data>
+      <!--Window action for report Wizard-->
+      <record model="ir.actions.act_window" id="attendance_report_wizard_action">
+          <field name="name">Gerenerar informe de asistencia</field>
+          <field name="res_model">report.wizard.attendance</field>
+          <field name="view_mode">form</field>
+          <field name="context">{}</field>
+          <field name="target">new</field>
+      </record>
+
+      <!--Elemento de menú para informes-->
+      <record id="attendance_report_wizard" model="ir.ui.menu">
+        <field name="name">Informes asistencia</field>
+        <field name="parent_id" ref="hr_attendance.menu_hr_attendance_root"/>
+        <field name="sequence">20</field>
+        <field name="action" ref="sv_schedule.attendance_report_wizard_action"/>
+      </record>
+
+       <!--Form view for wizard-->
+        <record model='ir.ui.view' id="wizard_report_form_view">
+            <field name="name">wizard_report_form_view</field>
+            <field name="model">report.wizard.attendance</field>
+            <field name="arch" type="xml">
+                <form string="Resumen de ventas">
+                    <div class="oe_title">
+                        <h1 class="mt0">
+                            <field name="name" placeholder="Titulo del informe" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="report_type"/>
+                        <field name="employee_ids" widget="many2many_tags"/>
+                        <label for="date_from" string="Periodo"/>
+                        <div>
+                            <field name="date_from" class="oe_inline"/> - <field name="date_to" class="oe_inline"/>
+                        </div>
+
+                    </group>
+                    <footer>
+                        <button name="action_print_report" string="Imprimir" class="btn-primary" type="object"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form> 
+            </field>
+        </record>
+
+        <!--Informe de asistencia-->
+        <record id="attendance_report_action" model="ir.actions.report">
+            <field name="model">report.wizard.attendance</field>
+            <field name="name">Reporte de asistencia</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sv_schedule.attendance_report_template</field>
+            <field name="report_file">sv_schedule.attendance_report_template</field>
+            <!--<field name="paperformat_id" ref="report.paper_a4_clean"/>-->
+        </record>
+
+        <template id="attendance_report_template">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style type="text/css">
+                            </style>
+                            <!--Variables Globales-->
+                            <t t-set="data" t-value="o.get_attendance_data()"/> 
+                            <!--Encabezado-->
+                            <div class="row">
+                                <div class="col-3 center">
+                                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 85px;"/>
+                                </div>
+                                <div class="col-5">
+                                    <p><h4><strong><span t-esc="company.name"/></strong></h4>
+                                    <span t-esc="o.name"/></p>
+                                </div>
+                                <div class="col-2">
+                                    <p style="font-size:11px"><b>Fecha de generación: </b>
+                                    <br/><span t-esc="(o.create_date - datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    </p>
+                                </div>
+                                <div class="col-2 center">
+                                    
+                                </div>
+                            </div><!--Fin encabezado-->
+                            <strong>Generado por:</strong> <t t-esc="o.env.user.name"/><br/>
+                            <strong>Periodo evaluado:</strong>
+                                <strong><span>Del</span></strong>
+                                <t t-esc="o.date_from.strftime('%d-%m-%Y')"/> <strong><span>al</span></strong> <t t-esc="o.date_to.strftime('%d-%m-%Y')"/><br/>
+                            <strong>Tipo:</strong> <span t-field="o.report_type"/><br/>
+
+                            <table class="table table-sm o_main_table" style="width:100%;border-collapse:collapse;">
+                                <thead>
+                                    <tr>
+                                        <th>Entrada</th>
+                                        <th>Salida</th>
+                                        <th>Trabajado</th>
+                                        <th>Llegada tarde</th>
+                                        <th>Tiempo de reposición</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <t t-foreach="data['employee_list']" t-as="emp">
+                                        <tr>
+                                            <td colspan="5" style="text-align:center"><span t-esc="emp.get('name')"/></td>
+                                        </tr>
+                                        <t t-foreach="emp['attendance']" t-as="a">
+                                            <tr>
+                                                <td><span t-esc="a.get('check_in')"/></td>
+                                                <td><span t-esc="a.get('check_out')"/></td>
+                                                <td><span t-esc="a.get('worked_hours')"/></td>
+                                                <td><span t-esc="a.get('unworked_time')"/></td>
+                                                <td><span t-esc="a.get('replacement_time')"/></td>
+                                            </tr>
+                                        </t>
+                                    </t> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </t><!--Fin layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html container-->
+        </template>
+    </data>
+</odoo>
