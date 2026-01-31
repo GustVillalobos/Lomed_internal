@@ -66,6 +66,7 @@ class ReportWizardAttendance(models.TransientModel):
                     "name":emp.name,
                     "code":emp.barcode,
                     "total_late_records":0,
+                    "total_worked_time":0,
                     "total_unworked_time":0,
                     "total_replacement_time":0,
                     "attendance":[],
@@ -78,11 +79,12 @@ class ReportWizardAttendance(models.TransientModel):
             
             employee_map[emp.id]['total_unworked_time'] += att.unworked_time or 0.0
             employee_map[emp.id]['total_replacement_time'] += att.replacement_time or 0.0
+            employee_map[emp.id]['total_worked_time'] += att.worked_hours or 0.0
 
             employee_map[emp.id]['attendance'].append({
-                "attendance_date":check_in_local.strftime("%d-%m-%Y"),
-                "check_in":check_in_local.strftime("%d-%m-%Y %H:%M:%S"),
-                "check_out":check_out_local.strftime("%d-%m-%Y %H:%M:%S"),
+                "attendance_date":check_in_local.strftime("%d-%m-%Y") if check_in_local else '',
+                "check_in":check_in_local.strftime("%d-%m-%Y %H:%M:%S") if check_in_local else '',
+                "check_out":check_out_local.strftime("%d-%m-%Y %H:%M:%S") if check_out_local else '',
                 "worked_hours":self._format_hours(att.worked_hours),
                 "unworked_time":self._format_hours(att.unworked_time),
                 "replacement_time":self._format_hours(att.replacement_time),
@@ -91,6 +93,9 @@ class ReportWizardAttendance(models.TransientModel):
         for emp_data in employee_map.values():
             emp_data['total_unworked_time'] = self._format_hours(emp_data['total_unworked_time'])
             emp_data['total_replacement_time'] = self._format_hours(emp_data['total_replacement_time'])
+            overtime = emp_data['total_worked_time'] - 96 if (emp_data['total_worked_time'] - 96) > 0 else 0
+            emp_data['overtime_calculated'] = self._format_hours(overtime)
+            emp_data['total_worked_time'] = self._format_hours(emp_data['total_worked_time'])
 
         json_data = {"employee_list":list(employee_map.values())}
         #_logger.info(str(json_data))

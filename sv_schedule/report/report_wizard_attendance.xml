@@ -62,6 +62,46 @@
                     <t t-call="web.basic_layout">
                         <div class="page">
                             <style type="text/css">
+                                thead tr th{
+                                    border:1px solid black;
+                                    color:#fff;
+                                    font-size:12px; 
+                                    text-align:center;
+                                    vertical-align: middle;
+                                    }
+                                thead{
+                                    border:1px solid black; 
+                                    background-color:#1d195c;
+                                    color:#fff
+                                    }
+                                 tbody tr{
+                                    border:1px solid black; 
+                                    }
+                                tbody tr td{
+                                    border:1px solid black; 
+                                    font-size:11px;
+                                    text-align:left;
+                                    vertical-align: middle;
+                                    }
+                                .footer-list{
+                                    border:1px solid black; 
+                                    background-color:#1d195c;
+                                    color:#fff
+                                }
+                                .footer-list td{
+                                    border:1px solid black; 
+                                    font-size:12px; 
+                                    text-align:center;
+                                    vertical-align: middle;
+                                }
+                                .subtitle-name {
+                                    border:0.3px solid black; 
+                                    font-size:9px;
+                                    background-color:#c2e0f2;
+                                    }
+                                .client-name td{
+                                    text-align:center
+                                    }
                             </style>
                             <!--Variables Globales-->
                             <t t-set="data" t-value="o.get_attendance_data()"/> 
@@ -70,7 +110,7 @@
                                 <div class="col-3 center">
                                     <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 85px;"/>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-7">
                                     <p><h4><strong><span t-esc="company.name"/></strong></h4>
                                     <span t-esc="o.name"/></p>
                                 </div>
@@ -79,44 +119,55 @@
                                     <br/><span t-esc="(o.create_date - datetime.timedelta(hours=6)).strftime('%d-%m-%Y %H:%M:%S')"/>
                                     </p>
                                 </div>
-                                <div class="col-2 center">
-                                    
-                                </div>
                             </div><!--Fin encabezado-->
                             <strong>Generado por:</strong> <t t-esc="o.env.user.name"/><br/>
                             <strong>Periodo evaluado:</strong>
                                 <strong><span>Del</span></strong>
                                 <t t-esc="o.date_from.strftime('%d-%m-%Y')"/> <strong><span>al</span></strong> <t t-esc="o.date_to.strftime('%d-%m-%Y')"/><br/>
                             <strong>Tipo:</strong> <span t-field="o.report_type"/><br/>
-
-                            <table class="table table-sm o_main_table" style="width:100%;border-collapse:collapse;">
-                                <thead>
-                                    <tr>
-                                        <th>Entrada</th>
-                                        <th>Salida</th>
-                                        <th>Trabajado</th>
-                                        <th>Llegada tarde</th>
-                                        <th>Tiempo de reposición</th>
-                                    </tr>
-                                </thead>
-                                
-                                <tbody>
-                                    <t t-foreach="data['employee_list']" t-as="emp">
-                                        <tr>
-                                            <td colspan="5" style="text-align:center"><span t-esc="emp.get('name')"/></td>
-                                        </tr>
-                                        <t t-foreach="emp['attendance']" t-as="a">
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-10">
+                                    <table class="table table-sm o_main_table" style="width:100%;border-collapse:collapse;">
+                                        <thead>
                                             <tr>
-                                                <td><span t-esc="a.get('check_in')"/></td>
-                                                <td><span t-esc="a.get('check_out')"/></td>
-                                                <td><span t-esc="a.get('worked_hours')"/></td>
-                                                <td><span t-esc="a.get('unworked_time')"/></td>
-                                                <td><span t-esc="a.get('replacement_time')"/></td>
+                                                <th>Entrada</th>
+                                                <th>Salida</th>
+                                                <th>Trabajado</th>
+                                                <th>Llegada tarde</th>
+                                                <th>Tiempo de reposición</th>
                                             </tr>
-                                        </t>
-                                    </t> 
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            <t t-foreach="data['employee_list']" t-as="emp">
+                                                <tr class="subtitle-name">
+                                                    <td colspan="5" style="text-align:center"><span t-esc="emp.get('name')"/></td>
+                                                </tr>
+                                                <t t-foreach="emp['attendance']" t-as="a">
+                                                    <tr>
+                                                        <td><span t-esc="a.get('check_in')"/></td>
+                                                        <td><span t-esc="a.get('check_out')"/></td>
+                                                        <td><span t-esc="a.get('worked_hours')"/></td>
+                                                        <td><span t-esc="a.get('unworked_time')"/></td>
+                                                        <td><span t-esc="a.get('replacement_time')"/></td>
+                                                    </tr>
+                                                </t>
+                                                <tr class="footer-list">
+                                                    <td colspan="2"><b>Totales</b></td>
+                                                    <td><b><span t-esc="emp.get('total_worked_time')"/></b></td>
+                                                    <td><b><span t-esc="emp.get('total_unworked_time')"/></b></td>
+                                                    <td><b><span t-esc="emp.get('total_replacement_time')"/></b></td>
+                                                </tr>
+                                                <tr class="footer-list">
+                                                    <td colspan="4"><b>Total horas extra registradas</b></td>
+                                                    <td><b><span t-esc="emp.get('overtime_calculated')"/></b></td>
+                                                </tr>
+                                            </t> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </t><!--Fin layout-->
                 </t><!--Fin ciclo docs-->
