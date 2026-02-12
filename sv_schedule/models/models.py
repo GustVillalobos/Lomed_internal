@@ -126,43 +126,41 @@ class sv_hr_attendance(models.Model):
     ],default='normal',string="Tipo salida")
     is_holiday = fields.Boolean("Es asueto")
 
-    @api.model
-    def create(self,vals):
-        if 'check_in' in vals:
-            res = 0
-            rem = 0
-            #capture info
-            tz = pytz.timezone(self.env.user.tz or 'UTC')
-            check_in = False
-            if isinstance(vals.get('check_in'),datetime):
-                check_in = vals.get('check_in')
-            else:
-                check_in = datetime.strptime(vals.get('check_in'),'%Y-%m-%d %H:%M:%S')
-            check_in_utc = pytz.utc.localize(check_in)
-            check_in_locale = check_in_utc.astimezone(tz)
-            day = check_in_locale.weekday()
-            hour = check_in_locale.hour + (check_in_locale.minute/60)
-            employee = self.env['hr.employee'].browse(vals.get('employee_id'))
-            sh_d = employee.resource_calendar_id.attendance_ids.filtered(lambda t:t.dayofweek == str(day) and t.day_period == 'morning')
-            if hour > sh_d.hour_from and self.is_check_in(check_in,employee.id):
-                #_logger.info('Inicia calculo de llegada tarde')
-                res = hour - sh_d.hour_from
-                if employee.remaining >= res:
-                    rem = employee.remaining - res
-                    employee.remaining = rem
-                    #_logger.info(f'Menos de 10 minutos: {res}, Sobrante: {rem}')
-                    res = 0
-                elif employee.remaining < res:
-                    res = res - employee.remaining
-                    employee.remaining = rem
-                    #_logger.info(f'Más de 10 minutos: {res}, Sobrante: {rem}')
-            vals['unworked_time'] = res
-            try:
-                #_logger.info(str(vals))
-                attendance = super(sv_hr_attendance,self).create(vals)
-            except Exception as e:
-                raise ValidationError("Error encontrado: "+str(e))
-            return attendance
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            if 'check_in' in vals:
+                res = 0
+                rem = 0
+                #capture info
+                tz = pytz.timezone(self.env.user.tz or 'UTC')
+                check_in = False
+                if isinstance(vals.get('check_in'),datetime):
+                    check_in = vals.get('check_in')
+                else:
+                    check_in = datetime.strptime(vals.get('check_in'),'%Y-%m-%d %H:%M:%S')
+                check_in_utc = pytz.utc.localize(check_in)
+                check_in_locale = check_in_utc.astimezone(tz)
+                day = check_in_locale.weekday()
+                hour = check_in_locale.hour + (check_in_locale.minute/60)
+                employee = self.env['hr.employee'].browse(vals.get('employee_id'))
+                sh_d = employee.resource_calendar_id.attendance_ids.filtered(lambda t:t.dayofweek == str(day) and t.day_period == 'morning')
+                if sh_d and hour > sh_d.hour_from and self.is_check_in(check_in,employee.id):
+                    #_logger.info('Inicia calculo de llegada tarde')
+                    res = hour - sh_d.hour_from
+                    if employee.remaining >= res:
+                        rem = employee.remaining - res
+                        employee.remaining = rem
+                        #_logger.info(f'Menos de 10 minutos: {res}, Sobrante: {rem}')
+                        res = 0
+                    elif employee.remaining < res:
+                        res = res - employee.remaining
+                        employee.remaining = rem
+                        #_logger.info(f'Más de 10 minutos: {res}, Sobrante: {rem}')
+                vals['unworked_time'] = res
+
+        attendance = super().create(vals_list)
+        return attendance
 
     def is_check_in(self,check_in,employee):
         tz = pytz.timezone(self.env.user.tz)
