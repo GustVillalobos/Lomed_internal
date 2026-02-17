@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="tax_mapping_inherited_form_view" model="ir.ui.view">
+            <field name="name">tax_mapping_inherited_form_view</field>
+            <field name="model">lsv.fiscal.document</field>
+            <field name="inherit_id" ref="sv_location.lsv_fiscal_document_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//sheet/group/group[1]" position="inside">
+                        <field name="sale_tax_id" groups="sv_location.lsv_register_cash_admin"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>-->
+
+        <record id="tax_mapping_inherited_form_view" model="ir.ui.view">
+            <field name="name">tax_mapping_inherited_form_view</field>
+            <field name="model">odoosv.fiscal.document</field>
+            <field name="inherit_id" ref="sv_accounting.odoosv_fiscal_document_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//sheet/group" position="inside">
+                        <field name="sale_tax_id"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+discount_rule_all,discount_rule_all,model_partner_discount_rules,base.group_user,1,0,0,0
+discount_rule_usr,discount_rule_usr,model_partner_discount_rules,discount_rule.group_discount_rule,1,1,1,0
+discount_rule_adm,discount_rule_adm,model_partner_discount_rules,base.group_system,1,1,1,1

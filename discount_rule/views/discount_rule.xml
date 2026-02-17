@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Window action for partner.discount.rules-->
+        <record id="discount_rule_action" model="ir.actions.act_window">
+            <field name="name">Reglas descuento</field>
+            <field name="res_model">partner.discount.rules</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Reglas de descuento</p>
+            </field>
+        </record>
+
+        <!--Menu item for partner.discount.rules-->
+        <menuitem 
+        id="discount_rule_partner_menu" 
+        name="Reglas de descuento"
+        action="discount_rule_action"
+        parent="contacts.res_partner_menu_config"
+        sequence="25"
+        groups='base.group_system,discount_rule.group_discount_rule'
+        />
+
+        <menuitem 
+        id="discount_rule_sale_menu" 
+        name="Reglas de descuento"
+        action="discount_rule_action"
+        parent="sale.product_menu_catalog"
+        sequence="35"
+        groups='base.group_system,discount_rule.group_discount_rule'
+        />
+
+        <!--List view for partner.discount.rules-->
+        <record model="ir.ui.view" id="discount_rule_list_view">
+            <field name="name">discount_rule_list_view</field>
+            <field name="model">partner.discount.rules</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="discount"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Form view for partner.discount.rules-->
+        <record id="discount_rule_form_view" model="ir.ui.view">
+            <field name="name">discount_rule_form_view</field>
+            <field name="model">partner.discount.rules</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <!--Invisible fields-->
+                        <field name="active" invisible="1"/>
+                        <widget name="web_ribbon" title="Inactivo" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
+                        <label for="name" string="Nombre de grupo"/>
+                        <div class="mt0 oe_title">
+                            <h1><field name="name" placeholder="Nombre de la regla..."/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="priority"/>
+                                <field name="application_range"/>
+                                <field name="product_ids" widget="many2many_tags" attrs="{'invisible':[('application_range','!=','product')],'required':[('application_range','=','product')]}"/>
+                                <field name="category_ids" widget="many2many_tags" attrs="{'invisible':[('application_range','!=','category')],'required':[('application_range','=','category')]}"/>
+                            </group>
+                            <group>
+                                <field name="discount"/>
+                                <label for="date_start" string="Periodo"/>
+                                <div class="o_row">
+                                    <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/> 
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

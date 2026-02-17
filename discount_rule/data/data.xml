@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_discount_rule" model="res.groups">
+            <field name="name">Crear reglas de descuento</field>
+        </record>
+    </data>
+</odoo>
