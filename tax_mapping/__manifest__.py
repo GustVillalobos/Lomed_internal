@@ -19,8 +19,9 @@
     'version': '16.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sv_location','base_accounting_kit','account'],
-    #Cambiar: 'base','account','account_accountant','sv_accounting'
+    'depends': ['base','account','account_accountant','sv_accounting'],
+    #Cambiar: ['base','account','account_accountant','sv_accounting'],['base','sv_location','base_accounting_kit','account']
+    
 
     # always loaded
     'data': [
