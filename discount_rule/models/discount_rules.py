@@ -54,9 +54,9 @@ class DiscountRulesSv(models.Model):
     @api.constrains('discount')
     def _check_discount_range(self):
         for rule in self:
-            if rule.discount < 0 or rule.discount > 100:
+            if rule.discount <= 0 or rule.discount > 100:
                 raise ValidationError(
-                    "El descuento debe estar entre 0 y 100."
+                    "El descuento debe estar entre 0.01 y 100."
                 )
 
     @api.constrains('application_range', 'product_ids', 'category_ids')

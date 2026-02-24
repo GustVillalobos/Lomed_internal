@@ -57,7 +57,7 @@
                         <widget name="web_ribbon" title="Inactivo" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
                         <label for="name" string="Nombre de grupo"/>
                         <div class="mt0 oe_title">
-                            <h1><field name="name" placeholder="Nombre de la regla..."/></h1>
+                            <h1><field name="name" placeholder="Nombre de la regla..." required="1"/></h1>
                         </div>
                         <group>
                             <group>
@@ -71,7 +71,7 @@
                                 <field name="discount"/>
                                 <label for="date_start" string="Periodo"/>
                                 <div class="o_row">
-                                    <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/> 
+                                    <field name="date_start" required="1" class="oe_inline"/> - <field name="date_end" class="oe_inline"/> 
                                 </div>
                             </group>
                         </group>
