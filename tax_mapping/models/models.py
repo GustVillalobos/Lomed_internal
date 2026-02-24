@@ -22,6 +22,9 @@ class TaxMappingAccountMove(models.Model):
 
     def _apply_fiscal_document_taxes(self):
         for move in self:
+            if move.move_type != 'out_invoice':
+                continue
+            
             if move.state != 'draft':
                 continue
             
