@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--inherited form: account.asset.asset-->
+        <!--<record id="asset_aditional_form_view" model="ir.ui.view">
+            <field name="name">asset_aditional_form_view</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="base_accounting_kit.view_account_asset_asset_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//sheet/group/group[1]" position="inside">
+                        <field name="barcode" readonly="1"/>
+                        <field name="label" invisible="1"/>
+                        <field name="responsible"/>
+                        <field name="area"/>
+                        <field name="note"/>
+                    </xpath>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="action_create_barcode" type="object" icon="fa-cube" string="Asignar código"/>
+                        <button name="print_label" string="imprimir" icon="fa-print" type="object" attrs="{'invisible':['|',('barcode','=',False),('label','=',False)]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>-->
+
+        <!--inherited form: account.asset-->
+        <record id="asset_aditional_form_view" model="ir.ui.view">
+            <field name="name">asset_aditional_form_view</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='model_id']" position="after">
+                        <field name="barcode" readonly="1"/>
+                        <field name="label" invisible="1"/>
+                    </xpath>
+                    <xpath expr="//field[@name='prorata_date']" position="after">
+                        <field name="sequence_id" attrs="{'invisible':[('state','!=','model')]}"/>
+                    </xpath>
+                    <xpath expr="//page[@name='main_page']/group" position="inside">
+                        <group string="Otros datos" name="sv_info" attrs="{'invisible':[('state','=','model')]}">
+                            <field name="responsible"/>
+                            <field name="area"/>
+                            <field name="note"/>
+                        </group>
+                    </xpath>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="action_create_barcode" type="object" icon="fa-cube" string="Asignar código"/>
+                        <button name="print_label" string="imprimir" icon="fa-print" type="object" attrs="{'invisible':['|',('barcode','=',False),('label','=',False)]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--inherited form: account.asset.category
+        <record id="asset_category_aditional_form_view" model="ir.ui.view">
+            <field name="name">asset_category_aditional_form_view</field>
+            <field name="model">account.asset.category</field>
+            <field name="inherit_id" ref="base_accounting_kit.view_account_asset_category_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//sheet/group/group[2]" position="inside">
+                        <field name="sequence_id"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>-->
+
+        <!--Accion de ventana asset.report.wizard-->
+        <record model="ir.actions.act_window" id="asset_report_wizard_action">
+            <field name="name">Reporte de activos</field>
+            <field name="res_model">assets.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--Elemento de menú asset.report.wizard-->
+        <!--account.menu_finance_entries_management,account.account_reports_management_menu-->
+        <menuitem id="asset_report_wizard_menu" 
+        parent="account.menu_finance_entries_management"
+        name="Informe de activos" 
+        action="asset_report_wizard_action" 
+        sequence="100"/>
+
+        <!--Form view for report wizard-->
+        <record id="asset_report_wizard_form_view" model="ir.ui.view">
+            <field name="name">asset_report_wizard_form_view</field>
+            <field name="model">assets.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Asset report">
+                    <sheet>
+                        <group string="Generar reporte de activo">
+                            <field name="month"/>
+                            <field name="year"/>
+                            <field name="include_all" widget="boolean_toggle"/>
+                        </group>
+                        <footer>
+                            <button name="action_print_report" type="object" string="Generar reporte" class="btn btn-primary"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

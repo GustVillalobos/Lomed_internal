@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+arw_all,arw_all,model_assets_report_wizard,base.group_user,1,0,0,0
+awr_sys,awr_sys,model_assets_report_wizard,base.group_system,1,1,1,1
+awr_usr,awr_usr,model_assets_report_wizard,account.group_account_manager,1,1,1,0

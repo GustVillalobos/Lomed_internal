@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Paper format Landscape-->
+        <record id="a4_landscape_clean" model="report.paperformat">
+            <field name="name">A4 Landscape Clean</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!--Report action Activos-->
+        <record model="ir.actions.report" id="assets_report_action">
+            <field name="name">Reporte de activos</field>
+            <field name="model">assets.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_file">assets_lomed.assets_report_view</field>
+            <field name="report_name">assets_lomed.assets_report_view</field>
+            <field name="paperformat_id" ref="assets_lomed.a4_landscape_clean"/>
+        </record>
+
+        <!--Vista para recibo de nómina 1-->
+        <template id="assets_report_view">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <!--Estilos CSS-->
+                        <style type="text/css">
+                        .table-report{
+                            width:100%;
+                            text-align:center;
+                            }
+                            .table-report tr td{
+                            font-size:11px;
+                            border:solid 1px black;
+                            height:10px;
+                            }
+                        </style>
+                            <!--Variables globales-->
+                            <t t-set="data" t-value="o.get_assets_list()"/>
+                            <t t-set="hoy" t-value="datetime.datetime.now()"/>
+                            <t t-set="month" t-value="data.get('report_month')"/>
+                            <t t-set="year" t-value="data.get('report_year')"/>
+                            <t t-set="include_all" t-value="data.get('include_all')"/>
+                            <t t-set="month_to_text" t-value="dict([('1','Enero'),('2','Febrero'),('3','Marzo'),('4','Abril'),('5','Mayo'),('6','Junio'),('7','Julio'),('8','Agosto'),('9','Septiembre'),('10','Octubre'),('11','Noviembre'),('12','Diciembre')])"/>
+                            <t t-set="asset_json" t-value="data.get('asset_json')"/>
+                            <!--Encabezado y fecha-->
+                            <div class="row">
+                                <div class="col-6">
+                                    <h2><span t-esc="company.name.upper()"/></h2>
+                                    <h2>REPORTE DE ACTIVOS FIJOS</h2>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table-sm table-report">
+                                        <tr>
+                                            <td>
+                                                <span>Corresponde a: </span>
+                                                <strong>
+                                                    <span t-esc="month_to_text[str(month)] +' del '+str(year)"/>
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>Incluye: </span>
+                                                <strong>
+                                                    <span t-if="include_all">Todos los activos registrados</span>
+                                                    <span t-if="not include_all">Activos en proceso</span>
+                                                </strong>
+                                            </td>
+                                            <td>
+                                            <span>Generado el: </span>
+                                                <strong><p t-esc="hoy.strftime('%d-%m-%Y %H:%M')"/></strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div><!--Fin encabezado y fecha-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <span>LISTADO DE ACTIVOS FIJOS</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-sm o_main_table">
+                                        <thead>
+                                            <tr>
+                                                <th>Modelo del activo</th>
+                                                <th>Fecha de adquisición</th>
+                                                <th>Nombre del activo</th>
+                                                <th>% Depreciación</th>
+                                                <th>Valor adquisición</th>
+                                                <th>Depreciación acumulada inicial</th>
+                                                <th>Cuota mensual</th>
+                                                <th>Depreciación acumulada del mes</th>
+                                                <!--<th>Analitica</td>-->
+                                                <th>Responsable</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="asset_json['asset_list']" t-as="asset">
+                                                <tr>
+                                                    <td><span t-esc="asset['clasificacion_activo']"/></td>
+                                                    <td><span t-esc="asset['fecha_adquisicion']"/></td>
+                                                    <td><span t-esc="asset['nombre_activo']"/></td>
+                                                    <td><span t-esc="asset['depreciacion']"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-esc="asset['valor_adquisicion']" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-esc="asset['depreciacion_acumulada']" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-esc="asset['cuota_mensual']" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <td style="text-align:right"><span>$</span><span t-esc="asset['acumulado_mes']" t-options="{'widget': 'float', 'precision':2}"/></td>
+                                                    <!--<td><span t-esc="asset['analitica']"/></td>-->
+                                                    <td><span t-esc="asset['responsable']"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--Fin page-->
+                    </t><!--Fin basic_layout-->
+                </t><!--Fin ciclo docs-->
+            </t><!--Fin html_container-->
+        </template>
+    </data>
+</odoo>
