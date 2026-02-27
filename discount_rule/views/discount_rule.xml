@@ -55,7 +55,7 @@
                         <!--Invisible fields-->
                         <field name="active" invisible="1"/>
                         <widget name="web_ribbon" title="Inactivo" bg_color="bg-danger" attrs="{'invisible':[('active','=',True)]}"/>
-                        <label for="name" string="Nombre de grupo"/>
+                        <label for="name" string="Nombre de regla"/>
                         <div class="mt0 oe_title">
                             <h1><field name="name" placeholder="Nombre de la regla..." required="1"/></h1>
                         </div>
