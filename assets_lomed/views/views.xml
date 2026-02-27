@@ -41,7 +41,8 @@
                         <group string="Otros datos" name="sv_info" attrs="{'invisible':[('state','=','model')]}">
                             <field name="responsible"/>
                             <field name="area"/>
-                            <field name="note"/>
+                            <field name="size"/>
+                            <field name="notes"/>
                         </group>
                     </xpath>
                     <xpath expr="//div[@name='button_box']" position="inside">
