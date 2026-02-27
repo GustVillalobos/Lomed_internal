@@ -69,8 +69,9 @@ class AccountAssetsLomed(models.Model):
             data['valor_adquisicion']=asset.original_value 
             data['depreciacion_acumulada']= line.asset_depreciated_value - line.depreciation_value if line else 0 
             data['cuota_mensual']= line.depreciation_value if line else 0 
-            data['acumulado_mes']= line.asset_depreciated_value if line else 0 
-            data['analitica']= self.env['account.analytic.account'].browse(line.analytic_distribution.get('100')) if line.analytic_distribution.get('100') else False
+            data['acumulado_mes']= line.asset_depreciated_value if line else 0
+            #analitica =  self.env['account.analytic.account'].browse(line.analytic_distribution.get('100')) if line else False
+            #data['analitica']= analitica.name if analitica else ''
             data['responsable'] = asset.responsible
             record_list.append(data)
         return record_list
