@@ -34,7 +34,7 @@
                         <field name="barcode" readonly="1"/>
                         <field name="label" invisible="1"/>
                     </xpath>
-                    <xpath expr="//field[@name='prorata_date']" position="after">
+                    <xpath expr="//field[@name='prorata_computation_type']" position="after">
                         <field name="sequence_id" attrs="{'invisible':[('state','!=','model')]}"/>
                     </xpath>
                     <xpath expr="//page[@name='main_page']/group" position="inside">
