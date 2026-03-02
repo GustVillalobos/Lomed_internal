@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Grupos de acceso-->
+        <record id="sensitive_fields_group" model="res.groups">
+            <field name="name">Editor de contratos</field>
+        </record>
+        <record id="wage_admin_group" model="res.groups">
+            <field name="name">Autoriza cambio de salario</field>
+            <field name="implied_ids" eval="[(4,ref('security_rh.sensitive_fields_group'))]"/>
+        </record>
+    </data>
+</odoo>

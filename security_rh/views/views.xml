@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--inherited view for hr.contract-->
+        <record model="ir.ui.view" id="security_rh_contract_form_view">
+            <field name="name">security_rh_contract_form_view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='salary']" position="inside">
+                        <label for="copy_wage" string="Salario" groups="!security_rh.wage_admin_group"/>
+                        <div class="o_row mw-50" name="copy_wage">
+                            <field name="copy_wage" class="oe_inline o_hr_narrow_field" nolabel="1" groups="!security_rh.wage_admin_group"/>
+                            <div class="mb-3" groups="!security_rh.wage_admin_group">/mes</div>
+                        </div>
+                    </xpath>
+                    <xpath expr="//field[@name='wage']" position="attributes">
+                        <attribute name="groups">security_rh.wage_admin_group</attribute>
+                    </xpath>
+                    <xpath expr="//div[@name='wage']/div" position="attributes">
+                        <attribute name="groups">security_rh.wage_admin_group</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--inherited view for res.company-->
+        <record model="ir.ui.view" id="security_rh_company_form_view">
+            <field name="name">security_rh_company_form_view</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='social_media']" position="after">
+                        <group name="contract_secutiry" string="Seguridad contratos">
+                            <field name="sensitive_fields_ids" widget="many2many_tags" options="{'no_create':True,'no_create_edit':True}" />
+                        </group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
