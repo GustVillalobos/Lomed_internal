@@ -50,12 +50,11 @@ class SecurityRhHrContract(models.Model):
                 body = (
                     f"Cambios detectados:<br/><ul>{' '.join(changes)}</ul>"
                 )
-            contract.message_post(
-                body=body,
-                message_type="comment",
-                subtype_xmlid="mail.mt_note",
-            )
-
+                contract.message_post(
+                    body=body,
+                    message_type="comment",
+                    subtype_xmlid="mail.mt_note",
+                )
         result = super().write(vals)
         return result
     
