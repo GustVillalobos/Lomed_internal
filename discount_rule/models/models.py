@@ -99,11 +99,11 @@ class SaleOrderLineDiscountRule(models.Model):
 
             if discount > 0:
                 line.discount = discount
-                line.line.x_descuento = 'other'
+                line.x_descuento = 'other'
                 line.is_auto_discount = True
             elif line.is_auto_discount:
                 line.discount = 0.0
-                line.line.x_descuento = '0'
+                line.x_descuento = '0'
                 line.is_auto_discount = False
         
         return result
