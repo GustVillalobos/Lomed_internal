@@ -23,6 +23,9 @@ class AccountAssetsLomed(models.Model):
     area= fields.Char("Areá designada")
     size = fields.Char("Medidas")
     sequence_id = fields.Many2one(comodel_name='ir.sequence',string="Secuencia",help='Secuencia o correlativo de código de barra')
+    comercial_value = fields.Float("Precio comercial")
+    file_name = fields.Char("Nombre de archivo")
+    file_pdf = fields.Binary(string="Ficha técnica",attachment=True)
 
     def action_create_barcode(self):
         self.ensure_one()

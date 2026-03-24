@@ -49,6 +49,15 @@
                         <button name="action_create_barcode" type="object" icon="fa-cube" string="Asignar código"/>
                         <button name="print_label" string="imprimir" icon="fa-print" type="object" attrs="{'invisible':['|',('barcode','=',False),('label','=',False)]}"/>
                     </xpath>
+                    <xpath expr="//notebook" position="inside">
+                        <page name="techical_sheet" string="Ficha ténica">
+                            <field name="file_name" invisible="1"/>
+                            <field name="file_pdf" widget="pdf_viewer" filename="file_name" options="{'accept':'.pdf'}"/>
+                        </page>
+                    </xpath>
+                    <xpath expr="//group[@name='current_values']" position="inside">
+                        <field name="comercial_value"/>
+                    </xpath>
                 </data>
             </field>
         </record>
