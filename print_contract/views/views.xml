@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Vista para empleados-->
+        <record id="print_contract_employee_form_view" model="ir.ui.view">
+            <field name="name">print_contract_employee_form_view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='active_group']" position="inside">
+                        <field name="is_legal_representative" groups="hr.group_hr_manager"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!--Vista para contratos-->
+        <record id="print_contract_contract_form_view" model="ir.ui.view">
+            <field name="name">print_contract_contract_form_view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button name="action_print_contract" string="Imprimir contrato" icon="fa-print" type="object" class="oe_stat_button"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+         <!--Vista para departamentos-->
+        <record id="print_contract_department_form_view" model="ir.ui.view">
+            <field name="name">print_contract_department_form_view</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//form/sheet/group" position="after">
+                        <group name="contract_schedule" string="Horarios para contrato">
+                            <field name="valid_schedules" nolabel="1" colspan="2" placeholder="Registre aqui las diferentes variantes de horario que usará el departamento...."/>
+                        </group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>
