@@ -44,5 +44,23 @@
                 </data>
             </field>
         </record>
+
+        <!--Vista para puestos de trabajo-->
+        <record id="print_contract_job_form_view" model="ir.ui.view">
+            <field name="name">print_contract_job_form_view</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook" position="inside">
+                        <page name="contract_equipment" string="Equipos relacionados">
+                            <group>
+                                <field name="contract_equipment" nolabel="1" colspan="2" placeholder="Escriba aqui los equipos y elementos a los que por naturaleza el puesto tendra acceso"/>
+                            </group>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
     </data>
 </odoo>

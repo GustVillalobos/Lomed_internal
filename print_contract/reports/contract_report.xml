@@ -16,7 +16,7 @@
                 <t t-set="company" t-value="env.company"/>
                 <t t-foreach="docs" t-as="doc">
                     <t t-call="web.basic_layout">
-                        <div class="page">
+                        <div class="page" style="font-family:Arial">
                             <!--Variables generales-->
                             <t t-set="legal_repre" t-value="doc.get_legal_representative()"/>
                             <t t-set="employee" t-value="doc.employee_id"/>
@@ -32,104 +32,96 @@
                             <div class="row">
                                 <div class="col-6">
                                     <p><b>GENERALES DEL CONTRATANTE PATRONAL</b></p>
-                                    <table class="table">
+                                    <table class="table-sm table-borderless" style="font-size:13px;">
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <b>Empresa:</b>
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <b><span t-esc="company.name"/></b>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Representada por
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.name.title() if legal_repre else ''"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Edad:</td>
-                                            <td><span t-esc="legal_repre.edad+' años'"/></td><!--legal_repre.age-->
-                                            <td>Sexo:</td>
-                                            <td><span t-field="legal_repre.gender"/></td>
+                                            <td class="p-0">Edad:</td>
+                                            <td class="p-0"><span t-esc="legal_repre.edad+' años'"/></td><!--legal_repre.age-->
+                                            <td class="p-0">Sexo:</td>
+                                            <td class="p-0"><span t-field="legal_repre.gender"/></td>
                                         </tr>
                                         <tr>
-                                            <td>Esatdo civil:</td>
-                                            <td><span t-field="legal_repre.marital"/></td>
-                                            <td>Profesión:</td>
-                                            <td><span t-esc="legal_repre.profesion"/></td><!--legal_repre.profession-->
+                                            <td class="p-0">Estado civil:</td>
+                                            <td class="p-0"><span t-field="legal_repre.marital"/></td>
+                                            <td class="p-0">Profesión:</td>
+                                            <td class="p-0"><span t-esc="legal_repre.profesion"/></td><!--legal_repre.profession-->
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Lugar de nacimiento:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.place_of_birth"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
-                                                Recidencia:
+                                            <td class="p-0" colspan="2">
+                                                Residencia:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.domicilio"/><!--legal_repre.domicile-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Nacionalidad:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.country_id.name"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 D.U.I. No.:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.dui"/><!--legal_repre.document_number-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                Extendido el día:
                                             </td>
-                                            <td colspan="2">
-                                                <span t-esc="legal_repre.dui_fecha"/><!--legal_repre.issue_date-->
+                                            <td class="p-0" colspan="2">
+                                                <span t-field="legal_repre.dui_fecha"/><!--legal_repre.issue_date-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
-                                               Expira:
-                                            </td>
-                                            <td colspan="2">
-                                                
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                En la ciudad de:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="legal_repre.dui_lugar"/><!--legal_repre.issue_place-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                En representación de:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="company.name"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                NIT:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="company.vat"/>
                                             </td>
                                         </tr>
@@ -137,61 +129,61 @@
                                 </div>
                                 <div class="col-6">
                                     <p><b>GENERALES DEL TRABAJADOR</b></p>
-                                    <table class="table">
+                                    <table class="table-sm table-borderless" style="font-size:13px;">
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Nombre y apellido:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="employee.name.title() if employee else ''"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Edad:</td>
-                                            <td><span t-esc="employee.edad+' años'"/></td><!--employee.age-->
-                                            <td>Sexo:</td>
-                                            <td><span t-field="employee.gender"/></td>
+                                            <td class="p-0">Edad:</td>
+                                            <td class="p-0"><span t-esc="employee.edad+' años'"/></td><!--employee.age-->
+                                            <td class="p-0">Sexo:</td>
+                                            <td class="p-0"><span t-field="employee.gender"/></td>
                                         </tr>
                                         <tr>
-                                            <td>Esatdo civil:</td>
-                                            <td><span t-field="employee.marital"/></td>
-                                            <td>Profesión:</td>
-                                            <td><span t-esc="employee.profesion"/></td><!--employee.profession-->
+                                            <td class="p-0">Estado civil:</td>
+                                            <td class="p-0"><span t-field="employee.marital"/></td>
+                                            <td class="p-0">Profesión:</td>
+                                            <td class="p-0"><span t-esc="employee.profesion"/></td><!--employee.profession-->
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Lugar de nacimiento:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="employee.place_of_birth"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
-                                                Recidencia:
+                                            <td class="p-0" colspan="2">
+                                                Residencia:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="employee.domicilio"/><!--employee.domicile-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 Nacionalidad:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="employee.country_id.name"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 D.U.I. No.:
                                             </td>
                                             <td colspan="2">
@@ -199,33 +191,26 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                Extendido el día:
                                             </td>
-                                            <td colspan="2">
-                                                <span t-esc="employee.dui_fecha"/><!--employee.issue_date-->
+                                            <td class="p-0" colspan="2">
+                                                <span t-field="employee.dui_fecha"/><!--employee.issue_date-->
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">
-                                               Expira:
-                                            </td>
-                                            <td colspan="2">
-                                                
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                En la ciudad de:
                                             </td>
-                                            <td colspan="2">
+                                            <td class="p-0" colspan="2">
                                                 <span t-esc="employee.dui_lugar"/><!--employee.issue_place-->
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
-                            <div class="row">
+                            <br/><br/>
+                            <div class="row" style="font-size:14px">
                                 <div class="col-12">
                                     <P>
                                         <b>NOSOTROS:</b> <s2pan t-esc="legal_repre.name.title()"/> y <span t-esc="employee.name.title()"/>, ambos de las generales arriba indicadas y actuando en el carácter que aparece expresado, 
@@ -234,18 +219,18 @@
                                     <p>
                                         <b>A) CLASE DE TRABAJO O SERVICIO:</b><br/>
                                         El trabajador se obliga a prestar sus servicios como <span t-esc="doc.job_id.name"/>. Además de las obligaciones que le impongan las leyes laborales y sus reglamentos y 
-                                        el reglamento interno de trabajo. 
+                                        el reglamento interno de trabajo, el trabajador tendra como obligaciones propias de su cargo las siguientes:<span t-esc="doc.job_id.description"/> así como cualquier otra que se detalle en el manuel de descripción de puestos.
                                     </p>
                                     <p>
                                         <b>B) DURACIÓN DEL CONTRATO Y TIEMPO DE SERVICIO:</b><br/>
                                         El presente contrato se celebra por tiempo indefinido.<br/><br/>
-                                        El tiempo de sercicios del trabajador se computará a partir del día <span t-esc="doc.date_start.strftime('%d-%m-%Y')"/>, fecha desde la cual el trabajador ingresó a prestar sus servicios al patrono.<br/><br/>
+                                        El tiempo de servicios del trabajador se computará a partir del día <span t-esc="doc.date_start.strftime('%d-%m-%Y')"/>, fecha desde la cual el trabajador ingresó a prestar sus servicios al patrono.<br/><br/>
                                         Queda estipulado para trabajadores de nuevo ingreso que los primeros treinta días son de prueba y <u>dentro de este término cualquiera de las partes podrá dar por terminado el contrato sin expresión de causa ni responsabilidad alguna.</u>
                                     </p>
                                     <p>
                                         <b>C) LUGAR DE PRESTACION DE LOS SERVICIOS:</b><br/>
                                         El lugar de prestación de los servicios será en <span t-esc="employee.work_location_id.name"/>: <span t-esc="employee.work_location_id.address_id.street"/>,<span t-esc="employee.work_location_id.address_id.state_id.name"/>,<span t-esc="employee.work_location_id.address_id.country_id.name"/> 
-                                        o en cualquier otro lugar que la empresa designe posteriormente de acuerdo con las necesidades de esta sin que esto altere los términos del presente contrato y siempre y cuando el trabajador no dev3engue un sueldo menor al convenid. El trabajador habitará en su casa de habitación 
+                                        o en cualquier otro lugar que la empresa designe posteriormente de acuerdo con las necesidades de esta sin que esto altere los términos del presente contrato y siempre y cuando el trabajador no devengue un sueldo menor al convenido. El trabajador habitará en su casa de habitación 
                                         dado que la empresa no proporciona alojamiento. (El patrono y trabajador, de común acuerdo podrán convenir en que el trabajador realice sus labores en cualquiero otro lugar garantizándoles los gastos de ida y vuelta del trabajador o los viaticos necesarios.)
                                     </p>
                                     <p>
@@ -257,12 +242,13 @@
                                     </p>
                                     <p>
                                         <b>E) SALARIO, FORMA PERIODO Y LUGAR DE PAGO:</b><br/>
-                                        Se estipula de mutuo acuerdo que el trabajador devengará un salario base de <span t-field="doc.wage"/> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA, la suma devengada, se pagará al trabajador mediante déposito en cuenta de ahorro designada para tales efectos. Dicho pago se hará quincenalmente, es decir 
+                                        Se estipula de mutuo acuerdo que el trabajador devengará un salario mensual de <span t-field="doc.wage"/> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA, la suma devengada, se pagará al trabajador mediante déposito en cuenta de ahorro designada para tales efectos. Dicho pago se hará quincenalmente, es decir 
                                         cada quince y ultimo de cada mes.<br/><br/>
                                         La operación de pago principará y se continuará sin interrupción, inmediatamente a la terminación de la jornada de trabajo correspondiente a la fecha respectiva.
                                     </p>
                                     <p>
                                         <b>F) HERRAMIENTAS Y MATERIALES:</b><br/>
+                                        <span t-esc="doc.job_id.contract_equipment"/><br/>
                                         El patrono suministrara al trabajador los materiales y herramientas de trabajo necesarias para el desarrollo de sus labores. Las herrmientas serán entregadas en buen estado al trabajador y deben ser devueltas así por el trabajador cuando sea requerido al efecto por sus jefes inmediatos, salvo disminución 
                                         o deterioro causados por caso fortuito o fuerza mayor, o por la acción del tiempo, o por el consumo y uso normal de los mismos.
                                     </p>
@@ -270,8 +256,8 @@
                                         <b>G) PERSONAS QUE DEPENDEN ECONOMICAMENTE DEL TRABAJADOR:</b><br/>
                                         Para los efectos del articulo 23 del Código de Trabajo, el trabajador señala como personas que dependen económicamente de, las siguientes:
                                     </p>    
-                                    <table>
-                                        <thead class="table table-sm table-bordered">
+                                    <table class="table table-sm table-bordered" style="border:1px solid black;font-size:13px">
+                                        <thead>
                                             <tr>
                                                 <th>NOMBRE</th>
                                                 <th>PARENTESCO</th>
@@ -279,18 +265,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
                                         </tbody>
                                     </table>
                                     <p>
                                         para los efectos de la Ley Reguladora de la Compensación Económica por Renuncia Voluntaria, en caso de fallecimiento de el trabajador o trabajadora, designa como beneficiarios a las personas siguientes:
                                     </p>
-                                    <table>
-                                        <thead class="table table-sm table-bordered">
+                                    <table class="table table-sm table-bordered" style="border:1px solid black;font-size:13px">
+                                        <thead>
                                             <tr>
                                                 <th>NOMBRE</th>
                                                 <th>PARENTESCO</th>
@@ -298,9 +284,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
-                                            <tr><td></td><td></td><td></td></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
+                                            <tr><td><br/></td><td/><td/></tr>
                                         </tbody>
                                     </table>
                                     <p>
@@ -309,26 +295,26 @@
                                         El trabajador debe guardar rigurosa reserva de los secretos e información confidencial de la empresa de los cuales tuviere conocimiento 
                                         por razon de su cargo y/o sobre otros asuntos administrativos cuya divulgación pueda causar perjuicios a la empresa.<br/><br/>
                                         En el presente contrato individual de trabajo se entenderán incluidos, segun el caso, los derechos y deberes laborales establecidos por las 
-                                        leyes y reglamentos de trabajo pertinenetes, por el reglamento interno y por los consagrados por la costumbre.<br/><br/>
+                                        leyes y reglamentos de trabajo pertinentes, por el reglamento interno y por los consagrados por la costumbre.<br/><br/>
                                         Este contrato sustituye cualquier otro convenio individual de trabajo anterior, ya sea escrito o verbal, que haya estado vigente entre el patrono 
                                         y el trabajador, pero no altera en manera alguna los derechos y prerrogativas del trabajador que emanen de su antigüedad en el servicio, ni se entenderá 
-                                        como negativo de mejores condiciones concedidas al trabajador en el cotrato anterior y que no consten en el presente.<br/><br/>
+                                        como negativo de mejores condiciones concedidas al trabajador en el contrato anterior y que no consten en el presente.<br/><br/>
                                         En fe de los cuales firmamos el presente documento en triplicado en San Salvador, a los  <span t-esc="doc.date_start.strftime('%d')"/> días del mes de <span t-esc="month[doc.date_start.strftime('%m')]"/>
                                         del año <span t-esc="doc.date_start.strftime('%Y')"/>
                                     </p>
                                 </div>
                             </div>
                             <br/><br/><br/><br/><br/><br/><br/>
-                            <div class="row">
+                            <div class="row" style="font-size:14px">
                                 <div class="col-1"/>
                                 <div class="col-4" style="text-align:center">
-                                    (f)______________________<br/>
+                                    (f)____________________________<br/>
                                     <span t-esc="legal_repre.name.title()"/><br/>
                                     Patrono o Representante
                                 </div>
                                 <div class="col-1"/>
                                 <div class="col-4" style="text-align:center">
-                                    (f)______________________<br/>
+                                    (f)____________________________<br/>
                                     <span t-esc="employee.name.title()"/><br/>
                                     Trabajador
                                 </div>

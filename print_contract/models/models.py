@@ -50,3 +50,8 @@ class PrintContractHrDepartment(models.Model):
     _inherit = 'hr.department'
 
     valid_schedules = fields.Html("Horarios disponibles")
+    
+class PrintContractHrJob(models.Model):
+    _inherit = 'hr.job'
+
+    contract_equipment = fields.Html("Equipos relacionados")
