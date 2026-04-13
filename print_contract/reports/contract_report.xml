@@ -219,7 +219,7 @@
                                     <p>
                                         <b>A) CLASE DE TRABAJO O SERVICIO:</b><br/>
                                         El trabajador se obliga a prestar sus servicios como <span t-esc="doc.job_id.name"/>. Además de las obligaciones que le impongan las leyes laborales y sus reglamentos y 
-                                        el reglamento interno de trabajo, el trabajador tendra como obligaciones propias de su cargo las siguientes:<span t-esc="doc.job_id.description"/> así como cualquier otra que se detalle en el manuel de descripción de puestos.
+                                        el reglamento interno de trabajo, el trabajador tendra como obligaciones propias de su cargo las siguientes:<span t-esc="doc.job_id.description"/> así como cualquier otra que se detalle en el manual de descripción de puestos.
                                     </p>
                                     <p>
                                         <b>B) DURACIÓN DEL CONTRATO Y TIEMPO DE SERVICIO:</b><br/>
@@ -228,33 +228,33 @@
                                         Queda estipulado para trabajadores de nuevo ingreso que los primeros treinta días son de prueba y <u>dentro de este término cualquiera de las partes podrá dar por terminado el contrato sin expresión de causa ni responsabilidad alguna.</u>
                                     </p>
                                     <p>
-                                        <b>C) LUGAR DE PRESTACION DE LOS SERVICIOS:</b><br/>
-                                        El lugar de prestación de los servicios será en <span t-esc="employee.work_location_id.name"/>: <span t-esc="employee.work_location_id.address_id.street"/>,<span t-esc="employee.work_location_id.address_id.state_id.name"/>,<span t-esc="employee.work_location_id.address_id.country_id.name"/> 
+                                        <b>C) LUGAR DE PRESTACIÓN DE LOS SERVICIOS:</b><br/>
+                                        El lugar de prestación de los servicios será en <span t-esc="employee.work_location_id.name"/>: <span t-esc="employee.work_location_id.address_id.street"/>, <span t-esc="employee.work_location_id.address_id.state_id.name"/>, <span t-esc="employee.work_location_id.address_id.country_id.name"/> 
                                         o en cualquier otro lugar que la empresa designe posteriormente de acuerdo con las necesidades de esta sin que esto altere los términos del presente contrato y siempre y cuando el trabajador no devengue un sueldo menor al convenido. El trabajador habitará en su casa de habitación 
-                                        dado que la empresa no proporciona alojamiento. (El patrono y trabajador, de común acuerdo podrán convenir en que el trabajador realice sus labores en cualquiero otro lugar garantizándoles los gastos de ida y vuelta del trabajador o los viaticos necesarios.)
+                                        dado que la empresa no proporciona alojamiento. (El patrono y trabajador, de común acuerdo, podrán convenir en que el trabajador realice sus labores en cualquier otro lugar, garantizándole los gastos de ida y vuelta del trabajador o los viáticos necesarios).
                                     </p>
                                     <p>
                                         <b>D) HORARIO DE TRABAJO:</b><br/>
-                                        Dado que la actividad que desarrollará el trabajador es de caracter comercial, horario durante el cual el trabajador desempeñará sus labores será:<br/>
-                                        <span t-esc="doc.department_id.valid_schedules"/><br/>
-                                        Segun el horario establecido, la jornada de trabajo se considera dividida. Únicamente podrán ejecutarse trabajos extraordinarios cuando se reciba la orden por escrito del jefe inmediato o gerente respectivo y <u>de mutuo acuerdo con el trabajador.</u><br/><br/>
+                                        Dado que la actividad que desarrollará el trabajador es de carácter comercial, el horario durante el cual el trabajador desempeñará sus labores será:<br/>
+                                        <span t-esc="doc.department_id.valid_schedules"/>
+                                        Según el horario establecido, la jornada de trabajo se considera dividida. Únicamente podrán ejecutarse trabajos extraordinarios cuando se reciba la orden por escrito del jefe inmediato o gerente respectivo y <u>de mutuo acuerdo con el trabajador.</u><br/><br/>
                                         El horario de trabajo está sujeto a cambios segun las necesidades de la empresa y previa comunicación escrita hecha al trabajador. Se pactarán los cambios de común acuerdo con el trabajador.
                                     </p>
                                     <p>
-                                        <b>E) SALARIO, FORMA PERIODO Y LUGAR DE PAGO:</b><br/>
-                                        Se estipula de mutuo acuerdo que el trabajador devengará un salario mensual de <span t-field="doc.wage"/> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA, la suma devengada, se pagará al trabajador mediante déposito en cuenta de ahorro designada para tales efectos. Dicho pago se hará quincenalmente, es decir 
-                                        cada quince y ultimo de cada mes.<br/><br/>
-                                        La operación de pago principará y se continuará sin interrupción, inmediatamente a la terminación de la jornada de trabajo correspondiente a la fecha respectiva.
+                                        <b>E) SALARIO, FORMA, PERIODO Y LUGAR DE PAGO:</b><br/>
+                                        Se estipula de mutuo acuerdo que el trabajador devengará un salario mensual de <span t-field="doc.wage"/> DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA; la suma devengada se pagará al trabajador mediante depósito en cuenta de ahorro designada para tales efectos. Dicho pago se hará quincenalmente, es decir, 
+                                        cada quince y último de cada mes.<br/><br/>
+                                        La operación de pago principiará y se continuará sin interrupción, inmediatamente a la terminación de la jornada de trabajo correspondiente a la fecha respectiva.
                                     </p>
                                     <p>
                                         <b>F) HERRAMIENTAS Y MATERIALES:</b><br/>
                                         <span t-esc="doc.job_id.contract_equipment"/><br/>
-                                        El patrono suministrara al trabajador los materiales y herramientas de trabajo necesarias para el desarrollo de sus labores. Las herrmientas serán entregadas en buen estado al trabajador y deben ser devueltas así por el trabajador cuando sea requerido al efecto por sus jefes inmediatos, salvo disminución 
+                                        El patrono suministrará al trabajador los materiales y herramientas de trabajo necesarias para el desarrollo de sus labores. Las herramientas serán entregadas en buen estado al trabajador y deben ser devueltas así por el trabajador cuando sea requerido al efecto por sus jefes inmediatos, salvo disminución 
                                         o deterioro causados por caso fortuito o fuerza mayor, o por la acción del tiempo, o por el consumo y uso normal de los mismos.
                                     </p>
                                     <p>
-                                        <b>G) PERSONAS QUE DEPENDEN ECONOMICAMENTE DEL TRABAJADOR:</b><br/>
-                                        Para los efectos del articulo 23 del Código de Trabajo, el trabajador señala como personas que dependen económicamente de, las siguientes:
+                                        <b>G) PERSONAS QUE DEPENDEN ECONÓMICAMENTE DEL TRABAJADOR:</b><br/>
+                                        Para los efectos del artículo 23 del Código de Trabajo, el trabajador señala como personas que dependen económicamente de, las siguientes:
                                     </p>    
                                     <table class="table table-sm table-bordered" style="border:1px solid black;font-size:13px">
                                         <thead>
@@ -273,7 +273,7 @@
                                         </tbody>
                                     </table>
                                     <p>
-                                        para los efectos de la Ley Reguladora de la Compensación Económica por Renuncia Voluntaria, en caso de fallecimiento de el trabajador o trabajadora, designa como beneficiarios a las personas siguientes:
+                                        para los efectos de la Ley Reguladora de la Compensación Económica por Renuncia Voluntaria, en caso de fallecimiento del trabajador o trabajadora, designa como beneficiarios a las personas siguientes:
                                     </p>
                                     <table class="table table-sm table-bordered" style="border:1px solid black;font-size:13px">
                                         <thead>
@@ -291,16 +291,16 @@
                                     </table>
                                     <p>
                                         <b>H) OTRAS ESTIPULACIONES:</b><br/>
-                                        El trabajador está obligado a cumplir y respetar las normas, politicas y reglamentos aprobados por las instancias pertinentes.<br/><br/>
+                                        El trabajador está obligado a cumplir y respetar las normas, políticas y reglamentos aprobados por las instancias pertinentes.<br/><br/>
                                         El trabajador debe guardar rigurosa reserva de los secretos e información confidencial de la empresa de los cuales tuviere conocimiento 
-                                        por razon de su cargo y/o sobre otros asuntos administrativos cuya divulgación pueda causar perjuicios a la empresa.<br/><br/>
-                                        En el presente contrato individual de trabajo se entenderán incluidos, segun el caso, los derechos y deberes laborales establecidos por las 
+                                        por razón de su cargo y/o sobre otros asuntos administrativos cuya divulgación pueda causar perjuicios a la empresa.<br/><br/>
+                                        En el presente contrato individual de trabajo se entenderán incluidos, según el caso, los derechos y deberes laborales establecidos por las 
                                         leyes y reglamentos de trabajo pertinentes, por el reglamento interno y por los consagrados por la costumbre.<br/><br/>
                                         Este contrato sustituye cualquier otro convenio individual de trabajo anterior, ya sea escrito o verbal, que haya estado vigente entre el patrono 
                                         y el trabajador, pero no altera en manera alguna los derechos y prerrogativas del trabajador que emanen de su antigüedad en el servicio, ni se entenderá 
                                         como negativo de mejores condiciones concedidas al trabajador en el contrato anterior y que no consten en el presente.<br/><br/>
                                         En fe de los cuales firmamos el presente documento en triplicado en San Salvador, a los  <span t-esc="doc.date_start.strftime('%d')"/> días del mes de <span t-esc="month[doc.date_start.strftime('%m')]"/>
-                                        del año <span t-esc="doc.date_start.strftime('%Y')"/>
+                                        del año <span t-esc="doc.date_start.strftime('%Y')"/>.
                                     </p>
                                 </div>
                             </div>
