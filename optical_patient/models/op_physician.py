@@ -42,15 +42,11 @@ class op_professional(models.Model):
         physician = super(op_professional,self).create(vals)
         return physician
 
-    @api.onchange('employee_id','partner_id')
+    @api.onchange('employee_id')
     def update_name(self):
-        self.ensure_one()
-        res = ''
-        if self.employee_id and not self.partner_id:
-            res = self.employee_id.name
-        if not self.employee_id and self.partner_id:
-            res = self.partner_id.name
-        self.name = res
+        for physician in self:
+            if physician.employee_id:
+                physician.name = physician.employee_id.name
 
     def generate_code(self,val):
         specialty = self.env['op.specialty'].browse(int(val))
